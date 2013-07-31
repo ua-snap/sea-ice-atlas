@@ -14,11 +14,14 @@
         <!-- build:js scripts/vendor/modernizr.js -->
         <script src="bower_components/modernizr/modernizr.js"></script>
         <!-- endbuild -->
+        <style>
+        		img.olMap { max-width: none !important; }
+        </style>
     </head>
     <body>
         <div class="container">
-            <div class="hero-unit" id="app">
-            </div>
+            <div class="hero-unit" id="app"></div>
+            <div id="map" style="width: 512px; height: 256px"></div>
         </div>
 
         <!--[if lt IE 7]>
@@ -37,6 +40,7 @@
         <script src="bower_components/jquery/jquery.js"></script>
         <script src="bower_components/underscore/underscore.js"></script>
         <script src="bower_components/backbone/backbone.js"></script>
+        <script src="bower_components/openlayers/lib/OpenLayers.js"></script>
         <!-- endbuild -->
 
         <!-- build:js scripts/plugins.js -->

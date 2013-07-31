@@ -1,5 +1,5 @@
-/*global client, $*/
-
+/*global client,Backbone */
+'use strict';
 
 window.client = {
     Models: {},
