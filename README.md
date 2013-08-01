@@ -40,3 +40,7 @@ cd sea-ice-atlas/server
 npm install
 npm start
 ```
+
+### Jenkins
+
+Upon changes to the master branch (checked every 5 minutes), Jenkins runs ```grunt``` then copies the contents of the ```dist/``` to Icarus.  One gotcha: the "publish over ssh" plugin chokes on removing prefixes from dotfiles (in this case, ```.htaccess```) so those files are omitted from being copied to the production server.
