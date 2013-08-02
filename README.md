@@ -6,6 +6,23 @@ Web app for exploring arctic sea ice extent.
 
 Basic idea is there's a simple web app (```client/```) which communicates with a basic data API and/or other services as required.
 
+### Dependencies
+
+#### Mac OS X
+
+First install:
+
+Xcode
+Homebrew
+
+Then install Ruby, Compass, and Node with the following commands:
+
+```bash
+brew install ruby
+gem install compass
+brew install node
+```
+
 ### Client
 
 #### Installation of build environment
