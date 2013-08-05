@@ -12,7 +12,7 @@ Basic idea is there's a simple web app (```client/```) which communicates with a
 
 First install:
 
-Xcode (you may also need to install the "Command Line Tools" package from the Xcode -> Preferences -> Downloads window)
+Xcode (you may also need to install the "Command Line Tools" package from the Xcode -> Preferences -> Downloads window)  
 Homebrew
 
 Then install Ruby, Compass, and Node with the following commands:
