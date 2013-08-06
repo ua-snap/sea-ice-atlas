@@ -5,13 +5,23 @@ client.Views.MapView = Backbone.View.extend({
 
 	template: JST['app/scripts/templates/Map.ejs'],
 	render: function() {
-		var map = new OpenLayers.Map('map');
+		var map = new OpenLayers.Map({
+			div: 'map',
+			allOverlays: true
+		});
 
 		var olWms = new OpenLayers.Layer.WMS(
 			'OpenLayers WMS',
 			'http://vmap0.tiles.osgeo.org/wms/vmap0',
 			{layers: 'basic'}
 			);
+
+		var seaWms = new OpenLayers.Layer.WMS(
+			'Sea WMS',
+			'http://hades.snap.uaf.edu/cgi-bin/mapserv?map=/var/www/html/seaiceatlas2.map&SERVICE=WMS&VERSION=1.1.1%20&REQUEST=GetMap&LAYERS=seaiceatlas&STYLES=&SRS=EPSG:4326&WIDTH=700&HEIGHT=644&BBOX=179.875,40.125,240.125,80.375&FORMAT=image/png',
+			{},
+			{singleTile: true}
+		);
 
 		var dmWms = new OpenLayers.Layer.WMS(
 			'Canadian Data',
@@ -28,7 +38,7 @@ client.Views.MapView = Backbone.View.extend({
 			}
 		);
 
-		map.addLayers([olWms, dmWms]);
+		map.addLayers([olWms, seaWms, dmWms]);
 		map.addControl(new OpenLayers.Control.LayerSwitcher());
 		map.zoomToMaxExtent();
 	}
