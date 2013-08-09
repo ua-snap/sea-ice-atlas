@@ -5,22 +5,24 @@ client.Views.MapView = Backbone.View.extend({
 
 	template: JST['app/scripts/templates/Map.ejs'],
 	render: function() {
-		var map = new OpenLayers.Map({
-			div: 'map',
+		var geographic = new OpenLayers.Projection("EPSG:4326");
+
+		var map = new OpenLayers.Map('map', {
+			projection: geographic,
 			allOverlays: true
 		});
 
 		var olWms = new OpenLayers.Layer.WMS(
 			'OpenLayers WMS',
 			'http://vmap0.tiles.osgeo.org/wms/vmap0',
-			{layers: 'basic'}
-			);
+			{
+				layers: 'basic'
+			}
+		);
 
-		var seaWms = new OpenLayers.Layer.WMS(
-			'Sea WMS',
-			'http://hades.snap.uaf.edu/cgi-bin/mapserv?map=/var/www/html/seaiceatlas2.map&SERVICE=WMS&VERSION=1.1.1%20&REQUEST=GetMap&LAYERS=seaiceatlas&STYLES=&SRS=EPSG:4326&WIDTH=700&HEIGHT=644&BBOX=179.875,40.125,240.125,80.375&FORMAT=image/png',
-			{},
-			{singleTile: true}
+		var seaWms = new OpenLayers.Layer.XYZ(
+			'Sea Ice Atlas',
+			'http://tiles.snap.uaf.edu/tilecache/tilecache.cgi/1.0.0/sic_mean_pct_weekly_ak_12_23_2012/${z}/${y}/${x}'
 		);
 
 		var dmWms = new OpenLayers.Layer.WMS(
