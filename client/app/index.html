@@ -1,67 +1,535 @@
 <!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
-        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-        <link rel="stylesheet" href="styles/main.css">
-        <!-- build:js scripts/vendor/modernizr.js -->
-        <script src="bower_components/modernizr/modernizr.js"></script>
-        <!-- endbuild -->
-        <style>
-        		img.olMap { max-width: none !important; }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="hero-unit" id="app"></div>
-            <div id="map" style="width: 512px; height: 256px"></div>
-        </div>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7">
+	<![endif]-->
+	<!--[if IE 7]>
+	<html class="no-js lt-ie9 lt-ie8">
+		<![endif]-->
+		<!--[if IE 8]>
+		<html class="no-js lt-ie9">
+			<![endif]-->
+			<!--[if gt IE 8]>
+			<!-->
+			<html class="no-js">
+				<!--<![endif]-->
+<head>
+				<meta charset="utf-8">
+				<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+				<title></title>
+				<meta name="description" content="">
+				<meta name="viewport" content="width=device-width">
+				<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+				<link rel="stylesheet" href="styles/main.css">
+				<!-- build:js scripts/vendor/modernizr.js -->
+				<script src="bower_components/modernizr/modernizr.js"></script>
+				<!-- endbuild -->
+				<style>img.olMap { max-width: none !important; }</style>
+</head>
 
-        <!--[if lt IE 7]>
-            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
-        <![endif]-->
+<body>
+		<!--start nav bar, responsive and degrades nicely for smaller devices-->
+		<div class="container-fluid">
+			<header class="row-fluid">
+				<nav class="navbar navbar-inverse">
+					<div class="navbar-inner">
+						<a class="btn btn-navbar" data-target=".nav-collapse"
+			data-toggle="collapse">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class=
+			"icon-bar"></span>
+						</a>
+						<a class="brand" href="#">
+							Historical Sea Ice Atlas
+						</a>
 
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
-            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-            g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-            s.parentNode.insertBefore(g,s)}(document,'script'));
+						<div class="nav-collapse collapse">
+							<ul class="nav">
+								<li class="active">
+									<a href="about.html">About</a>
+								</li>
+
+								<li>
+									<a href="download.html">Download</a>
+								</li>
+
+								<li>
+									<a href="uncertainty.html">Uncertainty</a>
+								</li>
+
+								<li>
+									<a href="glossary.html">Glossary</a>
+								</li>
+
+								<li>
+									<a href="http://www.snap.uaf.edu/">
+										SNAP Home
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</nav>
+			</header>
+			<!--end nav bar-->
+
+			<!--start 3-column left-hand block-->
+			<section class="row-fluid">
+				<aside class="span3">
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a data-toggle="tab" href="#showme">Show Me</a>
+						</li>
+
+						<li>
+							<a data-toggle="tab" href="#feedback">Feedback</a>
+						</li>
+					</ul>
+
+					<section class="tab-content">
+						<article class="tab-pane active" id="showme">
+							<h3>View historical sea ice trends for your area</h3>
+
+							<h4>Choose an area</h4>
+
+							<p>
+								Click a spot or click-and-drag to select a
+						larger area on the map.
+							</p>
+
+							<h4>Choose one time ...</h4>
+							<div class="btn-group">
+								<button type="button" class="btn btn-default btn-mini">Month</button>
+								<button type="button" class="btn btn-warning btn-mini dropdown-toggle" data-toggle="dropdown">
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+									<li>
+										<a href="#">January</a>
+									</li>
+									<li>
+										<a href="#">Fe/labeluary</a>
+									</li>
+									<li>
+										<a href="#">March</a>
+									</li>
+									<li>
+										<a href="#">April</a>
+									</li>
+									<li>
+										<a href="#">May</a>
+									</li>
+									<li>
+										<a href="#">June</a>
+									</li>
+									<li>
+										<a href="#">July</a>
+									</li>
+									<li>
+										<a href="#">August</a>
+									</li>
+									<li>
+										<a href="#">September</a>
+									</li>
+									<li>
+										<a href="#">October</a>
+									</li>
+									<li>
+										<a href="#">November</a>
+									</li>
+									<li>
+										<a href="#">December</a>
+									</li>
+								</ul>
+							</div>
+
+							<div class="btn-group">
+								<button type="button" class="btn btn-default btn-mini">Year</button>
+								<button type="button" class="btn btn-warning btn-mini dropdown-toggle" data-toggle="dropdown">
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+									<li>
+										<a href="#">First Year</a>
+									</li>
+									<li>
+										<a href="#">...Many years...</a>
+									</li>
+									<li>
+										<a href="#">Last year</a>
+									</li>
+								</ul>
+							</div>
+
+							<h4>... or a span of time</h4>
+							<p>From</p>
+							<div class="btn-group">
+								<button type="button" class="btn btn-default btn-mini">Month</button>
+								<button type="button" class="btn btn-warning  btn-mini dropdown-toggle" data-toggle="dropdown">
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+									<li>
+										<a href="#">January</a>
+									</li>
+									<li>
+										<a href="#">Fe/labeluary</a>
+									</li>
+									<li>
+										<a href="#">March</a>
+									</li>
+									<li>
+										<a href="#">April</a>
+									</li>
+									<li>
+										<a href="#">May</a>
+									</li>
+									<li>
+										<a href="#">June</a>
+									</li>
+									<li>
+										<a href="#">July</a>
+									</li>
+									<li>
+										<a href="#">August</a>
+									</li>
+									<li>
+										<a href="#">September</a>
+									</li>
+									<li>
+										<a href="#">October</a>
+									</li>
+									<li>
+										<a href="#">November</a>
+									</li>
+									<li>
+										<a href="#">December</a>
+									</li>
+								</ul>
+							</div>
+
+							<div class="btn-group">
+								<button type="button" class="btn btn-default btn-mini">Year</button>
+								<button type="button" class="btn btn-warning btn-mini dropdown-toggle" data-toggle="dropdown">
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+									<li>
+										<a href="#">First Year</a>
+									</li>
+									<li>
+										<a href="#">...Many years...</a>
+									</li>
+									<li>
+										<a href="#">Last year</a>
+									</li>
+								</ul>
+							</div>
+
+							<p>To</p>
+							<div class="btn-group">
+								<button type="button" class="btn btn-default btn-mini">Month</button>
+								<button type="button" class="btn btn-warning btn-mini dropdown-toggle" data-toggle="dropdown">
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+									<li>
+										<a href="#">January</a>
+									</li>
+									<li>
+										<a href="#">Fe/labeluary</a>
+									</li>
+									<li>
+										<a href="#">March</a>
+									</li>
+									<li>
+										<a href="#">April</a>
+									</li>
+									<li>
+										<a href="#">May</a>
+									</li>
+									<li>
+										<a href="#">June</a>
+									</li>
+									<li>
+										<a href="#">July</a>
+									</li>
+									<li>
+										<a href="#">August</a>
+									</li>
+									<li>
+										<a href="#">September</a>
+									</li>
+									<li>
+										<a href="#">October</a>
+									</li>
+									<li>
+										<a href="#">November</a>
+									</li>
+									<li>
+										<a href="#">December</a>
+									</li>
+								</ul>
+							</div>
+
+							<div class="btn-group">
+								<button type="button" class="btn btn-default btn-mini">Year</button>
+								<button type="button" class="btn btn-warning btn-mini dropdown-toggle" data-toggle="dropdown">
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+									<li>
+										<a href="#">First Year</a>
+									</li>
+									<li>
+										<a href="#">...Many years...</a>
+									</li>
+									<li>
+										<a href="#">Last year</a>
+									</li>
+								</ul>
+							</div>
+
+							<h4>Choose a threshold&nbsp;&nbsp;</h4>
+
+							<p>
+								<a class="btn btn-warning btn-mini" data-toggle=
+							"modal" href="#launch">info</a>
+							</p>
+
+							<section class="modal hide fade" id="launch">
+								<header class="modal-header">
+									<button class="close" data-dismiss="modal"
+									type="button">&times;</button>
+
+									<h3>About sea ice concentration</h3>
+
+									<p>
+										Concentration is a unitless term that
+										describes the relative amount of area covered
+										by ice, compared to some reference area. Thus,
+										concentration describes how much of a 25 km by
+										25 km box is covered by sea ice. This tool
+										shows ice concentration as a percentage. A
+										value of 0 means there is no ice, while a value
+										of 100 means the region is completely covered
+										by ice. (Source:
+										<a href=
+										"http://nsidc.org/cryosphere/seaice/data/terminology.html">NSIDC</a>
+										)
+									</p>
+								</header>
+
+								<div class="modal-body">
+									<h4>
+										How do I choose a sea ice concentration
+											threshold?
+									</h4>
+
+									<p>
+										Info on why one would choose X threshold for
+												X purpose ...
+									</p>
+								</div>
+
+								<footer class="modal-footer">
+									<button class="btn btn-warning" data-dismiss=
+												"modal">Close</button>
+								</footer>
+							</section>
+
+							<p>
+								Sea ice concentration threshold slider bar
+											here?
+							</p>
+
+							<h4>Show/hide layers</h4>
+
+							<form>
+								<label class="checkbox">
+									<input name="communities" type="checkbox"
+													value="communities"/>
+									Communities
+								</label>
+								<label class="checkbox">
+									<input name="drilling" type="checkbox" value=
+														"drilling"/>
+									Offshore drilling locations
+								</label>
+								<label class="checkbox">
+									<input name="shipping" type="checkbox" value=
+															"shipping"/>
+									Shipping/navigation routes
+								</label>
+								<label class="checkbox">
+									<input name="mammal" type="checkbox" value=
+																"mammal"/>
+									Marine mammal migrations
+								</label>
+								<label class="checkbox">
+									<input name="buoys" type="checkbox" value=
+																	"buoys"/>
+									Seasonal buoys
+								</label>
+							</form>
+						</article>
+
+						<article class="tab-pane" id="feedback">
+							<p>We welcome your comments.</p>
+
+							<div class="input-group">
+								<form id="contactUsForm" name="contactUsForm">
+									<div>
+										<!-- should  avoid using <select>
+										elements here as they cannot be fully styled in WebKit /labelowsers. -->
+										<select id="contactsSelector" name="what">
+											<option value="topic1">Details on Topic 1</option>
+
+											<option value="topic2">Details on Topic 2</option>
+
+											<option value="topic3">Details on Topic 3</option>
+										</select>
+									</div>
+
+									<div>
+										<input class="required" id="contact_name"
+																			name="name" placeholder="Your name*" type=
+																			"text"></div>
+
+									<div>
+										<input class="required email" id=
+																			"contact_email" name="email" placeholder=
+																			"Your e-mail address*" type="text"></div>
+
+									<div>
+										<div id="messageWrapper">
+
+											<textarea class="required" cols="20"
+																				id="contact_message" name="message"
+																				placeholder=
+																				"Your comment or suggestion" rows="6"></textarea>
+
+											<div>
+												<div id="buttonWrapper">
+													<button class=
+																					"btn btn-warning" id=
+																					"sendEmailButton">
+														Send your
+																					comment
+													</button>
+													<span id=
+																					"sendingEmail" style=
+																					"display: inline-block;"></span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+							<!-- end feedback form -->
+
+							<h4>Disclaimer (ADAPTED FROM AOOS)</h4>
+
+							<p>
+								All products published on this website are
+																not intended to be used for navigational or operational
+																purposes. This website aggregates and displays data and
+																modeling products created by SNAP. We welcome
+																suggestions for clarification or correction, as
+																appropriate.
+							</p>
+
+							<p>
+								Neither SNAP, nor any of its
+																	members, employees or agents makes any warranty,
+																	expressed or implied, including merchantability and
+																	fitness for a particular purpose, or assumes any legal
+																	liability or responsibility for the accuracy,
+																	completeness or usefulness of any information,
+																	apparatus, product or process disclosed, or represents
+																	that its use does not infringe privately owned
+																	rights.
+							</p>
+
+							<p>
+								The user of these data and products assumes
+																		the entire risk related to use of these date and this
+																		web site. In no event will SNAP, its agents,
+																		employees or members be liable to a user or any third
+																		party for any direct, indirect, incidental,
+																		consequential, special or exemplary damages, loss of
+																		life or lost profits resulting from any use, misuse or
+																		reliance on any of the data or information appearing on
+																		this website.
+							</p>
+
+						</article>
+					</section>
+				</aside>
+				<!--end 3-column left hand block-->
+
+				<!--start 9-column map block-->
+				<div class="span9">
+					<div id="map" style="min-width: 512px; height: 700px"></div>
+					<p>
+						here is the main content area, the other 9 columns. Map will
+																	go here.
+					</p>
+				</div>
+			</section>
+			<!--end 9-column map block-->
+
+			<!--start 12-column footer block-->
+			<footer class="span12">Footer. Copyright, etc. and other information goes here...</footer>
+			<!--end 12-column footer block-->
+		</div>
+		<!-- end main fluid-container wrapper -->
+
+		<!--[if lt IE 7]>
+		<p class="chromeframe">
+			You are using an <strong>outdated</strong>
+			/labelowser. Please
+			<a href="http:///labelowsehappy.com/">upgrade your /labelowser</a>
+			or
+			<a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a>
+			to improve your experience.
+		</p>
+		<![endif]-->
+
+		<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+		<script>
+        	var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+        	(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+        		g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+        		s.parentNode.insertBefore(g,s)}(document,'script'));
         </script>
 
-        <script src="http://openlayers.org/api/OpenLayers.js"></script>
+		<script src="http://openlayers.org/api/OpenLayers.js"></script>
 
-        <!-- build:js scripts/vendor.js -->
-        <script src="bower_components/jquery/jquery.js"></script>
-        <script src="bower_components/underscore/underscore.js"></script>
-        <script src="bower_components/backbone/backbone.js"></script>
-        <!-- endbuild -->
+		<!-- build:js scripts/vendor.js -->
+		<script src="bower_components/jquery/jquery.js"></script>
+		<script src="bower_components/underscore/underscore.js"></script>
+		<script src="bower_components/backbone/backbone.js"></script>
+		<!-- endbuild -->
 
-        <!-- build:js scripts/plugins.js -->
-        <script src="bower_components/sass-bootstrap/js/bootstrap-affix.js"></script>
-        <script src="bower_components/sass-bootstrap/js/bootstrap-alert.js"></script>
-        <script src="bower_components/sass-bootstrap/js/bootstrap-dropdown.js"></script>
-        <script src="bower_components/sass-bootstrap/js/bootstrap-tooltip.js"></script>
-        <script src="bower_components/sass-bootstrap/js/bootstrap-modal.js"></script>
-        <script src="bower_components/sass-bootstrap/js/bootstrap-transition.js"></script>
-        <script src="bower_components/sass-bootstrap/js/bootstrap-button.js"></script>
-        <script src="bower_components/sass-bootstrap/js/bootstrap-popover.js"></script>
-        <script src="bower_components/sass-bootstrap/js/bootstrap-typeahead.js"></script>
-        <script src="bower_components/sass-bootstrap/js/bootstrap-carousel.js"></script>
-        <script src="bower_components/sass-bootstrap/js/bootstrap-scrollspy.js"></script>
-        <script src="bower_components/sass-bootstrap/js/bootstrap-collapse.js"></script>
-        <script src="bower_components/sass-bootstrap/js/bootstrap-tab.js"></script>
-        <!-- endbuild -->
+		<!-- build:js scripts/plugins.js -->
+		<script src="bower_components/sass-bootstrap/js/bootstrap-affix.js"></script>
+		<script src="bower_components/sass-bootstrap/js/bootstrap-alert.js"></script>
+		<script src="bower_components/sass-bootstrap/js/bootstrap-dropdown.js"></script>
+		<script src="bower_components/sass-bootstrap/js/bootstrap-tooltip.js"></script>
+		<script src="bower_components/sass-bootstrap/js/bootstrap-modal.js"></script>
+		<script src="bower_components/sass-bootstrap/js/bootstrap-transition.js"></script>
+		<script src="bower_components/sass-bootstrap/js/bootstrap-button.js"></script>
+		<script src="bower_components/sass-bootstrap/js/bootstrap-popover.js"></script>
+		<script src="bower_components/sass-bootstrap/js/bootstrap-typeahead.js"></script>
+		<script src="bower_components/sass-bootstrap/js/bootstrap-carousel.js"></script>
+		<script src="bower_components/sass-bootstrap/js/bootstrap-scrollspy.js"></script>
+		<script src="bower_components/sass-bootstrap/js/bootstrap-collapse.js"></script>
+		<script src="bower_components/sass-bootstrap/js/bootstrap-tab.js"></script>
+		<!-- endbuild -->
 
-        <!-- build:js(.tmp) scripts/main.js -->
-        <script src="scripts/combined-scripts.js"></script>
-        <!-- endbuild -->
-</body>
+		<!-- build:js(.tmp) scripts/main.js -->
+		<script src="scripts/combined-scripts.js"></script>
+		<!-- endbuild -->
+	</body>
 </html>
