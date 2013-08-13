@@ -5,30 +5,44 @@ client.Views.MapView = Backbone.View.extend({
 
 	template: JST['app/scripts/templates/Map.ejs'],
 	render: function() {
-		var map = new OpenLayers.Map('map');
+		var geographic = new OpenLayers.Projection('EPSG:4326');
+
+		var map = new OpenLayers.Map('map', {
+			projection: geographic,
+			allOverlays: true
+		});
 
 		var olWms = new OpenLayers.Layer.WMS(
 			'OpenLayers WMS',
 			'http://vmap0.tiles.osgeo.org/wms/vmap0',
-			{layers: 'basic'}
-			);
-
-		var dmWms = new OpenLayers.Layer.WMS(
-			'Canadian Data',
-			'http://www2.dmsolutions.ca/cgi-bin/mswms_gmap',
 			{
-				layers: 'bathymetry,land_fn,park,drain_fn,drainage,' +
-				'prov_bound,fedlimit,rail,road,popplace',
+				layers: 'basic'
+			}
+		);
+/*
+		This needs to be fiddled with in order to correctly reference the tile's spatial position.
+
+		var seaXYZ = new OpenLayers.Layer.XYZ(
+			'Sea Ice Atlas',
+			'http://tiles.snap.uaf.edu/tilecache/tilecache.cgi/1.0.0/seaice_atlas_test/${z}/${y}/${x}'
+		);
+*/
+
+		var cacheWms = new OpenLayers.Layer.WMS(
+			'Cache WMS Sea Ice Atlas',
+			'http://tiles.snap.uaf.edu/tilecache/tilecache.cgi',
+			{
+				layers: 'seaice_atlas_test',
 				transparent: 'true',
 				format: 'image/png'
 			},
 			{
 				isBaseLayer: false,
-				visibility: false
+				visibility: true
 			}
 		);
 
-		map.addLayers([olWms, dmWms]);
+		map.addLayers([olWms, cacheWms]);
 		map.addControl(new OpenLayers.Control.LayerSwitcher());
 		map.zoomToMaxExtent();
 	}
