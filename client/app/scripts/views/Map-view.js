@@ -5,7 +5,7 @@ client.Views.MapView = Backbone.View.extend({
 
 	template: JST['app/scripts/templates/Map.ejs'],
 	render: function() {
-		var geographic = new OpenLayers.Projection("EPSG:4326");
+		var geographic = new OpenLayers.Projection('EPSG:4326');
 
 		var map = new OpenLayers.Map('map', {
 			projection: geographic,
