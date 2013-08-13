@@ -19,28 +19,30 @@ client.Views.MapView = Backbone.View.extend({
 				layers: 'basic'
 			}
 		);
+/*
+		This needs to be fiddled with in order to correctly reference the tile's spatial position.
 
-		var seaWms = new OpenLayers.Layer.XYZ(
+		var seaXYZ = new OpenLayers.Layer.XYZ(
 			'Sea Ice Atlas',
-			'http://tiles.snap.uaf.edu/tilecache/tilecache.cgi/1.0.0/sic_mean_pct_weekly_ak_12_23_2012/${z}/${y}/${x}'
+			'http://tiles.snap.uaf.edu/tilecache/tilecache.cgi/1.0.0/seaice_atlas_test/${z}/${y}/${x}'
 		);
+*/
 
-		var dmWms = new OpenLayers.Layer.WMS(
-			'Canadian Data',
-			'http://www2.dmsolutions.ca/cgi-bin/mswms_gmap',
+		var cacheWms = new OpenLayers.Layer.WMS(
+			'Cache WMS Sea Ice Atlas',
+			'http://tiles.snap.uaf.edu/tilecache/tilecache.cgi',
 			{
-				layers: 'bathymetry,land_fn,park,drain_fn,drainage,' +
-				'prov_bound,fedlimit,rail,road,popplace',
+				layers: 'seaice_atlas_test',
 				transparent: 'true',
 				format: 'image/png'
 			},
 			{
 				isBaseLayer: false,
-				visibility: false
+				visibility: true
 			}
 		);
 
-		map.addLayers([olWms, seaWms, dmWms]);
+		map.addLayers([olWms, cacheWms]);
 		map.addControl(new OpenLayers.Control.LayerSwitcher());
 		map.zoomToMaxExtent();
 	}
