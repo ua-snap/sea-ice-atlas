@@ -1,39 +1,45 @@
-/*global client, Backbone, JST, OpenLayers */
+/*global client, Backbone, JST, OpenLayers, proj4 */
 'use strict';
 
 client.Views.MapView = Backbone.View.extend({
 
 	template: JST['app/scripts/templates/Map.ejs'],
 	render: function() {
-		var geographic = new OpenLayers.Projection('EPSG:4326');
 
-		var map = new OpenLayers.Map('map', {
-			projection: geographic,
-			allOverlays: true
+		var destProj = new OpenLayers.Projection('EPSG:3338');
+		var sourceProj = new OpenLayers.Projection('EPSG:4326');
+		
+		var extent = new OpenLayers.Bounds(-9036842.762,-9036842.762, 9036842.762, 9036842.762);
+
+		var map = new OpenLayers.Map('map',{
+			maxExtent:extent,
+			restrictedExtent:extent,
+			units:'m',
+			wrapDateLine:false,
+			projection:destProj,
+			displayProjection:destProj
 		});
 
-		var olWms = new OpenLayers.Layer.WMS(
-			'OpenLayers WMS',
-			'http://vmap0.tiles.osgeo.org/wms/vmap0',
+		var ginaLayer = new OpenLayers.Layer.WMS(
+			'GINA WMS',//layer label
+			'http://wms.alaskamapped.org/bdl/',
 			{
-				layers: 'basic'
+				layers: 'BestDataAvailableLayer' //layer wms name
+			},
+			{
+				animationEnabled:true,
+				isBaseLayer:true,
+				transitionEffect: 'resize',
+				attribution: 'Best Data Layer provided by <a href="http://www.gina.alaska.edu">GINA</a>'
 			}
 		);
-/*
-		This needs to be fiddled with in order to correctly reference the tile's spatial position.
-
-		var seaXYZ = new OpenLayers.Layer.XYZ(
-			'Sea Ice Atlas',
-			'http://tiles.snap.uaf.edu/tilecache/tilecache.cgi/1.0.0/seaice_atlas_test/${z}/${y}/${x}'
-		);
-*/
 
 		var cacheWms = new OpenLayers.Layer.WMS(
 			'Cache WMS Sea Ice Atlas',
-			'http://tiles.snap.uaf.edu/tilecache/tilecache.cgi',
+			'http://tiles.snap.uaf.edu/cgi-bin/mapserv?map=/var/www/html/bruce-seaiceatlas.map',
 			{
-				layers: 'seaice_atlas_test',
-				transparent: 'true',
+				layers: 'seaiceatlas',
+				transparent: true,
 				format: 'image/png'
 			},
 			{
@@ -41,10 +47,8 @@ client.Views.MapView = Backbone.View.extend({
 				visibility: true
 			}
 		);
-
-		map.addLayers([olWms, cacheWms]);
-		map.addControl(new OpenLayers.Control.LayerSwitcher());
-		map.zoomToMaxExtent();
+		map.addLayers([ginaLayer, cacheWms]);
+		map.setCenter( new OpenLayers.LonLat(118829.786, 1310484.872).transform(map.displayProjection, map.projection),4);
 	}
 
 });
