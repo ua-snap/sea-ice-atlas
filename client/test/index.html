@@ -10,7 +10,8 @@
 
     <!-- for "fixtures" on the cheap -->
     <div id="sandbox"></div>
-    
+    <div id="applicationWrapper"></div>
+
     <!--
     	Hack.  See ~like 16 of node_modules/grunt-mocha/phantomjs/bridge.js where it's used.
 	Best I can tell, when a test fails in this environment using chai-jquery, the resulting error
@@ -26,8 +27,8 @@
     <script src="bower_components/jquery/jquery.js"></script>
     <script src="bower_components/underscore/underscore.js"></script>
     <script src="bower_components/backbone/backbone.js"></script>
-    <script src="bower_components/openlayers/lib/OpenLayers.js"></script>
-    <script src="scripts/combined-scripts.js"></script>
+	<script src="http://openlayers.org/api/OpenLayers.js"></script>
+	<script src="scripts/combined-scripts.js"></script>
 
     <!-- assertion framework + friends -->
     <script src="lib/chai.js"></script>

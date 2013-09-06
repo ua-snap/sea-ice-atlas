@@ -1,18 +1,25 @@
-/*global describe, it, chai, client */
+/* jshint expr: true */
+/*global describe, it, Backbone, chai, client, beforeEach */
 'use strict';
 
 (function () {
 	describe('App router', function () {
-		
+		beforeEach(function() {
+			this.appRouter = new client.Routers.ApplicationRouter();
+			try {
+				Backbone.history.start({pushState:true});
+			} catch (e) {} // dismiss exception due to history starting multiple times
+		});
+
 		it('default route builds + renders the map', function() {
+			this.appRouter.hasRenderedLayout.should.be.false;
+			this.appRouter.index();
 			this.appRouter.mapView.should.be.defined;
-			var spy = sinon.spy(this.appRouter.mapView, 'render');
-			this.appRouter.navigate('/');
-			spy.should.have.been.calledOnce;
+			this.appRouter.hasRenderedLayout.should.be.true;
 		});
 
 		it('loads data from the info specified in the URL if present', function() {
-			this.appRouter.navigate('/date/2011/10/3');
+			this.appRouter.navigate('/date/2011/10/3', { trigger: true });
 			this.appRouter.mapModel.get('year').should.equal(2011);
 			this.appRouter.mapModel.get('month').should.equal(10);
 			this.appRouter.mapModel.get('week').should.equal(3);

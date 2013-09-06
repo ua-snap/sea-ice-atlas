@@ -2,7 +2,10 @@
 'use strict';
 
 client.Views.MapView = Backbone.View.extend({
-
+	initialize: function() {
+		// When the layer changes, update the map
+		this.model.on('change', this.render, this);
+	},
 	template: JST['app/scripts/templates/Map.ejs'],
 	render: function() {
 
@@ -33,12 +36,11 @@ client.Views.MapView = Backbone.View.extend({
 				attribution: 'Best Data Layer provided by <a href="http://www.gina.alaska.edu">GINA</a>'
 			}
 		);
-
 		var cacheWms = new OpenLayers.Layer.WMS(
 			'Cache WMS Sea Ice Atlas',
 			'http://tiles.snap.uaf.edu/cgi-bin/mapserv?map=/var/www/html/bruce-seaiceatlas.map',
 			{
-				layers: 'seaiceatlas',
+				layers: this.model.get('layer'),
 				transparent: true,
 				format: 'image/png'
 			},
