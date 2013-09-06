@@ -7,31 +7,14 @@ library(raster)
 library(parallel)
 library(ncdf)
 library(rgdal)
-
-# set an output directory
-outDir = '/tmp/seaiceatlas'
-
-# set a working directory
-setwd('.')
-
-# read in the NetCDF file from Bill as a RasterBrick()
-b <- brick('~/Downloads/alaska.seaice.allweeks.nc')
-
-# make the sequence of dates to identify the layers in the new RasterBrick() and pass those new identifiers to the names()
-dates=seq(as.Date('1953/1/1'), as.Date('2012/12/31'), length.out=nlayers(b))
-names(b) <- gsub('-','_',as.character(dates))
-
-# write out the rasters
-writeRaster(b, format='GTiff', filename=paste(outDir,'sic_mean_pct_weekly_ak',sep="/"), datatype='INT1S',options='COMPRESS=LZW', bylayer=T, suffix=substring(names(b),2,nchar(names(b))))
-
-#########################################################################################################################################################################################################
+library(stringr)
 
 # a function that does the same thing as above, only funtionally
-seaIceConvert <- function(ncFilePath, outDirPath, outFormat, beginDate, endDate, outPrefix){
+seaIceConvert <- function(ncFilePath, outDirPath, outFormat, beginDate, endDate, outPrefix, varName){
 	if('package:raster' %in% search() == FALSE) require(raster)
 
 	# read in the NetCDF file from Bill as a RasterBrick()
-	b <- brick(ncFilePath)
+	b <- brick(ncFilePath, varname=varName)
 
 	# make the sequence of dates to identify the layers in the new RasterBrick() and pass those new identifiers to the names()
 	dates=seq(as.Date(beginDate), as.Date(endDate), length.out=nlayers(b))
@@ -41,9 +24,27 @@ seaIceConvert <- function(ncFilePath, outDirPath, outFormat, beginDate, endDate,
 	writeRaster(b, format=outFormat, filename=paste(outDirPath,outPrefix,sep="/"), datatype='INT1S',options='COMPRESS=LZW', bylayer=T, suffix=substring(names(b),2,nchar(names(b))))
 }
 
-#########################################################################################################################################################################################################
+ncFilePath = '~/alaska.seaice.allweeks.nc'
+outDirPath = '~/tmp'
+outFormat =  'GTiff'
+beginDate = '1953/1/1'
+endDate = '2012/12/31'
 
-# an example of how to call the function if that is an easier way to convert it
-# seaIceConvert(ncFilePath='/workspace/UA/malindgren/projects/Tracy_SeaIce/weekly_from_bill/Weekly_SeaIce_Bill_061113/alaska.seaice.quarter.by.quarter.nc', 
-	outDirPath='/workspace/UA/malindgren/projects/Tracy_SeaIce/weekly_from_bill/test', outFormat='GTiff',
-	beginDate='1953/1/1', endDate='2012/12/31', outPrefix='sic_mean_pct_weekly_ak')
+# we're going to create separate files for each of the two variables, for each date
+varNames <- c('seaice_conc', 'seaice_source')
+
+# set a working directory
+setwd('.')
+
+outputTiffs <-list.files(path=outDirPath, pattern='.*\\.tif$') 
+
+for(outputTiff in outputTiffs) {
+	print(outputTiff)
+	
+}
+
+for(varName in varNames) {
+	outPrefix = str_c(varName, '_sic_mean_pct_weekly_ak')
+	seaIceConvert(ncFilePath, outDirPath, outFormat, beginDate, endDate, outPrefix, varName)
+}
+
