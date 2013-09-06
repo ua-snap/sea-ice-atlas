@@ -8,6 +8,7 @@ library(parallel)
 library(ncdf)
 library(rgdal)
 library(stringr)
+library(RPostgreSQL)
 
 # a function that does the same thing as above, only funtionally
 seaIceConvert <- function(ncFilePath, outDirPath, outFormat, beginDate, endDate, outPrefix, varName){
@@ -25,7 +26,7 @@ seaIceConvert <- function(ncFilePath, outDirPath, outFormat, beginDate, endDate,
 }
 
 ncFilePath = '~/alaska.seaice.allweeks.nc'
-outDirPath = '~/tmp'
+outDirPath = '~/output'
 outFormat =  'GTiff'
 beginDate = '1953/1/1'
 endDate = '2012/12/31'
@@ -36,15 +37,48 @@ varNames <- c('seaice_conc', 'seaice_source')
 # set a working directory
 setwd('.')
 
-outputTiffs <-list.files(path=outDirPath, pattern='.*\\.tif$') 
-
-for(outputTiff in outputTiffs) {
-	print(outputTiff)
-	
-}
-
 for(varName in varNames) {
 	outPrefix = str_c(varName, '_sic_mean_pct_weekly_ak')
 	seaIceConvert(ncFilePath, outDirPath, outFormat, beginDate, endDate, outPrefix, varName)
 }
 
+drv <- dbDriver("PostgreSQL")
+con <- dbConnect(drv, host="hermes", user="sea_ice_atlas_user", password="DsUmcsjh", dbname="sea_ice_atlas")
+
+outputTiffs <-list.files(path=outDirPath, pattern='^seaice_conc.*\\.tif$') 
+
+for(outputTiff in outputTiffs) {
+	pattern = '.*(\\d{4})_(\\d{2})_(\\d{2}).*'
+	dateParts <- str_match(outputTiff, pattern)
+	formattedDate = paste(dateParts[2], dateParts[3], dateParts[4], sep='-')
+	filePath = paste(outDirPath, dateParts[1], sep='/')
+
+	syscall = paste("gdal_translate -of Gtiff -co tfw=yes -a_ullr -180 80.375 -120 40.125 -a_srs EPSG:3338", filePath, "~/tmp/concentration_reproj.tif", sep=" ")
+	system(syscall)
+
+	syscall = '/usr/pgsql-9.2/bin/raster2pgsql -r ~/tmp/concentration_reproj.tif -s 3338 -I > ~/tmp/concentration_reproj.sql'
+	system(syscall)
+
+	contents <- readLines('~/tmp/concentration_reproj.sql')
+	sqlQuery <- paste(contents, collapse="\n")
+
+	pattern = 'VALUES \\(\'(.*?)\''
+	queryParts <- str_match(sqlQuery, pattern)
+	rasterData = queryParts[2]
+	insertStatement = paste('INSERT INTO "test" ("date", "rast") VALUES (\'', formattedDate, '\',\'', rasterData, '\'::raster)', sep='')
+	dbGetQuery(con, insertStatement)
+
+	indexStatement = 'CREATE INDEX "test_rast_gist" ON "test" USING gist (st_convexhull("rast"))'
+	dbGetQuery(con, indexStatement)
+
+	analyzeStatement = 'ANALYZE "test"'
+	dbGetQuery(con, analyzeStatement)
+}
+
+outputTiffs <-list.files(path=outDirPath, pattern='^seaice_source.*\\.tif$') 
+
+for(outputTiff in outputTiffs) {
+}
+
+dbDisconnect(con)
+dbUnloadDriver(drv)
