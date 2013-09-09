@@ -7,6 +7,7 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 		'date/:year/:month': 'renderByDate'
 	},
 
+	// Default view
 	index: function() {
 		if(false === this.hasRenderedLayout) {
 			this.renderAppLayout();
@@ -15,6 +16,7 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 		this.renderMap();
 	},
 
+	// User arrived via bookmark
 	renderByDate: function(year, month) {
 		if(false === this.hasRenderedLayout) {
 			this.renderAppLayout();
@@ -40,11 +42,9 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 		this.appModel = new client.Models.ApplicationModel();
 		this.appView = new client.Views.ApplicationView({el: $('#applicationWrapper'), model: this.appModel});
 
-		this.mapModel = new client.Models.MapModel();
-		this.mapView = new client.Views.MapView({model: this.mapModel});
-
 		this.mapControlsModel = new client.Models.MapControlsModel();
-
+		this.mapView = new client.Views.MapView({model: this.mapControlsModel});
+		
 		// When the user changes the controls, update the name of the layer being referenced
 		//this.mapControlsModel.on('change', this.mapModel.setMapLayer, this.mapModel);
 		this.mapControlsModel.on('change', this.updateDate, this);
@@ -54,7 +54,6 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 	},
 
 	updateDate: function() {
-		this.mapModel.setMapLayer(this.mapControlsModel);
 		this.navigate('date/' + this.mapControlsModel.get('year') + '/' + this.mapControlsModel.get('month'));
 	}
 });

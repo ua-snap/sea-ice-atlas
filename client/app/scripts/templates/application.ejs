@@ -6,6 +6,10 @@
 
 	<!--start 9-column map block-->
 	<div class="span9">
-		<div id="map" style="min-width: 512px; height: 700px"></div>
+		<h3 id="mapTitle">Historical Sea Ice Concentration</h3>
+		<div id="mapWrapper">
+			<div id="map" style="min-width: 512px; height: 600px"></div>
+			<img id="legend" src="http://tiles.snap.uaf.edu/cgi-bin/mapserv?map=/var/www/html/seaiceatlas.map&SERVICE=WMS&VERSION=1.1.1&layer=seaiceatlas&REQUEST=getlegendgraphic&FORMAT=image/png" />
+		</div>
 	</div>
 </section>

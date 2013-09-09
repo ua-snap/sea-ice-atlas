@@ -8,7 +8,7 @@ window.client = {
     Routers: {},
     init: function () {
         var appRouter = new client.Routers.ApplicationRouter();
-        Backbone.history.start({pushState:true});
+        Backbone.history.start({pushState:false});
     }
 };
 

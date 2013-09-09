@@ -24,7 +24,6 @@ client.Views.MapControlsView = Backbone.View.extend({
 
 		this.$el.find('select.year').val(this.model.get('year'));
 		this.$el.find('select.month').val(this.model.get('month'));
-		this.$el.find('select.week').val(this.model.get('week'));
 
 	},
 
@@ -32,7 +31,7 @@ client.Views.MapControlsView = Backbone.View.extend({
 	// such as http://nytimes.github.io/backbone.stickit/
 	updateDate: function(event) {
 		var attr = {};
-		attr[event.target.name] = parseInt(event.target.value, 10); // Keep data type numeric, radix 10
+		attr[event.target.name] = event.target.value;
 		this.model.set(attr);
 	}
 

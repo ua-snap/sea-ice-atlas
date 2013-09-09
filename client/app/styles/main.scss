@@ -5,3 +5,23 @@ $iconSpritePath: '/images/glyphicons-halflings.png';
     margin: 50px auto 0 auto;
     width: 300px;
 }
+
+#mapWrapper {
+	position: relative;
+}
+
+#legend {
+	position: absolute;
+	bottom: 5px;
+	left: 5px;
+	z-index: 10000;
+}
+
+footer {
+	margin-top: 1ex;
+	padding-top: 1ex;
+}
+
+.olControlAttribution {
+    bottom: 5px !important;
+}
