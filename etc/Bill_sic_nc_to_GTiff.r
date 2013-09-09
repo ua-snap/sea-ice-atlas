@@ -45,7 +45,7 @@ for(varName in varNames) {
 
 # connect to PostgreSQL to populate PostGIS raster table
 drv <- dbDriver("PostgreSQL")
-con <- dbConnect(drv, host="hermes", user="sea_ice_atlas_user", password="DsUmcsjh", dbname="sea_ice_atlas")
+con <- dbConnect(drv, host="hermes", user="sea_ice_atlas_user", password="", dbname="sea_ice_atlas")
 
 # get a list of all the concentration GeoTIFFs that were created by the writeRaster() function
 outputTiffs <-list.files(path=outDirPath, pattern='^seaice_conc.*\\.tif$') 
