@@ -95,3 +95,4 @@ dbGetQuery(con, analyzeStatement)
 
 dbDisconnect(con)
 dbUnloadDriver(drv)
+
