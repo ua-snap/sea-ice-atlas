@@ -47,7 +47,7 @@ client.Views.MapView = Backbone.View.extend({
 		}
 		this.cacheWms = new OpenLayers.Layer.WMS(
 			'Cache WMS Sea Ice Atlas',
-			'http://tiles.snap.uaf.edu/cgi-bin/mapserv?map=/var/www/html/seaiceatlas.map',
+			'http://icarus.snap.uaf.edu/cgi-bin/mapserv.cgi?map=/var/www/mapserver/sea.map',
 			{
 				layers: 'seaiceatlas',
 				transparent: true,
