@@ -9,24 +9,25 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 
 	// Default view
 	index: function() {
-		if(false === this.hasRenderedLayout) {
-			this.renderAppLayout();
-			this.hasRenderedLayout = true;
-		}
+		this.checkIfRenderLayout();
 		this.renderMap();
 	},
 
 	// User arrived via bookmark
 	renderByDate: function(year, month) {
-		if(false === this.hasRenderedLayout) {
-			this.renderAppLayout();
-			this.hasRenderedLayout = true;
-		}
+		this.checkIfRenderLayout();
 		this.mapControlsModel.set({
 			year: year,
 			month: month
 		});
 		this.renderMap();
+	},
+
+	checkIfRenderLayout: function() {
+		if(false === this.hasRenderedLayout) {
+			this.renderAppLayout();
+			this.hasRenderedLayout = true;
+		}
 	},
 
 	renderMap: function() {
@@ -46,7 +47,6 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 		this.mapView = new client.Views.MapView({model: this.mapControlsModel});
 		
 		// When the user changes the controls, update the name of the layer being referenced
-		//this.mapControlsModel.on('change', this.mapModel.setMapLayer, this.mapModel);
 		this.mapControlsModel.on('change', this.updateDate, this);
 
 		// Render initial layout
