@@ -1,17 +1,21 @@
-/*global client, Backbone, JST, OpenLayers, proj4 */
+/*global client, Backbone, JST, OpenLayers, proj4, moment, _ */
 'use strict';
 
 client.Views.MapView = Backbone.View.extend({
+	initialize: function() {
+		// When the layer changes, update the map
+		this.model.on('change', this.render, this);
+		_.bindAll(this);
+	},
+	hasRendered: false,
 
-	template: JST['app/scripts/templates/Map.ejs'],
-	render: function() {
-
+	renderBaseLayer: function() {
 		var destProj = new OpenLayers.Projection('EPSG:3338');
 		var sourceProj = new OpenLayers.Projection('EPSG:4326');
 		
 		var extent = new OpenLayers.Bounds(-9036842.762,-9036842.762, 9036842.762, 9036842.762);
 
-		var map = new OpenLayers.Map('map',{
+		this.map = new OpenLayers.Map('map',{
 			maxExtent:extent,
 			restrictedExtent:extent,
 			units:'m',
@@ -33,13 +37,27 @@ client.Views.MapView = Backbone.View.extend({
 				attribution: 'Best Data Layer provided by <a href="http://www.gina.alaska.edu">GINA</a>'
 			}
 		);
+		this.map.addLayers([ginaLayer]);
+		this.map.setCenter( new OpenLayers.LonLat(118829.786, 1510484.872).transform(this.map.displayProjection, this.map.projection),4);
+		this.hasRendered = true;
+	},
 
-		var cacheWms = new OpenLayers.Layer.WMS(
+	render: function() {
+		if( false === this.hasRendered ) {
+			this.renderBaseLayer();
+		}
+		
+		if(_.isObject(this.cacheWms)) {
+			this.map.removeLayer(this.cacheWms);
+		}
+		
+		this.cacheWms = new OpenLayers.Layer.WMS(
 			'Cache WMS Sea Ice Atlas',
-			'http://tiles.snap.uaf.edu/cgi-bin/mapserv?map=/var/www/html/bruce-seaiceatlas.map',
+			'http://icarus.snap.uaf.edu/cgi-bin/mapserv.cgi?map=/var/www/mapserver/sea.map',
 			{
 				layers: 'seaiceatlas',
 				transparent: true,
+				date: _.template('<%= year %>_<%= month %>', this.model.toJSON()),
 				format: 'image/png'
 			},
 			{
@@ -47,8 +65,8 @@ client.Views.MapView = Backbone.View.extend({
 				visibility: true
 			}
 		);
-		map.addLayers([ginaLayer, cacheWms]);
-		map.setCenter( new OpenLayers.LonLat(118829.786, 1310484.872).transform(map.displayProjection, map.projection),4);
+		$('#mapTitle').text('Historical Sea Ice Concentration, ' + moment(_.template('<%= year %>-<%= month %>', this.model.toJSON()), 'YYYY-MM').format('MMMM YYYY'));
+		this.map.addLayers([this.cacheWms]);
 	}
 
 });

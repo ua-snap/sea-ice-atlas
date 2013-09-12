@@ -1,8 +1,5 @@
 /*global client, Backbone*/
 'use strict';
 
-client.Models.ApplicationModel = Backbone.Model.extend({
-	defaults: {
-		title:'Sea Ice Atlas'
-	}
-});
+// Empty for now; will start accumulating content/state as other common things factor up.
+client.Models.ApplicationModel = Backbone.Model.extend({});

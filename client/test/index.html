@@ -10,22 +10,36 @@
 
     <!-- for "fixtures" on the cheap -->
     <div id="sandbox"></div>
+    <div id="applicationWrapper"></div>
+
+    <!--
+    	Hack.  See ~like 16 of node_modules/grunt-mocha/phantomjs/bridge.js where it's used.
+	Best I can tell, when a test fails in this environment using chai-jquery, the resulting error
+	object contains a circular reference, which causes phantom to choke when attempting to
+	serialize the object back up through to Grunt.
+	-->
+    <script src="lib/circular-json.js"></script>
     
     <script src="lib/mocha/mocha.js"></script>
     <script>mocha.setup('bdd')</script>
-    <!-- assertion framework -->
-    <script src="lib/chai.js"></script>
-    <script>var expect = chai.expect</script>
-
+    
     <!-- include source files here... -->
     <script src="bower_components/jquery/jquery.js"></script>
     <script src="bower_components/underscore/underscore.js"></script>
     <script src="bower_components/backbone/backbone.js"></script>
-    <script src="bower_components/openlayers/lib/OpenLayers.js"></script>
-    <script src="scripts/combined-scripts.js"></script>
+	<script src="http://openlayers.org/api/OpenLayers.js"></script>
+	<script src="scripts/combined-scripts.js"></script>
+
+    <!-- assertion framework + friends -->
+    <script src="lib/chai.js"></script>
+    <script src="lib/sinon-1.7.3.js"></script>
+    <script src="lib/sinon-chai.js"></script>
+    <script src="lib/chai-jquery.js"></script>
+    <script>var should = chai.should()</script>
 
     <!-- include spec files here... -->
-    <script src="spec/test.js"></script>
+    <script src="spec/app.js"></script>
+    <script src="spec/map.js"></script>
 
     <script>
 

@@ -3,15 +3,57 @@
 
 client.Routers.ApplicationRouter = Backbone.Router.extend({
 	routes: {
-		'' : 'index'
+		'' : 'index',
+		'date/:year/:month': 'renderByDate'
 	},
 
-	index:  function() {
-		var appModel = new client.Models.ApplicationModel();
-		var appView = new client.Views.ApplicationView({el: $('#app'), model: appModel});
+	// Default view
+	index: function() {
+		this.checkIfRenderLayout();
+		this.renderMap();
+	},
 
-		var mapView = new client.Views.MapView();
-		appView.render();
-		mapView.render();
+	// User arrived via bookmark
+	renderByDate: function(year, month) {
+		this.checkIfRenderLayout();
+		this.mapControlsModel.set({
+			year: year,
+			month: month
+		});
+		this.renderMap();
+	},
+
+	checkIfRenderLayout: function() {
+		if(false === this.hasRenderedLayout) {
+			this.renderAppLayout();
+			this.hasRenderedLayout = true;
+		}
+	},
+
+	renderMap: function() {
+		this.mapView.render();
+		this.mapControlsView = new client.Views.MapControlsView({el: $('#mapControls'), model: this.mapControlsModel});
+		this.mapControlsView.render();
+	},
+
+	// Flag to indicate if the main app layout has rendered or not
+	hasRenderedLayout: false,
+
+	renderAppLayout:  function() {
+		this.appModel = new client.Models.ApplicationModel();
+		this.appView = new client.Views.ApplicationView({el: $('#applicationWrapper'), model: this.appModel});
+
+		this.mapControlsModel = new client.Models.MapControlsModel();
+		this.mapView = new client.Views.MapView({model: this.mapControlsModel});
+		
+		// When the user changes the controls, update the name of the layer being referenced
+		this.mapControlsModel.on('change', this.updateDate, this);
+
+		// Render initial layout
+		this.appView.render();
+	},
+
+	updateDate: function() {
+		this.navigate('date/' + this.mapControlsModel.get('year') + '/' + this.mapControlsModel.get('month'));
 	}
 });
