@@ -4,7 +4,7 @@ var pg = require('pg');
 var server = http.createServer(function (request, response) {
   response.writeHead(200, {"Content-Type": "text/plain"});
 
-  var conString = "postgres://sea_ice_atlas_user:vNZSrh33@hermes.snap.uaf.edu/sea_ice_atlas";
+  var conString = "postgres://sea_ice_atlas_user:*@hermes.snap.uaf.edu/sea_ice_atlas";
   var client = new pg.Client(conString);
 
   client.connect(function(err) {
@@ -28,7 +28,7 @@ var server = http.createServer(function (request, response) {
         // Node.js bombs if you try to toString() a null value.
         if(result.rows[i].concentration) {
           var concentration = result.rows[i].concentration.toString();
-	  rows[date] = concentration;
+          rows[date] = concentration;
         }
       }
 
