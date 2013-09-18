@@ -34,6 +34,12 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 		this.mapView.render();
 		this.mapControlsView = new client.Views.MapControlsView({el: $('#mapControls'), model: this.mapControlsModel});
 		this.mapControlsView.render();
+
+		this.mapAnimatorModel = new client.Models.MapAnimatorModel();
+		this.mapAnimatorView = new client.Views.MapAnimatorView({model: this.mapAnimatorModel});
+		this.mapAnimatorView.map = this.mapView.map;
+		this.mapAnimatorModel.view = this.mapAnimatorView;
+		this.mapAnimatorModel.start();
 	},
 
 	// Flag to indicate if the main app layout has rendered or not
