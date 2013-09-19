@@ -4,6 +4,7 @@ var static = require('node-static');
 var express = require("express");
 var app = express();
 
+// This is the route to the PostGIS JSON API.
 app.get('/data', function(request, response) {
   response.writeHead(200, {"Content-Type": "text/plain"});
 
@@ -44,6 +45,7 @@ app.get('/data', function(request, response) {
   });
 });
 
+// This is default route, which serves static files.
 app.get('*', function(request, response) {
   var file = new(static.Server)("/var/www/html/charts", { 
     cache: 600, 
