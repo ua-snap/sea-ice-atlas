@@ -4,8 +4,7 @@ var static = require('node-static');
 var express = require("express");
 var app = express();
 
-// This is the route to the PostGIS JSON API.
-app.get('/data', function sicData(request, response) {
+app.get('/data', function(request, response) {
   response.writeHead(200, {"Content-Type": "text/plain"});
 
   var conString = "postgres://sea_ice_atlas_user:*@hermes.snap.uaf.edu/sea_ice_atlas";
@@ -32,7 +31,7 @@ app.get('/data', function sicData(request, response) {
         // Node.js bombs if you try to toString() a null value.
         if(result.rows[i].concentration) {
           var concentration = result.rows[i].concentration.toString();
-	  rows[date] = concentration;
+          rows[date] = concentration;
         }
       }
 
@@ -45,8 +44,7 @@ app.get('/data', function sicData(request, response) {
   });
 });
 
-// This is default route, which serves static files.
-app.get('*', function sicData(request, response) {
+app.get('*', function(request, response) {
   var file = new(static.Server)("/var/www/html/charts", { 
     cache: 600, 
     headers: { 'X-Powered-By': 'node-static' } 
