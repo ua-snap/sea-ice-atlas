@@ -1,7 +1,11 @@
 var http = require('http');
 var pg = require('pg');
+var static = require('node-static');
+var express = require("express");
+var app = express();
 
-var server = http.createServer(function (request, response) {
+// This is the route to the PostGIS JSON API.
+app.get('/data', function sicData(request, response) {
   response.writeHead(200, {"Content-Type": "text/plain"});
 
   var conString = "postgres://sea_ice_atlas_user:*@hermes.snap.uaf.edu/sea_ice_atlas";
@@ -28,7 +32,7 @@ var server = http.createServer(function (request, response) {
         // Node.js bombs if you try to toString() a null value.
         if(result.rows[i].concentration) {
           var concentration = result.rows[i].concentration.toString();
-          rows[date] = concentration;
+	  rows[date] = concentration;
         }
       }
 
@@ -41,6 +45,15 @@ var server = http.createServer(function (request, response) {
   });
 });
 
-server.listen(8000);
-console.log("Server running at http://127.0.0.1:8000/");
+// This is default route, which serves static files.
+app.get('*', function sicData(request, response) {
+  var file = new(static.Server)("/var/www/html/charts", { 
+    cache: 600, 
+    headers: { 'X-Powered-By': 'node-static' } 
+  });
 
+  file.serve(request, response);
+});
+
+app.listen(8000);
+console.log("Server running at http://127.0.0.1:8000/");
