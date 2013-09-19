@@ -5,7 +5,7 @@ var express = require("express");
 var app = express();
 
 // This is the route to the PostGIS JSON API.
-app.get('/data', function(request, response) {
+app.get('/data*', function(request, response) {
   response.writeHead(200, {"Content-Type": "text/plain"});
 
   var conString = "postgres://sea_ice_atlas_user:*@hermes.snap.uaf.edu/sea_ice_atlas";
@@ -17,8 +17,14 @@ app.get('/data', function(request, response) {
       return console.error('could not connect to postgres', err);
     }
 
+    // Get the month GET parameter.
+    var month = parseInt(request.query.month);
+
+    // Strangely, JavaScript doesn't have a better way to pad ints with zeros.
+    month = String('0' + month).slice(-2);
+
     // Pull all dates and corresponding sea ice concentration values from PostGIS database.
-    var query = client.query("SELECT date, ST_Value(rast, ST_PointFromText('POINT(-180 80.375)', 3338)) AS concentration FROM rasters", function(err, result) {
+    var query = client.query("SELECT year AS date, min(concentration) AS concentration FROM (SELECT date, ST_Value(rast, 1, ST_SetSRID(ST_Point(-180, 80.375), 3338)) AS concentration FROM rasters) AS allvalues CROSS JOIN generate_series(1953, 2012) AS year WHERE date::text LIKE year || '-" + month  + "-%' GROUP BY year ORDER BY year", function(err, result) {
 
       if(err) {
         return console.error('error running query', err);
