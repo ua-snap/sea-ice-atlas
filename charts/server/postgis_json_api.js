@@ -5,7 +5,7 @@ var express = require("express");
 var app = express();
 
 // This is the route to the PostGIS JSON API.
-app.get('/data*', function(request, response) {
+app.get('/data', function(request, response) {
   response.writeHead(200, {"Content-Type": "text/plain"});
 
   var conString = "postgres://sea_ice_atlas_user:*@hermes.snap.uaf.edu/sea_ice_atlas";
