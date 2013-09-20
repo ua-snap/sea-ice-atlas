@@ -53,7 +53,7 @@ app.get('/data', function(request, response) {
 
 // This is default route, which serves static files.
 app.get('*', function(request, response) {
-  var file = new(static.Server)("/var/www/html/charts", { 
+  var file = new(static.Server)("/home/craig/sea-ice-atlas/charts/client", { 
     cache: 600, 
     headers: { 'X-Powered-By': 'node-static' } 
   });
