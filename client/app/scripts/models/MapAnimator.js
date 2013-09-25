@@ -11,6 +11,7 @@ function pad(n) {
 (function() {
 
 	client.Models.MapAnimatorModel = Backbone.Model.extend({
+		
 		// List of layer names (dates) to iterate/animate over
 		layers: [],
 
@@ -24,40 +25,56 @@ function pad(n) {
 			this.layerIndex = this.layers.length;
 			_.bindAll(this);
 
-			// We need a global context hook to handle the async promises/buffering?
-			window.mapAnimatorModel = this;
 		},
 
-		// Each time we switch a layer...
-		// (1) show the new layer
-		// (2) hide the last layer
-		// (2.1) destroy any layers outside of buffer range
-		// (3) add a new request to prebuffer
+		buffer: function() {
+
+			// Array of promises which, when all resolved, mean the buffer is populated with valid layers.
+			this.buffer = [];
+			var bufferIndex = this.layerIndex;
+
+			// Trigger layer loading for the first 10 layers, obtain promises + act when they're all resolved;
+			// Throttle this to fire one request every 100 milliseconds to avoid flooding the server.
+			var bufferInterval = setInterval(_.bind(function() {
+				this.buffer.push(this.view.loadLayer(--bufferIndex));
+				if( 10 <= (this.layerIndex - bufferIndex)) {
+					clearInterval(bufferInterval);
+				}
+			}, this), 100);
+
+		},
+
+		// Populates the buffer, then initiates playing.
 		start: function() {
+			
+			this.buffer();
+			this.view.showBuffering();
 
-			var buffer = [];
-
-			// Trigger layer loading for the first 10 layers, obtain promises + act when they're all resolved.
-			for (var i = this.layerIndex - 1; i >= 0 && (this.layerIndex - i) <= 10; i--) {
-				buffer.push(this.view.loadLayer(i));
-			}
-
-			// Wait until the buffer is full, then start cycling
-			Q.allSettled(buffer).then(_.bind(function startUpdater(results) {
-				window.mapAnimatorModel.startPlaying();				
-			}), this);
+			// Todo: this was firing too quickly, fix this by removing the setTimeout around this
+			// and also causing the buffering to _immediately_ assign the promises instead of
+			// delaying the first by 100ms (that delay means this code needs to be delayed as well)
+			setTimeout(_.bind(function(){
+				// Wait until the buffer is full, then start cycling.
+				Q.allSettled(this.buffer).then(_.bind(function startUpdater(results) {
+					this.view.hideBuffering();
+					this.startPlaying();
+				}, this));
+			}, this), 1000);
 
 		},
 
 		startPlaying: function() {
+
 			// Once the next ten layers are loaded, start switching between the layers
 			this.updater = setInterval(_.bind(function switchToPreviousLayer() {
 				var oldLayerIndex = this.layerIndex;
 				--this.layerIndex;
+				console.log('Old Layer Index = ' + oldLayerIndex + ', Current Layer Index = ' + this.layerIndex)
+				
 				this.view.showLayer(this.layerIndex);
 				this.view.hideLayer(oldLayerIndex);
 				this.view.loadLayer(this.layerIndex - 10);
-			}, this), 1000);
+			}, this), 1500);
 		},
 
 		stop: function() {

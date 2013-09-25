@@ -31,15 +31,21 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 	},
 
 	renderMap: function() {
-		this.mapView.render();
-		this.mapControlsView = new client.Views.MapControlsView({el: $('#mapControls'), model: this.mapControlsModel});
-		this.mapControlsView.render();
+		// mapView.render() returns a promise on initial run.  TODO: this may break if base map has already 
+		// rendered, fix/defend.
 
-		this.mapAnimatorModel = new client.Models.MapAnimatorModel();
-		this.mapAnimatorView = new client.Views.MapAnimatorView({model: this.mapAnimatorModel});
-		this.mapAnimatorView.map = this.mapView.map;
-		this.mapAnimatorModel.view = this.mapAnimatorView;
-		this.mapAnimatorModel.start();
+		this.mapView.render().then(_.bind(function() {
+			console.log('preparing to render controls!');
+			this.mapControlsView = new client.Views.MapControlsView({el: $('#mapControls'), model: this.mapControlsModel});
+			this.mapControlsView.render();
+			console.log('controls rendered, starting animation')
+			this.mapAnimatorModel = new client.Models.MapAnimatorModel();
+			this.mapAnimatorView = new client.Views.MapAnimatorView({el: $('#mapAnimationControls'), model: this.mapAnimatorModel});
+			this.mapAnimatorView.map = this.mapView.map;
+			this.mapAnimatorModel.view = this.mapAnimatorView;
+			this.mapAnimatorView.render();
+		}, this));
+
 	},
 
 	// Flag to indicate if the main app layout has rendered or not

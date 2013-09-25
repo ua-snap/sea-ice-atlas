@@ -10,11 +10,16 @@ client.Views.MapView = Backbone.View.extend({
 	layer: {}, // will be populated with buffering
 	hasRendered: false,
 
+	// Will contain a promise which, when fulfilled, means the base layer has been loaded.
+	baseLayerLoadPromise: null,
+
 	setCurrentLayer: function(year, month) {
 		this.currentLayer = year + '_' + month;
 	},
 
 	renderBaseLayer: function() {
+		this.baseLayerLoadPromise = Q.defer();
+
 		var destProj = new OpenLayers.Projection('EPSG:3338');
 		//var sourceProj = new OpenLayers.Projection('EPSG:4326');
 		
@@ -28,26 +33,8 @@ client.Views.MapView = Backbone.View.extend({
 			units:'m',
 			wrapDateLine:false,
 			projection:destProj,
-			displayProjection:destProj,
-			extent_type: 'loose'
+			displayProjection:destProj
 		});
-
-/*
-		var ginaLayer = new OpenLayers.Layer.WMS(
-			'Cache WMS Sea Ice Atlas',
-			'http://tiles.snap.uaf.edu/tilecache/tilecache.cgi/2.11.0/',
-			{
-				layers: 'seaice_conc_sic_mean_pct_weekly_ak_1953_01_average',
-				transparent: true,
-				format: 'image/png'
-			},
-			{
-				animationEnabled: true,
-				transitionEffect: 'resize',
-				isBaseLayer: true
-			}
-		);
-*/
 
 		var ginaLayer = new OpenLayers.Layer.WMS(
 			'GINA WMS',//layer label
@@ -62,39 +49,21 @@ client.Views.MapView = Backbone.View.extend({
 				attribution: 'Best Data Layer provided by <a href="http://www.gina.alaska.edu">GINA</a>'
 			}
 		);
-
+		ginaLayer.events.register('loadend', this, function(layer) {
+			this.baseLayerLoadPromise.resolve();
+		});
 
 		this.map.addLayers([ginaLayer]);
-		this.map.setCenter( new OpenLayers.LonLat(118829.786, 1510484.872).transform(this.map.displayProjection, this.map.projection),4);
+		this.map.setCenter( new OpenLayers.LonLat(118829.786, 1510484.872).transform(this.map.displayProjection, this.map.projection),3);
 		this.hasRendered = true;
-				console.log(this.map.getResolution());
-
+		
+		return this.baseLayerLoadPromise.promise;
 	},
 
 	render: function() {
 		if( false === this.hasRendered ) {
-			this.renderBaseLayer();
+			return this.renderBaseLayer();
 		}
-		this.oldLayer = this.currentLayer;
-		
-		this.setCurrentLayer(this.model.get('year'), this.model.get('month'));
-		this.loadLayer(this.model.get('year'), this.model.get('month'));
-/*
-		var counter = setInterval(_.bind(function loadPreviousMonth() {
-			
-			var month = moment(this.currentLayer, 'YYYY_MM').subtract('months', 1);
-			var monthString = month.month() + 1;
-			if (monthString <= 9) {
-				monthString = '0'+monthString;
-			}
-			this.model.set( {
-				month: monthString, // moment months are zero-indexed
-				year: month.year()
-			});
-			
-		}, this), 1000);
-*/
-
 	},
 
 	showLayer: function() {
@@ -103,6 +72,7 @@ client.Views.MapView = Backbone.View.extend({
 	},
 
 	loadLayer: function(year, month) {
+		/* Deprecated, need to reintegrate this. 
 		this.layer[year+'_'+month] = new OpenLayers.Layer.WMS(
 			'Cache WMS Sea Ice Atlas',
 			'http://icarus.snap.uaf.edu/cgi-bin/mapserv.cgi?map=/var/www/mapserver/sea.map',
@@ -117,5 +87,6 @@ client.Views.MapView = Backbone.View.extend({
 				visibility: true
 			}
 		);
+		*/
 	}
 });

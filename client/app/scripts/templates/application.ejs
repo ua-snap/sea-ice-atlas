@@ -1,11 +1,15 @@
 <section class="row-fluid">
 	<aside class="span3">
 		<div id="mapControls"></div>
+		<div id="mapAnimationControls"></div>
 	</aside>
 	<!--end 3-column left hand block-->
 
 	<!--start 9-column map block-->
 	<div class="span9">
+		<div id="animationBuffering" style="display: none">
+			<img src="images/ajax-loader.gif" /> Buffering&hellip;
+		</div>
 		<h3 id="mapTitle">Historical Sea Ice Concentration</h3>
 		<div id="mapWrapper">
 			<div id="map" style="min-width: 512px; height: 600px"></div>
