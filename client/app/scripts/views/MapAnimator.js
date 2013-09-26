@@ -4,6 +4,11 @@
 client.Views.MapAnimatorView = Backbone.View.extend({
 	initialize: function() {
 		_.bindAll(this);
+
+		// Set up some shortcuts
+		this.map = this.options.mapView.map;
+		this.model = this.options.model;
+
 	},
 
 	template: JST['app/scripts/templates/MapAnimator.ejs'],
@@ -30,13 +35,13 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 	},
 
 	setSequentialMode: function() {
-		console.log('setSequentialMode')
-
+		this.model.set({mode:'sequential'});
+		this.model.enumerateLayers();
 	},
 
 	setMonthlyMode: function() {
-		console.log('setMonthlyMode')
-
+		this.model.set({mode:'monthly'});
+		this.model.enumerateLayers();
 	},
 
 	render: function() {
@@ -45,15 +50,16 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 
 	showLayer: function(layerIndex) {
 		if( 'undefined' === typeof this.layers[this.model.layers[layerIndex]]) {
-			console.log('+++ Asked to show undefined layer: ' + layerIndex)
-			return
+			console.log('+++ Asked to show undefined layer: ' + layerIndex);
+			return;
 		}
-		$('#mapTitle').text('Historical Sea Ice Concentration, ' + this.model.layers[layerIndex]);
+		$('#mapTitle').text('Historical Sea Ice Concentration, ' + moment(this.model.layers[layerIndex], 'YYYY_MM').format('MMMM YYYY'));
 		this.layers[this.model.layers[layerIndex]].setOpacity(1);
 	},
 
 	loadLayer: function(layerIndex) {
-		console.log('loading layer ' + layerIndex)
+
+		console.log('loading layer ' + this.model.layers[layerIndex]);
 		this.promises[this.model.layers[layerIndex]] = Q.defer();
 
 		this.layers[this.model.layers[layerIndex]] = new OpenLayers.Layer.WMS(
@@ -75,9 +81,11 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 
 		// When the "loadend" event is triggered on the layer, resolve its initial loading promise.
 		this.layers[this.model.layers[layerIndex]].events.register('loadend', this, function(layer) {
-			console.log('FINISHED LOADING: layer #' + layer.object.layerIndex);
 			var distance = this.model.layerIndex - layer.object.layerIndex;
-			console.log('******* DISTANCE TO DEAD BUFFER: ' + distance)
+			
+			console.log('Finished loading layer: ' + this.model.layers[layer.object.layerIndex]);
+			console.log('Distance to empty buffer: ' + distance);
+
 			this.promises[this.model.layers[layer.object.layerIndex]].resolve(layer);
 		});
 		
@@ -89,12 +97,12 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 
 	hideLayer: function(layerIndex) {
 		if( 'undefined' === typeof this.layers[this.model.layers[layerIndex]]) {
-			console.log('--- Asked to HIDE undefined layer: ' + layerIndex)
-			return
+			console.log('--- Asked to HIDE undefined layer: ' + layerIndex);
+			return;
 		}
 		// Hide, but don't destroy yet.
 		// Timeout is to allow a bit of overlap with the newly-shown tile, to reduce flicker.
-		setTimeout( this.layers[this.model.layers[layerIndex]].setOpacity(0), 1000); 
+		setTimeout( this.layers[this.model.layers[layerIndex]].setOpacity(0), 1000);
 	},
 
 	showBuffering: function() {

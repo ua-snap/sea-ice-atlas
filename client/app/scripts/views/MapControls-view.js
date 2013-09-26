@@ -6,6 +6,10 @@ client.Views.MapControlsView = Backbone.View.extend({
 	events: {
 		'change select' : 'updateDate'
 	},
+
+	initialize: function() {
+		this.model.on('change', this.updateControls, this);
+	},
 	
 	template: JST['app/scripts/templates/MapControls.ejs'],
 
@@ -21,6 +25,12 @@ client.Views.MapControlsView = Backbone.View.extend({
 				text: year
 			}));
 		});
+
+		this.updateControls();
+
+	},
+
+	updateControls: function() {
 
 		this.$el.find('select.year').val(this.model.get('year'));
 		this.$el.find('select.month').val(this.model.get('month'));
