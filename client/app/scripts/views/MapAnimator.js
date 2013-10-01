@@ -64,7 +64,7 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 
 		this.layers[this.model.layers[layerIndex]] = new OpenLayers.Layer.WMS(
 			'Cache WMS Sea Ice Atlas',
-			'http://tiles.snap.uaf.edu/tilecache/tilecache.cgi/2.11.0/',
+			'http://tiles.snap.uaf.edu/tilecache/tilecache.py/2.11.0/',
 			{
 				layers: 'seaice_conc_sic_mean_pct_weekly_ak_' + this.model.layers[layerIndex] + '_average',
 				transparent: true,
