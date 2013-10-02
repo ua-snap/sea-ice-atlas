@@ -19,12 +19,14 @@ app.get('/data', function(request, response) {
 
     // Get the month GET parameter.
     var month = parseInt(request.query.month);
+    var lon = parseFloat(request.query.lon);
+    var lat = parseFloat(request.query.lat);
 
     // Strangely, JavaScript doesn't have a better way to pad ints with zeros.
     month = String('0' + month).slice(-2);
 
     // Pull all dates and corresponding sea ice concentration values from PostGIS database.
-    var query = client.query("SELECT year AS date, min(concentration) AS concentration FROM (SELECT date, ST_Value(rast, 1, ST_SetSRID(ST_Point(-180, 80.375), 3338)) AS concentration FROM rasters) AS allvalues CROSS JOIN generate_series(1953, 2012) AS year WHERE date::text LIKE year || '-" + month  + "-%' GROUP BY year ORDER BY year", function(err, result) {
+    var query = client.query("SELECT year AS date, MIN(concentration) AS concentration FROM (SELECT date, COALESCE(ST_Value(rast, 1, ST_SetSRID(ST_Point(" + lon + ", " + lat + "), 3338)), 0) AS concentration FROM rasters) AS allvalues CROSS JOIN generate_series(1953, 2012) AS year WHERE date::text LIKE year || '-" + month  + "-%' GROUP BY year ORDER BY year", function(err, result) {
 
       if(err) {
         return console.error('error running query', err);
@@ -34,12 +36,8 @@ app.get('/data', function(request, response) {
       var rows = {};
       for(var i=0; i < result.rows.length; i++) {
         var date = result.rows[i].date.toString();
-
-        // Node.js bombs if you try to toString() a null value.
-        if(result.rows[i].concentration) {
-          var concentration = result.rows[i].concentration.toString();
-          rows[date] = concentration;
-        }
+        var concentration = result.rows[i].concentration.toString();
+        rows[date] = concentration;
       }
 
       // Convert rows object to JSON.

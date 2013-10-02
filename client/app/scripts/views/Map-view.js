@@ -4,7 +4,7 @@
 client.Views.MapView = Backbone.View.extend({
 
         initialize: function() {
-                _.bindAll(this);
+		_.bindAll(this);
 		this.destProj = new OpenLayers.Projection('EPSG:3338');
 		this.sourceProj = new OpenLayers.Projection('EPSG:4326');
 		this.createMap();
