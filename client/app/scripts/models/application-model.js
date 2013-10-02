@@ -3,6 +3,7 @@
 
 client.Models.ApplicationModel = Backbone.Model.extend({
 	defaults: {
-		title:'Sea Ice Atlas'
+		title: 'Sea Ice Atlas',
+		testVar: 'hello'
 	}
 });

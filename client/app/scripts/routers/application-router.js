@@ -10,8 +10,8 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 		var appModel = new client.Models.ApplicationModel();
 
 		var appView = new client.Views.ApplicationView({el: $('#app'), model: appModel});
-		var mapView = new client.Views.MapView();
-		var chartView = new client.Views.ChartView();
+		var mapView = new client.Views.MapView({model: appModel});
+		var chartView = new client.Views.ChartView({model: appModel});
 
 		appView.render();
 		mapView.render();
