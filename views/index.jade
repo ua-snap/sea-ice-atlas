@@ -1,5 +1,56 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+    
+    // start 12 column main block
+    section.row-fluid
+      .span12(style='border: 1px solid silver; padding: 10px;')
+        h1 Historical Sea Ice Atlas
+    // end 12-column main block
+    // start 12-column thumbnail block
+    .row-fluid
+      ul.thumbnails
+        li.span4
+          article.thumbnail
+            a(href='index.html')
+              img(alt='explore', src='img/USS_BEAR_off_Point_Barrow_22_square.jpg')
+            h3 Explore
+            p View historical sea ice trends for your area
+            p
+              a.btn.btn-warning(href='index.html') Action
+        li.span4
+          article.thumbnail
+            a(href='download.html')
+              img(alt='download', src='img/download.jpg')
+            h3 Download
+            p
+              | Get historical sea ice data &lpar;Clearly this button needs
+              | to be larger&period;&rpar;
+            p
+              a.btn.btn-warning(href='index.html') Action
+        li.span4
+          article.thumbnail
+            a(href='#')
+              img(alt='another link', src='img/link3.jpg')
+            h3 Quick Link 3
+            p
+              | A third quick link here&comma; if needed&period; Three links would be
+              | good&period;&period;&period;
+            p
+              a.btn.btn-warning(href='index.html') Action
+    // end 12-column thumbnail block
+    // start 12-column footer block
+    section.row-fluid
+      footer.span12
+        small
+          | Copyright &copy; 2013 Alaska Center for Climate Assessment and
+          | Modeling and the Scenarios Network for Alaska &amp; Arctic
+          | Planning&comma; research institutes of the University of Alaska
+          | Fairbanks&period; UAF is an affirmative action&sol;equal opportunity employer
+          | and educational institution&period;
+    // end 12-column footer block
+    // jQuery (necessary for Bootstrap's JavaScript plugins)
+    script(src='http://code.jquery.com/jquery.js')
+    // Include all compiled plugins (below), or include individual files as needed
+    script(src='http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js')
+  

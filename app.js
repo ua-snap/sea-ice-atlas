@@ -5,7 +5,6 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , user = require('./routes/user')
   , http = require('http')
   , path = require('path');
 
@@ -20,6 +19,14 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
+
+  // May want to get rid of the below.
+  app.use(require('less-middleware')({
+	dest: __dirname + '/public/stylesheets',
+        src: __dirname + '/src/less',
+        prefix: '/stylesheets',
+        compress: true
+  }));
   app.use(express.static(path.join(__dirname, 'public')));
 });
 
@@ -28,7 +35,10 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
-app.get('/users', user.list);
+app.get('/explore', routes.explore);
+app.get('/glossary', routes.glossary);
+app.get('/about', routes.about);
+app.get('/download', routes.about);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
