@@ -26,7 +26,7 @@ app.get('/data', function(request, response) {
     month = String('0' + month).slice(-2);
 
     // Pull all dates and corresponding sea ice concentration values from PostGIS database.
-    var query = client.query("SELECT year AS date, MIN(concentration) AS concentration FROM (SELECT date, COALESCE(ST_Value(rast, 1, ST_SetSRID(ST_Point(" + lon + ", " + lat + "), 3338)), 0) AS concentration FROM rasters) AS allvalues CROSS JOIN generate_series(1953, 2012) AS year WHERE date::text LIKE year || '-" + month  + "-%' GROUP BY year ORDER BY year", function(err, result) {
+    var query = client.query("SELECT date, concentration FROM (SELECT year AS date, nth_value(concentration, 2) OVER (PARTITION BY year) AS concentration FROM (SELECT date, COALESCE(ST_Value(rast, 1, ST_SetSRID(ST_Point(" + lon + ", " + lat + "), 3338)), 0) AS concentration FROM rasters) AS allvalues CROSS JOIN generate_series(1953, 2012) AS year WHERE date::text LIKE year || '-" + month + "-%' ORDER BY year) AS partitioned GROUP BY date, concentration ORDER BY date;", function(err, result) {
 
       if(err) {
         return console.error('error running query', err);
