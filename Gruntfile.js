@@ -3,6 +3,7 @@
 var request = require('request');
 
 module.exports = function (grunt) {
+
     var reloadPort = 35729,
         files;
 
@@ -17,43 +18,110 @@ module.exports = function (grunt) {
                 		dest: 'build/style.css',
                 		src: 'src/less/style.less'
                 }
-            
         },
+
+        // Not configured right yet!
+        jshint: {
+            options: {
+                jshintrc: '.jshintrc'
+            },
+            all: [
+                'Gruntfile.js',
+                '<%= yeoman.app %>/scripts/{,*/}*.js',
+                '!<%= yeoman.app %>/scripts/vendor/*',
+                'test/spec/{,*/}*.js'
+            ]
+        },
+
+        // Purge directories when building.
+        clean: {
+            dist: ['build', 'public/js', 'public/css']
+        },
+
+        // Precompile JST templates used by the Backbone views.
+        jst: {
+            compile: {
+                files: {
+                    'build/templates.js': ['src/scripts/templates/*.ejs']
+                }
+            }
+        },
+
+        // Neuter is responsible for maintaining specified order for the include files so we can
+        // avoid failing declaration dependencies.
+        neuter: {
+            app: {
+                src: ['src/scripts/main.js'],
+                dest: 'build/app.js'
+            }
+        },
+
+        // This copies out the "main" bower files -- the ones to be consumed by our application --
+        // from the bower_components directory into the build directory where we'll concat and
+        // minify them.
+        bower: {
+            install: {
+	      options: {
+	        targetDir: './build/lib',
+	        layout: 'byType',
+	        install: true,
+	        verbose: false,
+	        cleanTargetDir: false,
+	        cleanBowerDir: false
+	      }
+	    }
+        },
+
+        // Concatenate various scripts.
         concat: {
         		css: {
         			files: {
         				'public/css/style.css': [
-        					'src/bower_components/bootstrap/dist/css/bootstrap.css',
+        					'build/lib/bootstrap/**/*.css',
         					'build/style.css'
         				]
         			}
         		},
-        		js: {
+        		// Javascript below only pulls in what's pulled in from Bower and/or other vendor code (non-Bower)
+        		vendor: {
+        			files: {
+        				// We're enumerating these manually to ensure dependencies go OK.  Bad + good.
+        				'build/bower.js': [
+        					'build/lib/jquery/**/*.js',
+        					'build/lib/bootstrap/**/*.js',
+        					'build/lib/underscore/underscore-min.js', // Neither Backbone nor Underscore really place nice with Bower.
+        					'build/lib/backbone/backbone-min.js', // depends on Underscore.
+        					'build/lib/momentjs/moment.js', // depends on Underscore.
+        					'build/lib/q/q.js',
+        					'src/vendor/OpenLayers.js'
+        				]
+        			}
+        		},
+        		// This is what pull together all of our custom application files.
+        		app: {
         			files: {
         				'public/js/client.js': [
-        					'src/bower_components/bootstrap/dist/js/bootstrap.min.js'
+        					'build/bower.js',
+        					'build/app.js'
         				]
         			}
         		}
         },
-        copy: {
-        		bootstrap: {
-        			expand: true,
-        			src: ['src/bower_components/bootstrap/dist/fonts/*'],
-        			dest: 'public/fonts'
-        		}
-        },
+
         uglify: {
 
         },
+
         cssmin: {
 
         },
+
         develop: {
             server: {
                 file: 'app.js'
             }
         },
+
         watch: {
             options: {
                 nospawn: true,
@@ -62,15 +130,15 @@ module.exports = function (grunt) {
             server: {
                 files: [
                             'app.js',
-                            'routes/*.js',
-                            'Gruntfile.js'
+                            'routes/*.js'
                 ],
                 tasks: ['develop', 'delayed-livereload']
             },
             js: {
-                files: ['public/js/*.js'],
+                files: ['src/scripts/**/*.js'],
+                tasks: ['default', 'develop', 'delayed-livereload'],
                 options: {
-                    livereload: reloadPort
+                		debounceDelay: 250
                 }
             },
             css: {
@@ -81,7 +149,10 @@ module.exports = function (grunt) {
             },
             less: {
             	files: ['src/less/*.less'],
-            	tasks: ['develop', 'delayed-livereload']
+            	tasks: ['less'],
+            	options: {
+            		livereload: reloadPort
+            	}
             },
             jade: {
                 files: ['views/*.jade'],
@@ -108,14 +179,20 @@ module.exports = function (grunt) {
                 }
                 done(reloaded);
             });
-        }, 500);
+        }, 1000);
     });
 
     grunt.loadNpmTasks('grunt-develop');
+    grunt.loadNpmTasks('grunt-neuter');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-bower-task');
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-jst');
 
-    grunt.registerTask('default', ['less', 'concat', 'copy', 'develop', 'watch']);
+    grunt.registerTask('default', ['clean', 'less', 'bower', 'jst', 'neuter', 'concat', 'copy', 'develop', 'watch']);
+    
+
 };

@@ -1,0 +1,158 @@
+extends layout
+
+block content
+
+    section.row-fluid
+      .span12(style='border: 1px solid silver; padding: 10px;')
+        h1 We can plan for the future by studying the past&period;
+        p
+          | Until now&comma; no tool has existed that allows the simultaneous
+          | viewing of multiple sources of visualized &lpar;mapped&rpar; historical sea
+          | ice data&period; The new&comma; web based Historical Sea Ice Atlas is designed
+          | to let users view historical sea ice data collected between XX and
+          | XX and compiled for display on an interactive map of the seas
+          | surrounding northern Alaska&period;
+        .panel.panel-warning.pull-right(style='width: 280px; margin-left:20px;')
+          .panel-heading
+            h4.panel-title Living with uncertainty
+          .panel-body
+            p
+              strong
+                | Uncertainty is not an enemy of science that
+                | holds it back
+              | &ndash; it is a stimulus that drives it
+              | forward&period;
+            p
+              | The role of science is to assess the evidence and show
+              | which of several possible answers has the most support&period;
+              | Where uncertainties remain&comma; scientists know what to
+              | investigate next&period;
+            p
+              | We all make decisions in our daily lives that are based
+              | on incomplete information&period; It is helpful to know about
+              | uncertainties up front so that we can make informed
+              | decisions&period;
+            p(style='width: 250px; word-wrap: normal; font-style: italic; font-size: .8em; text-align: left;')
+              img(src='img/USS_BEAR_off_Point_Barrow_22_sm.jpg')
+              br
+              | Navigating and collecting data in heavy ice was extremely
+              | uncertain for some mariners&period; &lpar;Photo&colon;
+              a(href='http://vilda.alaska.edu/cdm/singleitem/collection/cdmg11/id/10919/rec/1')
+                | Alaska Digital Archives&rpar;
+        h2 How to use the atlas
+        p
+          | Use this atlas to learn how sea ice extent and concentration
+          | have changed&comma; from many decades ago to the present time&period; The atlas
+          | is not designed for forecasting or prediction&comma; but can provide
+          | useful historical context for future planning efforts&period;
+        p
+          strong If you are
+          | a resident of a coastal community&comma;
+          | someone who hunts or fishes in a marine environment&comma; a member of
+          | the shipping or oil &amp; gas industries&comma; in the US Coast guard&comma; a
+          | scientist&comma; or otherwise interested in Arctic sea ice data and
+          | climate change&comma;
+          strong this atlas is for you&period;
+        p
+          | Key findings from
+          a(href='#')
+            | a major report on the need for
+            | spatial tools for Arctic Mapping and Planning
+          | &lpar;link&quest;&rpar; indicate
+          | that&colon;
+        blockquote
+          p
+            | Marine resource management decisions are often made through
+            | processes that are not based explicitly on resource data &mldr;
+            | important weaknesses in current decision-making processes
+            | involve two issues that spatial tools can help address&colon; public
+            | participation and the availability of data and information&period;
+          p
+            | The most pressing management decisions revolve around
+            | climate change and the associated changes in environmental
+            | conditions coupled with increasing industrial development and
+            | consequent human uses of the ocean and near shore
+            | environments&period;
+        h2 Data considerations
+        p
+          | These data represent &OpenCurlyDoubleQuote;snapshots&rdquor; in time&comma; as well as historical
+          | trends in arctic sea ice cover and extent&period; They are not projections
+          | or predictions of future conditions&period; Things that create uncertainty
+          | in data &mdash; especially historical data &mdash; include&colon;
+        p
+          strong Data collection challenges&period;
+          | Collecting
+          | sea ice data is difficult&semi; traveling through or near sea ice can be
+          | perilous or impossible for most vessels&comma; and was especially
+          | dangerous for historic arctic voyagers&period; Another hazard is the
+          | weather&comma; which is typically capricious and can be severe for
+          | observers aboard planes or ships&period; Historical data collection
+          | methods and interpretations of ice concentration often differed
+          | from modern protocols&comma; and observers over time have used different
+          | types of sensors &lpar;e&period;g&period;&comma; human observation&comma; radar&comma; satellites&rpar; and
+          | instrument calibrations&period;
+          strong
+            | All of these add up to
+            | inconsistencies in the data&period;
+        p
+          strong Data compilation choices&period;
+          | Compiling data
+          | always involves a series of choices&period; Experts do their best to
+          | answer questions such as&colon; Which hard copy maps to digitize&quest; How do
+          | we interpret this handwriting&quest; How do we fill gaps in the data
+          | record&quest; Which time scale is best to use&quest;
+          strong
+            | These choices lead
+            | to uncertainty&period;
+        h3 Sources of sea ice data
+        script(src='https://www.google.com/jsapi?autoload={"modules":[{"name":"visualization",%20"version":"1","packages":["timeline"]}]}', type='text/javascript')
+        script(type='text/javascript')
+          google.setOnLoadCallback(drawChart);
+          function drawChart() {
+          var container = document.getElementById('datasources');
+          var chart = new google.visualization.Timeline(container);
+          var dataTable = new google.visualization.DataTable();
+          dataTable.addColumn({ type: 'string', id: 'Term' });
+          dataTable.addColumn({ type: 'string', id: 'Name' });
+          dataTable.addColumn({ type: 'date', id: 'Start' });
+          dataTable.addColumn({ type: 'date', id: 'End' });
+          dataTable.addRows([
+          [ 'DMI', 'Danish Meteorological Institute', new Date(1893, 1, 0), new Date(1956, 12, 0) ],
+          [ 'Hill', 'Brian Hill Collection',        new Date(1900, 1, 0),  new Date(2002, 12, 0) ],
+          [ 'Kelly', 'Kelly Ice Extent Grids FIX DATES',        new Date(1900, 1, 0),  new Date(2013, 12, 0) ],
+          [ 'Kelly Extension', 'Temporal Extension of Kelly Data FIX DATES',        new Date(1901, 1, 0),  new Date(1956, 12, 0) ],
+          [ 'AARI', 'Arctic and Antarctic Research Institute',        new Date(1933, 1, 0),  new Date(1992, 12, 0) ],
+          [ 'Dehn', 'NSIDC Bill Dehn Data Collection',        new Date(1983, 1, 0),  new Date(1986, 12, 0) ],
+          [ 'Walsh/Johnson', 'Walsh and Johnson/Navy-NOAA Joint Ice Center',        new Date(1953, 1, 0),  new Date(1977, 12, 0) ],
+          [ 'JMA', 'Japan Meteorological Agency',        new Date(1970, 1, 0),  new Date(2013, 12, 0) ],
+          [ 'JIC', 'Navy-NOAA Joint Ice Center Climatology',        new Date(1972, 1, 0),  new Date(1994, 12, 0) ],
+          [ 'NSIDC', 'NSIDC Nimbus-7 SMMR Arctic Sea Ice Concentrations',        new Date(1978, 1, 0),  new Date(2013, 12, 0) ],
+          [ 'NAVOCEANO', 'Naval Oceanographic Office',        new Date(1994, 1, 0),  new Date(2013, 12, 0) ],
+          [ 'AARI', 'AARI',  new Date(1997, 1, 0),  new Date(2006, 12, 0) ]]);
+          var options = {
+          timeline: { showRowLabels: true, singleColor: '#7ECEFD',
+          rowLabelStyle: {fontName: 'Candara', fontSize: 14, color: '#3E454C' },
+          barLabelStyle: { fontName: 'Candara', fontSize: 12 } }
+          };
+          chart.draw(dataTable, options);
+          }
+        #datasources(style='width: 100%; height: 510px;')
+      p(style="margin-top: 1em").well.well-small
+        small
+          strong Partners and funding&period;
+          | This project is
+          | funded by the National Oceanic and Atmospheric Administration
+          | &lpar;NOAA&rpar; through Alaska Ocean Observing System &lpar;AOOS&rpar; grant &num;
+          | NA11NOS0120020&period; Work was performed by the
+          a(href='http://accap.uaf.edu/')
+            | Alaska Center for Climate Assessment and
+            | Policy
+          | &lpar;ACCAP&rpar; at the University of Alaska Fairbanks &lpar;UAF&rpar; in
+          | partnership with the
+          a(href='http://www.snap.uaf.edu')
+            | Scenarios
+            | Network for Alaska and Arctic Planning
+          | &lpar;SNAP&comma; UAF&rpar; and the
+          | University of Illinois&comma; Urbana-Champaign&period;
+    // end 12-column main block
+ 
