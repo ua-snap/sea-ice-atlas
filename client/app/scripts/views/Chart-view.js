@@ -17,7 +17,7 @@ client.Views.ChartView = Backbone.View.extend({
         drawCharts: function() {
                 $('#chart').highcharts({
                         title: {
-                                text: 'Minimum Sea Ice Concentration for September at 80.375 / -180',
+                                text: 'Sea Ice Concentration for September at ' + this.model.get('lat') + ' / ' + this.model.get('lon'),
                                 x: -20,
                                 margin: 40
                         },
