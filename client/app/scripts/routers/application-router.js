@@ -7,6 +7,7 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 		'date/:year/:month': 'renderByDate'
 	},
 
+<<<<<<< HEAD
 	// Default view
 	index: function() {
 		this.checkIfRenderLayout();
@@ -35,6 +36,8 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 		// mapView.render() returns a promise on initial run.  TODO: this may break if base map has already 
 		// rendered, fix/defend.
 		this.mapView.render().then(_.bind(function() {
+
+			this.chartView.render();
 
 			this.mapControlsView = new client.Views.MapControlsView({el: $('#mapControls'), model: this.mapModel});
 			this.mapControlsView.render();
@@ -68,6 +71,7 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 	renderAppLayout:  function() {
 		this.appModel = new client.Models.ApplicationModel();
 		this.appView = new client.Views.ApplicationView({el: $('#applicationWrapper'), model: this.appModel});
+		this.chartView = new client.Views.ChartView({model: appModel});
 
 		this.mapModel = new client.Models.MapModel();
 		this.mapView = new client.Views.MapView({model: this.mapModel});
