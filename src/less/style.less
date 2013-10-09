@@ -1,3 +1,10 @@
+// Pull in Bootstrap and override with our customizations as required
+
+@import "../../bower_components/bootstrap/less/bootstrap.less";
+@import "mixins.less";
+@import "variables.less";
+
+// Additional styling
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -5,4 +12,8 @@ body {
 
 a {
   color: #00B7FF;
+}
+
+.banner {
+	background-image: url(../img/ice_montage_450.jpg)
 }

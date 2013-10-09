@@ -5,7 +5,7 @@ client.Views.MapView = Backbone.View.extend({
 	initialize: function() {
 		// When the layer changes, update the map
 		this.model.on('change', _.debounce(this.render, 1000), this);
-		_.bindAll(this, 'createMap', 'setCurrentLayer','renderBaseLayer','render','showLayer','coordinateClicked');
+		_.bindAll(this, 'setCurrentLayer','renderBaseLayer','render','showLayer','coordinateClicked');
 	},
 
 	layer: {}, // will be populated with buffering
@@ -26,7 +26,6 @@ client.Views.MapView = Backbone.View.extend({
 		this.baseLayerLoadPromise = Q.defer();
 
 		var destProj = new OpenLayers.Projection('EPSG:3338');
-
 
                 OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
                         model: this.model,
@@ -64,8 +63,8 @@ client.Views.MapView = Backbone.View.extend({
 			resolutions: [70600.334078125001, 35300.1670390625, 17650.08351953125, 8825.0417597656251, 4412.5208798828126, 2206.2604399414063, 1103.1302199707031, 551.56510998535157, 275.78255499267578, 137.89127749633789, 68.945638748168946, 34.472819374084473, 17.236409687042237, 8.6182048435211183, 4.3091024217605591, 2.1545512108802796, 1.0772756054401398, 0.53863780272006989, 0.26931890136003495, 0.13465945068001747],
 			units:'m',
 			wrapDateLine:false,
-			projection:this.destProj,
-			displayProjection:this.destProj
+			projection:destProj,
+			displayProjection: destProj
 		});
 
 		var ginaLayer = new OpenLayers.Layer.WMS(

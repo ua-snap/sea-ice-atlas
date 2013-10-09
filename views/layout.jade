@@ -6,73 +6,78 @@ html
 		script(src='http://localhost:35729/livereload.js')
 		meta(charset='UTF-8')
 		meta(content='width=device-width, initial-scale=1.0', name='viewport')
-		
+
 		//if lt IE 9
 			script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
 
-	body
+	body(style="padding-top: 70px")
 
 		// start nav, responsive and degrades nicely for smaller devices
-		nav.navbar.navbar-default.navbar-fixed-top(role='navigation')
-		
-			// Brand and toggle get grouped for better mobile display
-			.navbar-header
-				button.navbar-toggle(data-target='.navbar-ex1-collapse', data-toggle='collapse', type='button')
-					span.sr-only
-						| Toggle navigation
-					span.icon-bar
-					span.icon-bar
-					span.icon-bar
-				a.navbar-brand(href='/')
-					| Historical Sea Ice Atlas
+		header.navbar.navbar-default.navbar-fixed-top(role='banner')
+			
+			.container
 
-			// Collect the nav links, forms, and other content for toggling
-			.collapse.navbar-collapse.navbar-ex1-collapse
-				ul.nav.navbar-nav
-					li
-						a(href='/explore') Explore
-					li
-						a(href='/about') About
-					li
-						a(href='/download') Download
-					li
-						a(href='/glossary') Glossary
+				// Brand and toggle get grouped for better mobile display
+				.navbar-header
+					button.navbar-toggle(data-target='.navbar-bs-collapse', data-toggle='collapse', type='button')
+						span.sr-only Toggle navigation
+						span.icon-bar
+						span.icon-bar
+						span.icon-bar
+					a.navbar-brand(href='/')
+						|Historical Sea Ice Atlas
 
-		.container
-			block content
+				// Collect the nav links, forms, and other content for toggling
+				nav.collapse.navbar-collapse.navbar-bs-collapse(role='navigation')
+					- var activeClass
+					ul.nav.navbar-nav
+						- activeClass = ('explore' === active) ? 'active' : ''
+						li(class=activeClass)
+							a(href='/explore') Explore
+						- activeClass = ('about' === active) ? 'active' : ''
+						li(class=activeClass)
+							a(href='/about') About
+						- activeClass = ('download' === active) ? 'active' : ''
+						li(class=activeClass)
+							a(href='/download') Download
+						- activeClass = ('glossary' === active) ? 'active' : ''
+						li(class=activeClass)
+							a(href='/glossary') Glossary
 
-			footer
-				| Copyright &copy; 2013 Alaska Center for Climate Assessment and
-				| Modeling and the Scenarios Network for Alaska &amp; Arctic
-				| Planning&comma; research institutes of the University of Alaska
-				| Fairbanks&period; UAF is an affirmative action&sol;equal opportunity employer
-				| and educational institution&period;
+		block content
 
-				h4 Disclaimer &lpar;ADAPTED FROM AOOS&rpar;
-				p
-					| All products published on this website are not
-					| intended to be used for navigational or operational
-					| purposes&period; This website aggregates and displays data and
-					| modeling products created by SNAP&period; We welcome suggestions
-					| for clarification or correction&comma; as
-					| appropriate&period;
-				p
-					| Neither SNAP&comma; nor any of its members&comma; employees
-					| or agents makes any warranty&comma; expressed or implied&comma;
-					| including merchantability and fitness for a particular
-					| purpose&comma; or assumes any legal liability or responsibility
-					| for the accuracy&comma; completeness or usefulness of any
-					| information&comma; apparatus&comma; product or process disclosed&comma; or
-					| represents that its use does not infringe privately owned
-					| rights&period;
-				p
-					| The user of these data and products assumes the
-					| entire risk related to use of these date and this web site&period;
-					| In no event will SNAP&comma; its agents&comma; employees or members be
-					| liable to a user or any third party for any direct&comma;
-					| indirect&comma; incidental&comma; consequential&comma; special or exemplary
-					| damages&comma; loss of life or lost profits resulting from any
-					| use&comma; misuse or reliance on any of the data or information
-					| appearing on this website&period;
+		footer
+			| Copyright &copy; 2013 Alaska Center for Climate Assessment and
+			| Modeling and the Scenarios Network for Alaska &amp; Arctic
+			| Planning&comma; research institutes of the University of Alaska
+			| Fairbanks&period; UAF is an affirmative action&sol;equal opportunity employer
+			| and educational institution&period;
+
+			h4 Disclaimer &lpar;ADAPTED FROM AOOS&rpar;
+			p
+				| All products published on this website are not
+				| intended to be used for navigational or operational
+				| purposes&period; This website aggregates and displays data and
+				| modeling products created by SNAP&period; We welcome suggestions
+				| for clarification or correction&comma; as
+				| appropriate&period;
+			p
+				| Neither SNAP&comma; nor any of its members&comma; employees
+				| or agents makes any warranty&comma; expressed or implied&comma;
+				| including merchantability and fitness for a particular
+				| purpose&comma; or assumes any legal liability or responsibility
+				| for the accuracy&comma; completeness or usefulness of any
+				| information&comma; apparatus&comma; product or process disclosed&comma; or
+				| represents that its use does not infringe privately owned
+				| rights&period;
+			p
+				| The user of these data and products assumes the
+				| entire risk related to use of these date and this web site&period;
+				| In no event will SNAP&comma; its agents&comma; employees or members be
+				| liable to a user or any third party for any direct&comma;
+				| indirect&comma; incidental&comma; consequential&comma; special or exemplary
+				| damages&comma; loss of life or lost profits resulting from any
+				| use&comma; misuse or reliance on any of the data or information
+				| appearing on this website&period;
 
 		script(src='/js/client.js')

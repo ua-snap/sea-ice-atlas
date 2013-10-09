@@ -9,13 +9,14 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+
         less: {
                 options: {
                     paths: ['src/less'],
                     compress: true
                 },
                 files: {
-                		dest: 'build/style.css',
+                		dest: 'public/css/style.css',
                 		src: 'src/less/style.less'
                 }
         },
@@ -74,14 +75,6 @@ module.exports = function (grunt) {
 
         // Concatenate various scripts.
         concat: {
-        		css: {
-        			files: {
-        				'public/css/style.css': [
-        					'build/lib/bootstrap/**/*.css',
-        					'build/style.css'
-        				]
-        			}
-        		},
         		// Javascript below only pulls in what's pulled in from Bower and/or other vendor code (non-Bower)
         		vendor: {
         			files: {
@@ -192,7 +185,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-jst');
 
-    grunt.registerTask('default', ['clean', 'less', 'bower', 'jst', 'neuter', 'concat', 'copy', 'develop', 'watch']);
+    grunt.registerTask('default', ['clean', 'less', 'bower', 'jst', 'neuter', 'concat', 'develop', 'watch']);
     
 
 };

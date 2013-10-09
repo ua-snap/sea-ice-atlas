@@ -7,7 +7,6 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 		'date/:year/:month': 'renderByDate'
 	},
 
-<<<<<<< HEAD
 	// Default view
 	index: function() {
 		this.checkIfRenderLayout();
@@ -71,7 +70,7 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 	renderAppLayout:  function() {
 		this.appModel = new client.Models.ApplicationModel();
 		this.appView = new client.Views.ApplicationView({el: $('#applicationWrapper'), model: this.appModel});
-		this.chartView = new client.Views.ChartView({model: appModel});
+		this.chartView = new client.Views.ChartView({model: this.appModel});
 
 		this.mapModel = new client.Models.MapModel();
 		this.mapView = new client.Views.MapView({model: this.mapModel});

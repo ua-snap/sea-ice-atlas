@@ -17498,6 +17498,82 @@ return __p
 
 (function() {
 
+/*global client, Backbone, _, JST, OpenLayers, proj4 */
+'use strict';
+
+client.Views.ChartView = Backbone.View.extend({
+
+        initialize: function() {
+                _.bindAll(this, 'render', 'drawCharts', 'populateCharts');
+		this.model.on('change', this.render, this);
+        },
+
+	template: JST['app/scripts/templates/Chart.ejs'],
+
+	render: function() {
+		this.populateCharts();
+	},
+
+        drawCharts: function() {
+                $('#chart').highcharts({
+                        title: {
+                                text: 'Sea Ice Concentration for September at ' + this.model.get('lat') + ' / ' + this.model.get('lon'),
+                                x: -20,
+                                margin: 40
+                        },
+                        xAxis: {
+                                categories: this.dates
+                        },
+                        yAxis: {
+                                title: {
+                                        text: 'Percentage'
+                                },
+                                plotLines: [{
+                                        value: 0,
+                                        width: 1,
+                                        color: '#808080'
+                                }],
+                                max: 100
+                        },
+                        tooltip: {
+                                valueSuffix: '%'
+                        },
+                        legend: {
+                                layout: 'vertical',
+                                align: 'right',
+                                verticalAlign: 'middle',
+                                borderWidth: 0
+                        },
+                        series: [{
+                                name: 'Concentration',
+                                data: this.values
+                        }]
+                });
+        },
+
+	populateCharts: function() {
+		this.dates = [];
+		this.values = [];
+		var chartscope = this;
+
+		// This requires CORS to be enabled on the web browser and is not a long-term
+		// solution. We either need everything to be hosted through the same port, or
+		// figure out how to get jQuery's JSONP working.
+		$.getJSON("http://icarus.snap.uaf.edu:8000/data?month=9&lon=" + this.model.get('lon') + "&lat=" + this.model.get('lat'), function(data) {
+			var jsonscope = chartscope;
+			$.each(data, function(key, val) {
+				jsonscope.dates.push(key);
+				jsonscope.values.push(parseInt(val));
+			});
+		}).done(this.drawCharts);
+	}
+});
+
+
+})();
+
+(function() {
+
 /*global client, Backbone, JST, OpenLayers, proj4, moment, _, Q */
 'use strict';
 
@@ -17505,10 +17581,15 @@ client.Views.MapView = Backbone.View.extend({
 	initialize: function() {
 		// When the layer changes, update the map
 		this.model.on('change', _.debounce(this.render, 1000), this);
-		_.bindAll(this, 'setCurrentLayer', 'renderBaseLayer', 'render', 'showLayer');
+		_.bindAll(this, 'setCurrentLayer','renderBaseLayer','render','showLayer','coordinateClicked');
 	},
+
 	layer: {}, // will be populated with buffering
+
+	// True means don't re-render the basemap object
 	hasRendered: false,
+
+	template: JST['app/scripts/templates/Map.ejs'],
 
 	// Will contain a promise which, when fulfilled, means the base layer has been loaded.
 	baseLayerLoadPromise: null,
@@ -17521,6 +17602,36 @@ client.Views.MapView = Backbone.View.extend({
 		this.baseLayerLoadPromise = Q.defer();
 
 		var destProj = new OpenLayers.Projection('EPSG:3338');
+
+                OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
+                        model: this.model,
+			coordinateClicked: this.coordinateClicked,
+
+                        defaultHandlerOptions: {
+                                'single': true,
+                                'double': false,
+                                'pixelTolerance': 0,
+                                'stopSingle': false,
+                                'stopDouble': false
+                        },
+
+                        initialize: function(options) {
+                                this.handlerOptions = OpenLayers.Util.extend(
+                                        {}, this.defaultHandlerOptions
+                                );
+
+                                OpenLayers.Control.prototype.initialize.apply(
+                                        this, arguments
+                                );
+
+                                this.handler = new OpenLayers.Handler.Click(
+                                        this, {
+                                                'click': this.coordinateClicked
+                                        }, this.handlerOptions
+                                );
+                        },
+                });
+
 		var extent = new OpenLayers.Bounds(-9036842.762,-9036842.762, 9036842.762, 9036842.762);
 
 		this.map = new OpenLayers.Map('map',{
@@ -17529,7 +17640,7 @@ client.Views.MapView = Backbone.View.extend({
 			units:'m',
 			wrapDateLine:false,
 			projection:destProj,
-			displayProjection:destProj
+			displayProjection: destProj
 		});
 
 		var ginaLayer = new OpenLayers.Layer.WMS(
@@ -17584,6 +17695,17 @@ client.Views.MapView = Backbone.View.extend({
 			}
 		);
 		*/
+	},
+
+	coordinateClicked: function(e) {
+		var lonlat = this.map.getLonLatFromPixel(e.xy);
+
+		lonlat.transform(this.destProj, this.sourceProj);
+
+		this.model.set({
+			'lon' : lonlat.lon,
+			'lat' : lonlat.lat
+		});
 	}
 });
 
@@ -17949,8 +18071,12 @@ function parseToDate(idx) {
 /*global client, Backbone*/
 'use strict';
 
-// Empty for now; will start accumulating content/state as other common things factor up.
-client.Models.ApplicationModel = Backbone.Model.extend({});
+client.Models.ApplicationModel = Backbone.Model.extend({
+	defaults: {
+		title: 'Sea Ice Atlas'
+	}
+});
+
 
 })();
 
@@ -18007,6 +18133,8 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 		// rendered, fix/defend.
 		this.mapView.render().then(_.bind(function() {
 
+			this.chartView.render();
+
 			this.mapControlsView = new client.Views.MapControlsView({el: $('#mapControls'), model: this.mapModel});
 			this.mapControlsView.render();
 
@@ -18028,7 +18156,7 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 			
 			this.mapAnimatorModel.view = this.mapAnimatorView;
 			this.mapAnimatorView.render();
-		
+
 		}, this));
 
 	},
@@ -18039,6 +18167,7 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 	renderAppLayout:  function() {
 		this.appModel = new client.Models.ApplicationModel();
 		this.appView = new client.Views.ApplicationView({el: $('#applicationWrapper'), model: this.appModel});
+		this.chartView = new client.Views.ChartView({model: this.appModel});
 
 		this.mapModel = new client.Models.MapModel();
 		this.mapView = new client.Views.MapView({model: this.mapModel});

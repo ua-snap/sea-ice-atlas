@@ -1,41 +1,40 @@
 extends layout
 
 block content
-    
-    // start 12 column main block
-    section.row-fluid
-      .span12(style='border: 1px solid silver; padding: 10px;')
-        h1 Historical Sea Ice Atlas
-    // end 12-column main block
-    // start 12-column thumbnail block
-    .row-fluid
-      ul.thumbnails
-        li.span4
-          article.thumbnail
-            a(href='index.html')
-              img(alt='explore', src='img/USS_BEAR_off_Point_Barrow_22_square.jpg')
-            h3 Explore
-            p View historical sea ice trends for your area
-            p
-              a.btn.btn-warning(href='index.html') Action
-        li.span4
-          article.thumbnail
-            a(href='download.html')
-              img(alt='download', src='img/download.jpg')
-            h3 Download
-            p
-              | Get historical sea ice data &lpar;Clearly this button needs
-              | to be larger&period;&rpar;
-            p
-              a.btn.btn-warning(href='index.html') Action
-        li.span4
-          article.thumbnail
-            a(href='#')
-              img(alt='another link', src='img/link3.jpg')
-            h3 Quick Link 3
-            p
-              | A third quick link here&comma; if needed&period; Three links would be
-              | good&period;&period;&period;
-            p
-              a.btn.btn-warning(href='index.html') Action
-    // end 12-column thumbnail block
+
+	.row.banner
+		.container
+			h1 Historical Sea Ice Atlas
+			p
+				| Alaska sea ice patterns and trends, 1750&mdash;present
+			div
+				a.btn.btn-danger.btn-lg Explore
+			p.attribution
+				| Photos: (left) Northern hunters. (NOAA Arctic Image Gallery) (right) Beset by ice, the Baldwin-Ziegler 
+				| North Pole expedition waits out the Arctic winter in 1901. (Library of Congress Prints)
+	.row.boxes
+		.container
+			.col-md-4
+				.thumbnail
+					img(src="img/seaice.jpg",alt="")
+					.caption
+						h3 Ways to use this Atlas
+						p History, planning, uncertainty and data considerations
+						p
+							a(href="/about").btn.btn-warning Learn More
+			.col-md-4
+				.thumbnail
+					img(src="img/binarycode.jpg",alt="")
+					.caption
+						h3 Download data
+						p Use historical sea ice data for your own analyses
+						p
+							a(href="/download").btn.btn-warning Get Data
+			.col-md-4
+				.thumbnail
+					img(src="img/glossary_book.jpg",alt="")
+					.caption
+						h3 About sea ice
+						p Common terms and phenomena explained
+						p
+							a(href="/glossary").btn.btn-warning Glossary
