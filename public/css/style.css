@@ -837,3 +837,4 @@ th.visible-print,td.visible-print{display:none !important}
 .jumbotron.banner{background-image:url(../img/ice_montage_450.jpg);min-height:450px;position:relative}.jumbotron.banner h1,.jumbotron.banner p{color:#fff6e5}
 .jumbotron.banner .attribution{position:absolute;bottom:1ex;font-size:12px}
 .about .panel{width:40ex;margin:1em 0 1em 1em}
+#ice-carousel{margin:4em 0 1em 2em}
