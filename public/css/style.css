@@ -833,6 +833,7 @@ th.hidden-lg,td.hidden-lg{display:table-cell !important}
 @media (min-width:1200px){.hidden-lg{display:none !important}tr.hidden-lg{display:none !important} th.hidden-lg,td.hidden-lg{display:none !important}}
 .visible-print{display:none !important}tr.visible-print{display:none !important}
 th.visible-print,td.visible-print{display:none !important}
-@media print{.visible-print{display:block !important}tr.visible-print{display:table-row !important} th.visible-print,td.visible-print{display:table-cell !important} .hidden-print{display:none !important}tr.hidden-print{display:none !important} th.hidden-print,td.hidden-print{display:none !important}}body{padding:50px;font:14px "Lucida Grande",Helvetica,Arial,sans-serif}
-a{color:#00B7FF}
-.banner{background-image:url(../img/ice_montage_450.jpg)}
+@media print{.visible-print{display:block !important}tr.visible-print{display:table-row !important} th.visible-print,td.visible-print{display:table-cell !important} .hidden-print{display:none !important}tr.hidden-print{display:none !important} th.hidden-print,td.hidden-print{display:none !important}}body{padding-top:50px}
+.jumbotron.banner{background-image:url(../img/ice_montage_450.jpg);min-height:450px;position:relative}.jumbotron.banner h1,.jumbotron.banner p{color:#fff6e5}
+.jumbotron.banner .attribution{position:absolute;bottom:1ex;font-size:12px}
+.about .panel{width:40ex;margin:1em 0 1em 1em}

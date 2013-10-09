@@ -1,19 +1,32 @@
 // Pull in Bootstrap and override with our customizations as required
 
 @import "../../bower_components/bootstrap/less/bootstrap.less";
-@import "mixins.less";
-@import "variables.less";
+@import "./mixins.less";
+@import "./variables.less";
 
-// Additional styling
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	padding-top: 50px;
 }
 
-a {
-  color: #00B7FF;
+// Used in index.jade
+.jumbotron.banner {
+	background-image: url(../img/ice_montage_450.jpg);
+	min-height: 450px;
+	position: relative; 
+
+	h1, p {
+		color: @reverse-text-color;
+	}
+
+	.attribution {
+		position: absolute;
+		bottom: 1ex;
+		font-size: 12px;
+	}
 }
 
-.banner {
-	background-image: url(../img/ice_montage_450.jpg)
+// Used in about.jade
+.about .panel {
+	width: 40ex;
+	margin: 1em 0 1em 1em;
 }

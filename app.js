@@ -4,7 +4,8 @@
  */
 
 var express = require('express')
-  , routes = require('./routes')
+  , contentRoutes = require('./routes/index')
+  , dataRoutes = require('./routes/data')
   , http = require('http')
   , path = require('path');
 
@@ -34,11 +35,12 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-app.get('/', routes.index);
-app.get('/explore', routes.explore);
-app.get('/glossary', routes.glossary);
-app.get('/about', routes.about);
-app.get('/download', routes.download);
+app.get('/', contentRoutes.index);
+app.get('/explore', contentRoutes.explore);
+app.get('/glossary', contentRoutes.glossary);
+app.get('/about', contentRoutes.about);
+app.get('/download', contentRoutes.download);
+app.get('/data', dataRoutes.data);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
