@@ -21,6 +21,17 @@ module.exports = function (grunt) {
                 }
         },
 
+        // Copies static assets from Bower components to public directories
+        copy: {
+        		openlayers: {
+        			cwd: 'bower_components/openlayers/theme',
+			src: 'default/*',
+			dest: 'public/theme',
+			expand: true
+  
+        		}
+        },
+
         // Not configured right yet!
         jshint: {
             options: {
@@ -127,17 +138,18 @@ module.exports = function (grunt) {
                 ],
                 tasks: ['develop', 'delayed-livereload']
             },
+            templates: {
+            	files: ['src/scripts/templates/**/*.ejs'],
+            	tasks: ['jst', 'neuter', 'concat', 'delayed-livereload'],
+                options: {
+                    livereload: reloadPort
+                }
+            },
             js: {
                 files: ['src/scripts/**/*.js'],
                 tasks: ['default', 'develop', 'delayed-livereload'],
                 options: {
                 		debounceDelay: 250
-                }
-            },
-            css: {
-                files: ['public/css/*.css'],
-                options: {
-                    livereload: reloadPort
                 }
             },
             less: {
@@ -185,7 +197,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-jst');
 
-    grunt.registerTask('default', ['clean', 'less', 'bower', 'jst', 'neuter', 'concat', 'develop', 'watch']);
+    grunt.registerTask('default', ['clean', 'less', 'bower', 'jst', 'neuter', 'concat', 'copy', 'develop', 'watch']);
     
 
 };

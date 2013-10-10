@@ -17468,7 +17468,7 @@ this["JST"]["src/scripts/templates/MapAnimator.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<h3>Animation</h3>\n<p><strong>Sequential</strong> animation displays sea ice for every month, and <strong>monthly</strong> animation cycles through sea ice data for the same month over different years.</p>\n<div class="btn-group" data-toggle="buttons-radio">\n\t<button class="btn active" id="mapAnimationSequential">Sequential</button>\n\t<button class="btn" id="mapAnimationMonthly">Monthly</button>\n</div>\n<div class="btn-group">\n\t<button class="btn" id="mapAnimationPlay"><i class="icon-play"></i></button>\n\t<button class="btn" id="mapAnimationPause"><i class="icon-pause"></i></button>\n</div>\n';
+__p += '<h3>Animation</h3>\n<p><strong>Sequential</strong> animation displays sea ice for every month, and <strong>monthly</strong> animation cycles through sea ice data for the same month over different years.</p>\n<div class="btn-group" data-toggle="buttons-radio">\n\t<button class="btn btn-default active" id="mapAnimationSequential">Sequential</button>\n\t<button class="btn btn-default" id="mapAnimationMonthly">Monthly</button>\n</div>\n<div class="btn-group">\n\t<button class="btn btn-default btn-primary" id="mapAnimationPlay"><span class="glyphicon glyphicon-play"></span></button>\n\t<button class="btn btn-default" id="mapAnimationPause"><span class="glyphicon glyphicon-pause"></span></button>\n</div>\n';
 
 }
 return __p
@@ -17478,7 +17478,7 @@ this["JST"]["src/scripts/templates/MapControls.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div id="mapControls_ymd">\n\t<label>Select by date</label>\n\t<select name="month" class="month">\n\t\t<option value="01">January</option>\n\t\t<option value="02">February</option>\n\t\t<option value="03">March</option>\n\t\t<option value="04">April</option>\n\t\t<option value="05">May</option>\n\t\t<option value="06">June</option>\n\t\t<option value="07">July</option>\n\t\t<option value="08">August</option>\n\t\t<option value="09">September</option>\n\t\t<option value="10">October</option>\n\t\t<option value="11">November</option>\n\t\t<option value="12">December</option>\n\t</select>\n\t<select name="year" class="year"></select>\n</div>\n';
+__p += '<div class="toolPanel active">\n<h3>Charts by date</h3>\n<p>Choose a date, and click on the map to see a historical chart for that location.</p>\n\n<label>Select by date</label>\n<div id="mapControls_ymd">\n\t<select name="month" class="month">\n\t\t<option value="01">January</option>\n\t\t<option value="02">February</option>\n\t\t<option value="03">March</option>\n\t\t<option value="04">April</option>\n\t\t<option value="05">May</option>\n\t\t<option value="06">June</option>\n\t\t<option value="07">July</option>\n\t\t<option value="08">August</option>\n\t\t<option value="09">September</option>\n\t\t<option value="10">October</option>\n\t\t<option value="11">November</option>\n\t\t<option value="12">December</option>\n\t</select>\n\t<select name="year" class="year"></select>\n</div>\n</div>';
 
 }
 return __p
@@ -17488,7 +17488,7 @@ this["JST"]["src/scripts/templates/application.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<section class="row-fluid">\n\t<aside class="span3">\n\t\t<div id="mapControls"></div>\n\t\t<div id="mapAnimationControls"></div>\n\t</aside>\n\t<!--end 3-column left hand block-->\n\n\t<!--start 9-column map block-->\n\t<div class="span9">\n\t\t<div id="animationBuffering" style="display: none">\n\t\t\t<img src="img/ajax-loader.gif" /> Buffering&hellip;\n\t\t</div>\n\t\t<h3 id="mapTitle">Historical Sea Ice Concentration</h3>\n\t\t<div id="mapWrapper">\n\t\t\t<div id="map" style="min-width: 512px; height: 600px"></div>\n\t\t\t<img id="legend" src="http://tiles.snap.uaf.edu/cgi-bin/mapserv?map=/var/www/html/seaiceatlas.map&SERVICE=WMS&VERSION=1.1.1&layer=seaiceatlas&REQUEST=getlegendgraphic&FORMAT=image/png" />\n\t\t</div>\n\t</div>\n</section>';
+__p += '<aside class="col-md-3">\n\t<div id="mapControls"></div>\n\t<div id="mapAnimationControls"></div>\n</aside>\n<!--end 3-column left hand block-->\n\n<!--start 9-column map block-->\n<div class="col-md-9">\n\t<div id="animationBuffering" style="display: none">\n\t\t<img src="img/ajax-loader.gif" /> Buffering&hellip;\n\t</div>\n\t<h3 id="mapTitle">Historical Sea Ice Concentration</h3>\n\t<div id="mapWrapper">\n\t\t<div id="map" style="min-width: 512px; height: 600px"></div>\n\t\t<img id="legend" src="http://tiles.snap.uaf.edu/cgi-bin/mapserv?map=/var/www/html/seaiceatlas.map&SERVICE=WMS&VERSION=1.1.1&layer=seaiceatlas&REQUEST=getlegendgraphic&FORMAT=image/png" />\n\t</div>\n</div>\n';
 
 }
 return __p
