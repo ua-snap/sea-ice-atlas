@@ -19,7 +19,7 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 		this.mapModel.set({
 			year: year,
 			month: month
-		});
+		}, {silent:true}); // silent because otherwise it triggers a change event, unwanted here.
 		this.renderMap();
 	},
 
@@ -35,8 +35,6 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 		// mapView.render() returns a promise on initial run.  TODO: this may break if base map has already 
 		// rendered, fix/defend.
 		this.mapView.render().then(_.bind(function() {
-
-			this.chartView.render();
 
 			this.mapControlsView = new client.Views.MapControlsView({el: $('#mapControls'), model: this.mapModel});
 			this.mapControlsView.render();
@@ -60,6 +58,8 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 			this.mapAnimatorModel.view = this.mapAnimatorView;
 			this.mapAnimatorView.render();
 
+			this.mapView.loadLayer(this.mapModel.get('year'), this.mapModel.get('month'));
+
 		}, this));
 
 	},
@@ -70,14 +70,14 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 	renderAppLayout:  function() {
 		this.appModel = new client.Models.ApplicationModel();
 		this.appView = new client.Views.ApplicationView({el: $('#applicationWrapper'), model: this.appModel});
-		this.chartView = new client.Views.ChartView({model: this.appModel});
 
 		this.mapModel = new client.Models.MapModel();
 		this.mapView = new client.Views.MapView({model: this.mapModel});
+		this.chartView = new client.Views.ChartView({model: this.mapModel});
 		
 		// When the user changes the controls, update the name of the layer being referenced
 		this.mapModel.on('change', this.updateDate, this);
-
+		
 		// Render initial layout
 		this.appView.render();
 	},

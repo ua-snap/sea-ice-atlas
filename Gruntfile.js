@@ -97,7 +97,7 @@ module.exports = function (grunt) {
         					'build/lib/backbone/backbone-min.js', // depends on Underscore.
         					'build/lib/momentjs/moment.js', // depends on Underscore.
         					'build/lib/q/q.js',
-        					'src/vendor/OpenLayers.js'
+        					'build/lib/highcharts/highcharts.js'
         				]
         			}
         		},
@@ -184,7 +184,7 @@ module.exports = function (grunt) {
                 }
                 done(reloaded);
             });
-        }, 1000);
+        }, 1500);
     });
 
     grunt.loadNpmTasks('grunt-develop');

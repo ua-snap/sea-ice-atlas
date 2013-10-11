@@ -3,14 +3,16 @@ var pg = require('pg');
 // This is the route to the PostGIS JSON API.
 exports.data = function(request, response) {
 
-	response.writeHead(200, {"Content-Type": "text/plain"});
 
-	var conString = "postgres://sea_ice_atlas_user:*@hermes.snap.uaf.edu/sea_ice_atlas";
+	var conString = "postgres://sea_ice_atlas_user:vNZSrh33@localhost:30303/sea_ice_atlas";
 	var client = new pg.Client(conString);
 
 	client.connect(function(err) {
 
 		if(err) {
+			response.writeHead(500, {"Content-Type": "text/plain"});
+			response.write(JSON.stringify(err));
+			response.end();
 			return console.error('could not connect to postgres', err);
 		}
 
@@ -26,8 +28,13 @@ exports.data = function(request, response) {
 		var query = client.query("SELECT date, concentration FROM (SELECT year AS date, nth_value(concentration, 2) OVER (PARTITION BY year) AS concentration FROM (SELECT date, COALESCE(ST_Value(rast, 1, ST_SetSRID(ST_Point(" + lon + ", " + lat + "), 3338)), 0) AS concentration FROM rasters) AS allvalues CROSS JOIN generate_series(1953, 2012) AS year WHERE date::text LIKE year || '-" + month + "-%' ORDER BY year) AS partitioned GROUP BY date, concentration ORDER BY date;", function(err, result) {
 
 			if(err) {
+				response.writeHead(500, {"Content-Type": "text/plain"});
+				response.write(JSON.stringify(err));
+				response.end();
 				return console.error('error running query', err);
 			}
+
+			response.writeHead(200, {"Content-Type": "application/json"});
 
 			// Create and populate rows object with date/concentration pairs.
 			var rows = {};

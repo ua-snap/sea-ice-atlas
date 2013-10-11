@@ -8,8 +8,6 @@ client.Views.ChartView = Backbone.View.extend({
 		this.model.on('change', this.render, this);
         },
 
-	template: JST['app/scripts/templates/Chart.ejs'],
-
 	render: function() {
 		this.populateCharts();
 	},
@@ -52,19 +50,24 @@ client.Views.ChartView = Backbone.View.extend({
         },
 
 	populateCharts: function() {
-		this.dates = [];
-		this.values = [];
-		var chartscope = this;
 
-		// This requires CORS to be enabled on the web browser and is not a long-term
-		// solution. We either need everything to be hosted through the same port, or
-		// figure out how to get jQuery's JSONP working.
-		$.getJSON("http://icarus.snap.uaf.edu:8000/data?month=9&lon=" + this.model.get('lon') + "&lat=" + this.model.get('lat'), function(data) {
-			var jsonscope = chartscope;
-			$.each(data, function(key, val) {
-				jsonscope.dates.push(key);
-				jsonscope.values.push(parseInt(val));
-			});
-		}).done(this.drawCharts);
+		if(
+			false === _.isUndefined(this.model.get('lat'))
+			&& false === _.isNaN(this.model.get('lat'))
+			&& false === _.isUndefined(this.model.get('lon'))
+			&& false === _.isNaN(this.model.get('lon'))
+		) {
+			this.dates = [];
+			this.values = [];
+			var getUrl = _.template('http://localhost:3000/data?month=<%= month %>&lon=<%= lon %>&lat=<%= lat %>', this.model.toJSON());
+			$.getJSON(getUrl, _.bind(function(data) {
+		
+				_.each(data, function(e, i) {
+					this.dates.push(i);
+					this.values.push(parseInt(e));
+				}, this);
+		
+			}, this)).done(this.drawCharts);
+		}
 	}
 });

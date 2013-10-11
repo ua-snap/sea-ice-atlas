@@ -20,6 +20,7 @@
     "underscore": "~1.5.2",
     "q": "~0.9.7",
     "openlayers": "~2.13.1",
-    "momentjs": "~2.2.1"
+    "momentjs": "~2.2.1",
+    "highcharts": "~3.0.5"
   }
 }
