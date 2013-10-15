@@ -97,7 +97,8 @@ module.exports = function (grunt) {
         					'build/lib/backbone/backbone-min.js', // depends on Underscore.
         					'build/lib/momentjs/moment.js', // depends on Underscore.
         					'build/lib/q/q.js',
-        					'build/lib/highcharts/highcharts.js'
+        					'build/lib/highcharts/highcharts.js',
+        					'build/lib/proj4/proj4.js'
         				]
         			}
         		},
