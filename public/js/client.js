@@ -15086,7 +15086,7 @@ client.Views.MapView = Backbone.View.extend({
 	loadLayer: function() {
 		var oldLayer = this.currentLayer;
 		var layerName = this.model.get('year') + '_' + this.model.get('month');
-		
+
 		this.layer[layerName] = new OpenLayers.Layer.WMS(
 			'Cache WMS Sea Ice Atlas',
 			'http://tiles.snap.uaf.edu/tilecache/tilecache.py/2.11.0/',
@@ -15105,6 +15105,8 @@ client.Views.MapView = Backbone.View.extend({
 		this.layer[layerName].events.register('loadend', this, function(layer) {
 
 			this.layer[layerName].setOpacity(1);
+
+
 
 			if( 
 				false === _.isUndefined(oldLayer)
@@ -15165,6 +15167,10 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 	},
 
 	play: function() {
+		var layers = this.map.getLayers();
+		_.each(layers, function(e, i, l) {
+			this.map.layers[e].destroy();
+		}, this);
 		this.model.start();
 	},
 

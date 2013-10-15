@@ -28,6 +28,10 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 	},
 
 	play: function() {
+		var layers = this.map.getLayers();
+		_.each(layers, function(e, i, l) {
+			this.map.layers[e].destroy();
+		}, this);
 		this.model.start();
 	},
 
