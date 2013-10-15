@@ -111,11 +111,10 @@ client.Views.MapView = Backbone.View.extend({
 		
 		this.layer[layerName] = new OpenLayers.Layer.WMS(
 			'Cache WMS Sea Ice Atlas',
-			'http://icarus.snap.uaf.edu/cgi-bin/mapserv.cgi?map=/var/www/mapserver/sea.map',
+			'http://tiles.snap.uaf.edu/tilecache/tilecache.py/2.11.0/',
 			{
-				layers: 'seaiceatlas',
+				layers: _.template('seaice_conc_sic_mean_pct_weekly_ak_<%= year %>_<%= month %>_average', this.model.toJSON()),
 				transparent: true,
-				date: _.template('<%= year %>_<%= month %>', this.model.toJSON()),
 				format: 'image/png'
 			},
 			{
