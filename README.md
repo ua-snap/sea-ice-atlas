@@ -2,10 +2,6 @@
 
 Web app for exploring arctic sea ice extent.
 
-## Development
-
-Basic idea is there's a simple web app (```client/```) which communicates with a basic data API and/or other services as required.
-
 ### Dependencies
 
 #### Mac OS X
@@ -23,13 +19,7 @@ gem install compass
 brew install node
 ```
 
-### Client
-
-#### Installation of build environment
-
-The client application is handled with [Yeoman](http://yeoman.io/), using the [Backbone generator](https://github.com/yeoman/generator-backbone).  Follow steps on those sites to get Yeoman and the appropriate generator installed.
-
-Then,
+### Installation
 
 ```bash
 git clone git@github.com:ua-snap/sea-ice-atlas.git
@@ -38,26 +28,39 @@ npm install
 bower install
 ```
 
-#### Building the project
+### Building the project
 
-To run a development environment, it's ```grunt server``` and to build for release, it's ```grunt```.
+*Building the project* means being able to "compile" all the source into a web app you can use and run.  To run a development environment, it's ```grunt ```.
 
-#### Important files, locations
+Important stuff grunt is doing for us:
 
-The ```index.html``` file in ```client/app/``` is where a fair amount of initial templating can be done, and other page elements that are rendered on the fly are located in ```client/app/scripts/templates/```.  *It's probably important to keep that ```index.html``` in sync, at least in terms of script references, with the one used in the ```test/``` directory*.
+ * Takes all the javascript code and turns it into a single optimized file,
+ * Takes all LESS code (ours and others) and compiles it to a single file.
 
-### Server
+*One nice but flaky thing* is that when you save changes to files, the build system will try and reload your current browser page.  When this works, it's wicked magic because it's like "live editing."  The sad news is that sometimes it's late/slow and won't work.  In some cases, you need to manually retrigger Grunt so it is _definitely_ rebuilding all the styles + code.
 
-#### Installation
+### Important files, locations
 
-The repo is already cloned, as above.  At this point, the server is just stubbed in place at this point, but for what it's worth:
+For *GUI development*, here's how things roll:
 
-```bash
-cd sea-ice-atlas/server
-npm install
-npm start
-```
+ * Server-side Jade templates.  Layout + "pages" live in the ```views/*.jade``` files.  For changing static text or layout, this is probably the right place to start.
+ * Client-side JST templates.  These only currently lurk in the Explore page, and they're small chunks of HTML that get assembled for the "application" behavior.  These files dwell in ```src/scripts/templates``` directory. 
+ * Styling is done by taking the Bootstrap 3.0 source LESS files, then adding/overriding the styling to build a single final CSS file.  Our custom LESS files live in ```src/less```.
+ * The public web root is ```/public```.  This means, if you want to add an image, you'd add the file in the repository to ```/public/img/photo.jpg``` then reference it with this path: ```/img/photo.jpg```.  Jade code: ```img(src='/img/photo.jpg')```.  
+ * Adding a new "page" means that you have to tell Express (the web framework) how to wire things up.  For "normal static pages" this can be made a lot more awesome + straightforward, but what we've got is OK for this small site.
+
+#### Some normal types of changes as examples
+
+*Scenario*: I want to change some text and an image on the Glossary page.  I'd open ```/views/glossary.jade``` and update content there, adding any images to ```/public/img```.
+
+*Scenario*: I need to change the footer text.  This text is in the layout, since it's included in every page.  I'd open ```views/layout.jade``` and make changes as required.
+
+*Scenario*: I want to override or change some styling choice site-wide.  I'd start by seeing if Bootstrap has this set up as a "variable" by checking in the Bootstrap source code, which will be in ```bower_components/bootstrap/less/variables.less```.  Bootstrap's set up to apply the effects of these variables globally, which is why I start by looking at what they've got.  I may fiddle around with them inside that file, but when I confirm I've found the right thing, I'd open ```src/less/variables.less``` and make my changes there, so I'm not changing anything in the Bootstrap original source.
+
+*Scenario*: I want to apply specific styles to one section of a page.  I'd identify how to write LESS rules that target that section (maybe wrap it in a div with a specific ID or class), then I'd add my LESS code to ```/src/less/style.less```.
 
 ### Jenkins
+
+*Out of date!*
 
 Upon changes to the master branch (checked every 5 minutes), Jenkins runs ```grunt``` then copies the contents of the ```dist/``` to Icarus.  One gotcha: the "publish over ssh" plugin chokes on removing prefixes from dotfiles (in this case, ```.htaccess```) so those files are omitted from being copied to the production server.
