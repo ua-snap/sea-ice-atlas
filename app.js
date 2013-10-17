@@ -7,12 +7,17 @@ var express = require('express')
   , contentRoutes = require('./routes/index')
   , dataRoutes = require('./routes/data')
   , http = require('http')
-  , path = require('path');
+  , path = require('path')
+  , conf = require('nconf');
 
 var app = express();
 
+// Establish config file connections, add it to the app
+conf.file({ file: './config.json' });
+app.set('config', conf);
+
 app.configure(function(){
-  app.set('port', process.env.PORT || 3000);
+  app.set('port', conf.get('port'));
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.favicon());

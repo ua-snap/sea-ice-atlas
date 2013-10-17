@@ -20,5 +20,7 @@ public/js
 public/css
 public/theme
 
+config.json
+
 sea-ice-atlas.sublime-workspace
 sea-ice-atlas.sublime-project

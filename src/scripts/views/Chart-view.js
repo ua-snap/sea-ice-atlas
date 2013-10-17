@@ -13,11 +13,10 @@ client.Views.ChartView = Backbone.View.extend({
 	},
 
         drawCharts: function() {
-var data = moment(this.model.get('month'), 'MM').format('MMMM');
-console.log(data);
+		
                 $('#chart').highcharts({
                         title: {
-                                text: 'Sea Ice Concentration for ' + data + ' at ' + this.model.get('lat') + ' / ' + this.model.get('lon'),
+                                text: 'Sea Ice Concentration for ' + moment(this.model.get('month'), 'MM').format('MMMM') + ' at ' + this.model.get('lat') + ' / ' + this.model.get('lon'),
                                 x: -20,
                                 margin: 40
                         },
@@ -61,7 +60,7 @@ console.log(data);
 		) {
 			this.dates = [];
 			this.values = [];
-			var getUrl = _.template('http://icarus.snap.uaf.edu:8000/data?month=<%= month %>&lon=<%= lon %>&lat=<%= lat %>', this.model.toJSON());
+			var getUrl = _.template('/data?month=<%= month %>&lon=<%= lon %>&lat=<%= lat %>', this.model.toJSON());
 			$.getJSON(getUrl, _.bind(function(data) {
 		
 				_.each(data, function(e, i) {

@@ -9,7 +9,8 @@
     "express": "~3.3.4",
     "jade": "~0.34.0",
     "less-middleware": "",
-    "pg": "~2.7.0"
+    "pg": "~2.7.0",
+    "nconf": "~0.6.7"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
