@@ -14912,9 +14912,11 @@ client.Views.ChartView = Backbone.View.extend({
 	},
 
         drawCharts: function() {
+var data = moment(this.model.get('month'), 'MM').format('MMMM');
+console.log(data);
                 $('#chart').highcharts({
                         title: {
-                                text: 'Sea Ice Concentration for September at ' + this.model.get('lat') + ' / ' + this.model.get('lon'),
+                                text: 'Sea Ice Concentration for ' + data + ' at ' + this.model.get('lat') + ' / ' + this.model.get('lon'),
                                 x: -20,
                                 margin: 40
                         },
@@ -14958,7 +14960,7 @@ client.Views.ChartView = Backbone.View.extend({
 		) {
 			this.dates = [];
 			this.values = [];
-			var getUrl = _.template('http://localhost:3000/data?month=<%= month %>&lon=<%= lon %>&lat=<%= lat %>', this.model.toJSON());
+			var getUrl = _.template('http://icarus.snap.uaf.edu:8000/data?month=<%= month %>&lon=<%= lon %>&lat=<%= lat %>', this.model.toJSON());
 			$.getJSON(getUrl, _.bind(function(data) {
 		
 				_.each(data, function(e, i) {
@@ -15124,10 +15126,13 @@ client.Views.MapView = Backbone.View.extend({
 
 	coordinateClicked: function(e) {		
 		var lonlat = this.map.getLonLatFromPixel(e.xy);
-		lonlat.transform(this.destProj, this.sourceProj);
+var to = '+proj=aea +lat_1=55 +lat_2=65 +lat_0=50 +lon_0=-154 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs';
+var from = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs';
+var data = proj4(to, from, [lonlat.lon, lonlat.lat]);
+		// :lonlat.transform(this.destProj, this.sourceProj);
 		this.model.set({
-			'lon' : lonlat.lon,
-			'lat' : lonlat.lat
+			'lon' : data[0],
+			'lat' : data[1]
 		});
 	}
 });
@@ -15167,10 +15172,8 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 	},
 
 	play: function() {
-		var layers = this.map.getLayers();
-		_.each(layers, function(e, i, l) {
-			this.map.layers[e].destroy();
-		}, this);
+console.log(this.map.layers);
+this.map.layers[1].destroy();
 		this.model.start();
 	},
 

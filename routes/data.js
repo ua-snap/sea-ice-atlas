@@ -4,7 +4,7 @@ var pg = require('pg');
 exports.data = function(request, response) {
 
 
-	var conString = "postgres://sea_ice_atlas_user:vNZSrh33@localhost:30303/sea_ice_atlas";
+	var conString = "postgres://sea_ice_atlas_user:vNZSrh33@hermes.snap.uaf.edu/sea_ice_atlas";
 	var client = new pg.Client(conString);
 
 	client.connect(function(err) {
@@ -43,6 +43,7 @@ exports.data = function(request, response) {
 				var concentration = result.rows[i].concentration.toString();
 				rows[date] = concentration;
 			}
+console.log(rows);
 
 			client.end();
 
