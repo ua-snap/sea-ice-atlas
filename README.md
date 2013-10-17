@@ -28,6 +28,14 @@ npm install
 bower install
 ```
 
+The application also needs a configuration file set up.  From a fresh checkout:
+
+```
+cp config.json.example config.json
+```
+
+Then, edit the ```config.json``` file to specify port & database connection.
+
 ### Building the project
 
 *Building the project* means being able to "compile" all the source into a web app you can use and run.  To run a development environment, it's ```grunt ```.
