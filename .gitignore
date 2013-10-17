@@ -16,6 +16,9 @@ node_modules
 bower_components
 build
 
-public/js/client.js
+public/js
+public/css
+public/theme
 
 sea-ice-atlas.sublime-workspace
+sea-ice-atlas.sublime-project
