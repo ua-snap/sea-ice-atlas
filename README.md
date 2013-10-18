@@ -23,7 +23,7 @@ brew install node
 
 ```bash
 git clone git@github.com:ua-snap/sea-ice-atlas.git
-cd sea-ice-atlas/client
+cd sea-ice-atlas
 npm install
 bower install
 ```
