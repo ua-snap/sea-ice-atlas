@@ -10,20 +10,67 @@ body {
 
 // Used in index.jade
 .jumbotron.banner {
-	background-image: url(../img/ice_montage_450.jpg);
-	min-height: 450px;
+	background-image: url(../img/ice_montage_350.jpg);
+	background-repeat: no-repeat;
+	min-height: 350px;
 	position: relative; 
+	padding: 15px 0 0 15px;
+	font-size: 21px;
+	font-weight: 200;
+	color: @reverse-text-color;
+	margin: 0;
+	max-width: 100%;
 
-	h1, p {
+	h1 {
 		color: @reverse-text-color;
+		line-height: .8;
+		font-size: 2.4em;
+	}
+
+	p {color: @reverse-text-color;}
+
+	small {
+	color: #FFF6e5;
+	font-size: 50%;
+	margin: 0;
+	line-height: 1;
 	}
 
 	.attribution {
 		position: absolute;
 		bottom: 1ex;
 		font-size: 12px;
+		margin: 0 0 -10px -170px;
+		color: white;
+	}
+
+	.container {
+	max-width: 100%;
+	margin: 0 0 0 175px;
+	padding-left: 0px;
+	height: 325px;
 	}
 }
+
+.thumbnail > img {
+	display: block;
+	height: auto;
+	max-width: 100%;
+	margin: 0;
+	border-radius: 4px;
+
+	p {
+	color: @reverse-text-color;
+	line-height: 1.2;
+	margin: 5px 0 10px 0;
+	}
+
+	h3 {
+	color: @reverse-text-color;
+	margin: 0;
+	}
+}
+
 
 // Used in about.jade
 .about .panel {
@@ -33,6 +80,23 @@ body {
 
 #ice-carousel {
 	margin: 4em 0 1em 2em;
+}
+
+blockquote {
+	padding: 10px 20px;
+	margin: 0 0 20px;
+	border-left: 5px solid #7ecefd;
+
+	p {
+	font-size: 15.5px;
+	font-weight: 300;
+	line-height: 1.25;
+	color: #6db3db;
+	}
+
+	p:last-child {
+	margin-bottom: 0;
+	}
 }
 
 // Styles in the main app
