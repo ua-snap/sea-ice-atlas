@@ -45,6 +45,7 @@ app.get('/explore', contentRoutes.explore);
 app.get('/glossary', contentRoutes.glossary);
 app.get('/about', contentRoutes.about);
 app.get('/download', contentRoutes.download);
+app.get('/credits', contentRoutes.credits);
 app.get('/data', dataRoutes.data);
 
 http.createServer(app).listen(app.get('port'), function(){
