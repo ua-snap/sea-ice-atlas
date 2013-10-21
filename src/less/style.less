@@ -10,7 +10,7 @@ body {
 
 // Used in index.jade
 .jumbotron.banner {
-	background-image: url(../img/ice_montage_1900.jpg);
+	background-image: url(../img/ice_montage_1900_satellite.jpg);
 	background-repeat: no-repeat;
 	min-height: 350px;
 	position: relative; 
@@ -27,7 +27,9 @@ body {
 		font-size: 2.4em;
 	}
 
-	p {color: @reverse-text-color;}
+	p {
+		color: @reverse-text-color;
+	}
 
 	small {
 	color: #FFF6e5;
@@ -48,7 +50,7 @@ p.footer {
 		font-size: 11px;
 		margin: 5px 10px 0 10px;
 		color: gray;
-	}
+}
 
 .thumbnail > img {
 	display: block;
@@ -72,7 +74,7 @@ p.footer {
 // Used in about.jade
 .about .panel {
 	width: 40ex;
-	margin: 1em 0 1em 1em;}
+	margin: 1em 0 1em 1em;
 }
 
 #ice-carousel {
@@ -101,6 +103,7 @@ blockquote {
 	#mapWrapper {
 		position: relative;
 	}
+
 	#legend {
 		position: absolute;
 		bottom: 5px;
