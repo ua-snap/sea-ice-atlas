@@ -7,23 +7,21 @@ block content
 		h1 We can plan for the future by studying the past.
 		p
 			| Until now, no tool has existed that allows the simultaneous
-			| viewing of multiple sources of visualized &lpar;mapped&rpar; historical sea
-			| ice data. The new, web based Historical Sea Ice Atlas is designed
-			| to let users view historical sea ice data collected between XX and
-			| XX and compiled for display on an interactive map of the seas
+			| viewing of multiple sources of  historical sea
+			| ice data. This new, web based atlas is designed to let users
+			| view historical sea ice data collected between 1760 and
+			| today, and compiled for display on an interactive map of the seas
 			| surrounding northern Alaska.
 				
 		.panel.panel-primary.pull-right
 			.panel-heading
-				h4.panel-title Living with uncertainty
+				h4.panel-title Living with uncertainty in data
 			
 			.panel-body
 				p
-					strong Uncertainty is not an enemy of science that holds it back&nbsp;
-					| &ndash; it is a stimulus that drives it
-					| forward.
+					strong Uncertainty is essential for driving science forward.
 				p
-					| The role of science is to assess the evidence and show
+					| The role of science is to assess evidence and show
 					| which of several possible answers has the most support.
 					| Where uncertainties remain, scientists know what to
 					| investigate next.
@@ -34,12 +32,9 @@ block content
 					| decisions.
 		
 					img(src='img/USS_BEAR_off_Point_Barrow_22_sm.jpg')
-					
+				p	
 					| Navigating and collecting data in heavy ice was extremely
-					| uncertain for some mariners. &lpar;Photo:
-					
-					a(href='http://vilda.alaska.edu/cdm/singleitem/collection/cdmg11/id/10919/rec/1')
-						| Alaska Digital Archives&rpar;
+					| uncertain for some mariners. 
 				
 		h2 How to use the atlas
 		p
@@ -48,20 +43,18 @@ block content
 			| is not designed for forecasting or prediction, but can provide
 			| useful historical context for future planning efforts.
 		p
-			strong If you are&nbsp;
+			strong If you are
 			| a resident of a coastal community,
 			| someone who hunts or fishes in a marine environment, a member of
-			| the shipping or oil &amp; gas industries, in the US Coast guard, a
+			| the shipping or oil + gas industries, in the US Coast guard, a
 			| scientist, or otherwise interested in Arctic sea ice data and
-			| climate change,&nbsp;
+			| climate change,
 			strong this atlas is for you.
 		p
 			| Key findings from&nbsp;
-			a(href='#')
+			a(href='http://dev.aoos.org/wp-content/uploads/2011/11/Descoped-CMSP-Proposal-Nov-4-FINAL.pdf')
 				| a major report on the need for
-				| spatial tools for Arctic Mapping and Planning&nbsp;
-			| &lpar;link?&rpar; indicate
-			| that:
+				| spatial tools for Arctic Mapping and Planning indicate that:
 		blockquote
 			p
 				| Marine resource management decisions are often made through
@@ -107,39 +100,7 @@ block content
 				| These choices lead
 				| to uncertainty.
 
-		h3 Sources of sea ice data
-		script(src='https://www.google.com/jsapi?autoload={"modules":[{"name":"visualization",%20"version":"1","packages":["timeline"]}]}', type='text/javascript')
-		script(type='text/javascript').
-			google.setOnLoadCallback(drawChart);
-			function drawChart() {
-			var container = document.getElementById('datasources');
-			var chart = new google.visualization.Timeline(container);
-			var dataTable = new google.visualization.DataTable();
-			dataTable.addColumn({ type: 'string', id: 'Term' });
-			dataTable.addColumn({ type: 'string', id: 'Name' });
-			dataTable.addColumn({ type: 'date', id: 'Start' });
-			dataTable.addColumn({ type: 'date', id: 'End' });
-			dataTable.addRows([
-			[ 'DMI', 'Danish Meteorological Institute', new Date(1893, 1, 0), new Date(1956, 12, 0) ],
-			[ 'Hill', 'Brian Hill Collection',        new Date(1900, 1, 0),  new Date(2002, 12, 0) ],
-			[ 'Kelly', 'Kelly Ice Extent Grids FIX DATES',        new Date(1900, 1, 0),  new Date(2013, 12, 0) ],
-			[ 'Kelly Extension', 'Temporal Extension of Kelly Data FIX DATES',        new Date(1901, 1, 0),  new Date(1956, 12, 0) ],
-			[ 'AARI', 'Arctic and Antarctic Research Institute',        new Date(1933, 1, 0),  new Date(1992, 12, 0) ],
-			[ 'Dehn', 'NSIDC Bill Dehn Data Collection',        new Date(1983, 1, 0),  new Date(1986, 12, 0) ],
-			[ 'Walsh/Johnson', 'Walsh and Johnson/Navy-NOAA Joint Ice Center',        new Date(1953, 1, 0),  new Date(1977, 12, 0) ],
-			[ 'JMA', 'Japan Meteorological Agency',        new Date(1970, 1, 0),  new Date(2013, 12, 0) ],
-			[ 'JIC', 'Navy-NOAA Joint Ice Center Climatology',        new Date(1972, 1, 0),  new Date(1994, 12, 0) ],
-			[ 'NSIDC', 'NSIDC Nimbus-7 SMMR Arctic Sea Ice Concentrations',        new Date(1978, 1, 0),  new Date(2013, 12, 0) ],
-			[ 'NAVOCEANO', 'Naval Oceanographic Office',        new Date(1994, 1, 0),  new Date(2013, 12, 0) ],
-			[ 'AARI', 'AARI',  new Date(1997, 1, 0),  new Date(2006, 12, 0) ]]);
-			var options = {
-			timeline: { showRowLabels: true, singleColor: '#7ECEFD',
-			rowLabelStyle: {fontName: 'Candara', fontSize: 14, color: '#3E454C' },
-			barLabelStyle: { fontName: 'Candara', fontSize: 12 } }
-			};
-			chart.draw(dataTable, options);
-			}
-		#datasources(style='width: 100%; height: 510px;')
+		
 	p(style="margin-top: 1em").well.well-small
 		small
 			strong Partners and funding.
