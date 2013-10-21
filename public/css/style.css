@@ -837,8 +837,8 @@ th.visible-print,td.visible-print{display:none !important}
 .jumbotron.banner{background-image:url(../img/ice_montage_1900.jpg);background-repeat:no-repeat;min-height:350px;position:relative;padding:15px 0 0 15px;font-size:21px;font-weight:200;color:#fff6e5;margin:0;max-width:100%}.jumbotron.banner h1{color:#fff6e5;line-height:.8;font-size:2.4em}
 .jumbotron.banner p{color:#fff6e5}
 .jumbotron.banner small{color:#FFF6e5;font-size:50%;margin:0;line-height:1}
-.jumbotron.banner .attribution{position:absolute;bottom:1ex;font-size:12px;margin:0 0 -10px -170px;color:white}
-.jumbotron.banner .container{max-width:100%;margin:0 0 0 160px;padding-left:0px;height:325px}
+.jumbotron.banner .container{max-width:100%;margin:0 0 0 10px;padding-left:0px;height:325px}
+p.footer{font-size:11px;margin:5px 10px 0 10px;color:gray}
 .thumbnail>img{display:block;height:auto;max-width:100%;margin:0;border-radius:4px}.thumbnail>img p{color:#fff6e5;line-height:1.2;margin:5px 0 10px 0}
 .thumbnail>img h3{color:#fff6e5;margin:0}
 .about .panel{width:40ex;margin:1em 0 1em 1em}
