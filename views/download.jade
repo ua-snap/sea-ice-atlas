@@ -19,40 +19,38 @@ block content
 			dataTable.addColumn({ type: 'date', id: 'Start' });
 			dataTable.addColumn({ type: 'date', id: 'End' });
 			dataTable.addRows([
-			[ 'DMI', 'Danish Meteorological Institute', new Date(1893, 1, 0), new Date(1956, 12, 0) ],
-			[ 'Hill', 'Brian Hill Collection',        new Date(1900, 1, 0),  new Date(2002, 12, 0) ],
-			[ 'Kelly', 'Kelly Ice Extent Grids FIX DATES',        new Date(1900, 1, 0),  new Date(2013, 12, 0) ],
-			[ 'Kelly Extension', 'Temporal Extension of Kelly Data FIX DATES',        new Date(1901, 1, 0),  new Date(1956, 12, 0) ],
-			[ 'AARI', 'Arctic and Antarctic Research Institute',        new Date(1933, 1, 0),  new Date(1992, 12, 0) ],
-			[ 'Dehn', 'NSIDC Bill Dehn Data Collection',        new Date(1983, 1, 0),  new Date(1986, 12, 0) ],
+			[ 'ACSYS', 'Arctic Climate System Study', new Date(1750, 1, 0), new Date(2003, 12, 0) ],
+			[ 'Hill', 'Brian Hill Collection',        new Date(1870, 1, 0),  new Date(1963, 12, 0) ],
+			[ 'Kelly', 'Kelly Ice Extent Grids',        new Date(1901, 1, 0),  new Date(1956, 12, 0) ],
+			[ 'AARI', 'Arctic and Antarctic Research Institute',        new Date(1933, 1, 0),  new Date(2004, 12, 0) ],
+			[ 'Dehn', 'NSIDC Bill Dehn Data Collection',        new Date(1953, 1, 0),  new Date(1986, 12, 0) ],
 			[ 'Walsh/Johnson', 'Walsh and Johnson/Navy-NOAA Joint Ice Center',        new Date(1953, 1, 0),  new Date(1977, 12, 0) ],
-			[ 'JMA', 'Japan Meteorological Agency',        new Date(1970, 1, 0),  new Date(2013, 12, 0) ],
+			[ 'NAVOCEANO', 'Naval Oceanographic Office',        new Date(1953, 1, 0),  new Date(1971, 12, 0) ],
+			[ 'JMA', 'Japan Meteorological Agency',        new Date(1970, 1, 0),  new Date(2007, 12, 0) ],
 			[ 'JIC', 'Navy-NOAA Joint Ice Center Climatology',        new Date(1972, 1, 0),  new Date(1994, 12, 0) ],
-			[ 'NSIDC', 'NSIDC Nimbus-7 SMMR Arctic Sea Ice Concentrations',        new Date(1978, 1, 0),  new Date(2013, 12, 0) ],
-			[ 'NAVOCEANO', 'Naval Oceanographic Office',        new Date(1994, 1, 0),  new Date(2013, 12, 0) ],
-			[ 'AARI', 'AARI',  new Date(1997, 1, 0),  new Date(2006, 12, 0) ]]);
+			[ 'NSIDC', 'NSIDC Nimbus-7 SMMR Arctic Sea Ice Concentrations',        new Date(1978, 1, 0),  new Date(2013, 12, 0) ]]);
+
 			var options = {
 			timeline: { showRowLabels: true, singleColor: '#7ECEFD',
 			rowLabelStyle: {fontName: 'Candara', fontSize: 14, color: '#3E454C' },
-			barLabelStyle: { fontName: 'Candara', fontSize: 12 } }
+				barLabelStyle: { fontName: 'Open Sans', fontSize: 12 } }
 			};
+
 			chart.draw(dataTable, options);
 			}
 		#datasources(style='width: 100%; height: 510px;')
-		.well.well-small
-			p
-				strong The fine print&period;
-				| SNAP cannot determine
-				| and control which information is read&comma; or how data are
-				| processed&comma; interpreted&comma; and used&period; All products published here
-				| should not be used for navigational or operational purposes&period;
-				| The user of these data and products assumes the entire risk
-				| related to use of these data&period; In no event will SNAP&comma; its
-				| agents&comma; employees or members be liable to a user or any third
-				| party for any direct&comma; indirect&comma; incidental&comma; consequential&comma;
-				| special or exemplary damages&comma; loss of life or lost profits
-				| resulting from any use&comma; misuse or reliance on any of the data
-				| or information appearing on this website&period;
-				em
-					| Paraphrased
-					| from AOOS disclaimer
+
+		p
+			strong Disclaimer&nbsp;
+			|NEW TEXT COMING FROM LEGAL FOLKS ... SNAP cannot determine
+			|and control which information is read, or how data are
+			|processed, interpreted, and used. All products published here
+			|should not be used for navigational or operational purposes.
+			|The user of these data and products assumes the entire risk
+			|related to use of these data. In no event will SNAP, its
+			|agents, employees or members be liable to a user or any third
+			|party for any direct, indirect, incidental, consequential,
+			|special or exemplary damages, loss of life or lost profits
+			|resulting from any use, misuse or reliance on any of the data
+			|or information appearing on this website. &nbsp;Paraphrased
+			|from AOOS disclaimer
