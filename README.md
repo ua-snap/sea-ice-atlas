@@ -23,10 +23,18 @@ brew install node
 
 ```bash
 git clone git@github.com:ua-snap/sea-ice-atlas.git
-cd sea-ice-atlas/client
+cd sea-ice-atlas
 npm install
 bower install
 ```
+
+The application also needs a configuration file set up.  From a fresh checkout:
+
+```
+cp config.json.example config.json
+```
+
+Then, edit the ```config.json``` file to specify port & database connection.
 
 ### Building the project
 

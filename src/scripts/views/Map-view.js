@@ -146,10 +146,14 @@ client.Views.MapView = Backbone.View.extend({
 
 	coordinateClicked: function(e) {		
 		var lonlat = this.map.getLonLatFromPixel(e.xy);
-		lonlat.transform(this.destProj, this.sourceProj);
+
+		var to = '+proj=aea +lat_1=55 +lat_2=65 +lat_0=50 +lon_0=-154 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs';
+		var from = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs';
+		var reprojected = proj4(to, from, [lonlat.lon, lonlat.lat]);
+
 		this.model.set({
-			'lon' : lonlat.lon,
-			'lat' : lonlat.lat
+			'lon' : reprojected[0],
+			'lat' : reprojected[1]
 		});
 	}
 });

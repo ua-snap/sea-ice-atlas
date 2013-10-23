@@ -7,12 +7,17 @@ var express = require('express')
   , contentRoutes = require('./routes/index')
   , dataRoutes = require('./routes/data')
   , http = require('http')
-  , path = require('path');
+  , path = require('path')
+  , conf = require('nconf');
 
 var app = express();
 
+// Establish config file connections, add it to the app
+conf.file({ file: './config.json' });
+app.set('config', conf);
+
 app.configure(function(){
-  app.set('port', process.env.PORT || 3000);
+  app.set('port', conf.get('port'));
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.favicon());
@@ -40,6 +45,7 @@ app.get('/explore', contentRoutes.explore);
 app.get('/glossary', contentRoutes.glossary);
 app.get('/about', contentRoutes.about);
 app.get('/download', contentRoutes.download);
+app.get('/credits', contentRoutes.credits);
 app.get('/data', dataRoutes.data);
 
 http.createServer(app).listen(app.get('port'), function(){

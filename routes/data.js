@@ -3,9 +3,9 @@ var pg = require('pg');
 // This is the route to the PostGIS JSON API.
 exports.data = function(request, response) {
 
-
-	var conString = "postgres://sea_ice_atlas_user:vNZSrh33@localhost:30303/sea_ice_atlas";
-	var client = new pg.Client(conString);
+	var client = new pg.Client(
+		request.app.get('config').get('database')
+	);
 
 	client.connect(function(err) {
 
