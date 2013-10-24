@@ -21,7 +21,8 @@ client.Views.ChartView = Backbone.View.extend({
                                 margin: 40
                         },
                         xAxis: {
-                                categories: this.dates
+                                categories: this.dates,
+                                tickInterval: 5
                         },
                         yAxis: {
                                 title: {
