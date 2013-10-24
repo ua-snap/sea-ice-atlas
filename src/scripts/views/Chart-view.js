@@ -14,12 +14,16 @@ client.Views.ChartView = Backbone.View.extend({
 
         drawCharts: function() {
 		
+        	function formatCoord(coord) {
+                	return Math.abs(Math.round(coord*100)/100).toFixed(2);
+        	}
+
                 $('#chart').highcharts({
                         chart: {
                                 type: 'column'
                         },
                         title: {
-                                text: 'Sea Ice Concentration for ' + moment(this.model.get('month'), 'MM').format('MMMM') + ' at ' + this.model.get('lat') + ' / ' + this.model.get('lon'),
+                                text: 'Sea Ice Concentration for ' + moment(this.model.get('month'), 'MM').format('MMMM') + ' at ' + formatCoord(this.model.get('lat')) + 'N ' + formatCoord(this.model.get('lon')) + 'W',
                                 x: -20,
                                 margin: 40
                         },
