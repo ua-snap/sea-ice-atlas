@@ -15,6 +15,9 @@ client.Views.ChartView = Backbone.View.extend({
         drawCharts: function() {
 		
                 $('#chart').highcharts({
+                        chart: {
+                                type: 'column'
+                        },
                         title: {
                                 text: 'Sea Ice Concentration for ' + moment(this.model.get('month'), 'MM').format('MMMM') + ' at ' + this.model.get('lat') + ' / ' + this.model.get('lon'),
                                 x: -20,
