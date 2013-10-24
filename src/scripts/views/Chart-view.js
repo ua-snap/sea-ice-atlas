@@ -38,13 +38,9 @@ client.Views.ChartView = Backbone.View.extend({
                                 valueSuffix: '%'
                         },
                         legend: {
-                                layout: 'vertical',
-                                align: 'right',
-                                verticalAlign: 'middle',
-                                borderWidth: 0
+                                enabled: false
                         },
                         series: [{
-                                name: 'Concentration',
                                 data: this.values
                         }]
                 });
