@@ -67,7 +67,7 @@ client.Views.ChartView = Backbone.View.extend({
 		) {
 			this.dates = [];
 			this.values = [];
-			var getUrl = _.template('/data?month=<%= month %>&lon=<%= lon %>&lat=<%= lat %>', this.model.toJSON());
+			var getUrl = _.template('/data/concentration?month=<%= month %>&lon=<%= lon %>&lat=<%= lat %>', this.model.toJSON());
 			$.getJSON(getUrl, _.bind(function(data) {
 		
 				_.each(data, function(e, i) {

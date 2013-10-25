@@ -46,7 +46,8 @@ app.get('/glossary', contentRoutes.glossary);
 app.get('/about', contentRoutes.about);
 app.get('/download', contentRoutes.download);
 app.get('/credits', contentRoutes.credits);
-app.get('/data', dataRoutes.data);
+app.get('/data/concentration', dataRoutes.data.concentration);
+app.get('/data/openwater', dataRoutes.data.openwater);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
