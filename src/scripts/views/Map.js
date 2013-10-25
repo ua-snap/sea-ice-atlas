@@ -68,7 +68,8 @@ client.Views.MapView = Backbone.View.extend({
 			units:'m',
 			wrapDateLine:false,
 			projection: this.destProj,
-			displayProjection: this.destProj
+			displayProjection: this.destProj,
+			controls: []
 		});
 
 		var ginaLayer = new OpenLayers.Layer.WMS(
@@ -89,7 +90,7 @@ client.Views.MapView = Backbone.View.extend({
 		});
 
 		this.map.addLayers([ginaLayer]);
-		this.map.setCenter( new OpenLayers.LonLat(118829.786, 1510484.872).transform(this.map.displayProjection, this.map.projection),3);
+		this.map.setCenter( new OpenLayers.LonLat(118829.786, 1510484.872).transform(this.map.displayProjection, this.map.projection),4);
 		this.hasRendered = true;
 		
 		var click = new OpenLayers.Control.Click();
@@ -106,6 +107,9 @@ client.Views.MapView = Backbone.View.extend({
 	},
 
 	loadLayer: function() {
+
+		var layerLoadedPromise = Q.defer();
+
 		var oldLayer = this.currentLayer;
 		var layerName = this.model.get('year') + '_' + this.model.get('month');
 
@@ -125,10 +129,9 @@ client.Views.MapView = Backbone.View.extend({
 		this.map.addLayers([this.layer[layerName]]);
 		this.layer[layerName].setOpacity(0);
 		this.layer[layerName].events.register('loadend', this, function(layer) {
-
+			
+			layerLoadedPromise.resolve();
 			this.layer[layerName].setOpacity(1);
-
-
 
 			if( 
 				false === _.isUndefined(oldLayer)
@@ -142,6 +145,7 @@ client.Views.MapView = Backbone.View.extend({
 		});
 		this.setCurrentLayer(this.model.get('year'), this.model.get('month'));
 		
+		return layerLoadedPromise.promise;
 	},
 
 	coordinateClicked: function(e) {		

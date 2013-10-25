@@ -21,15 +21,22 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 	promises: {},
 
 	events: {
+		'click' : 'focus',
 		'click #mapAnimationSequential' : 'setSequentialMode',
 		'click #mapAnimationMonthly' : 'setMonthlyMode',
 		'click #mapAnimationPlay' : 'play',
 		'click #mapAnimationPause' : 'pause'
 	},
 
+	focus: function(event) {
+		$.scrollTo( $('#mapGroupWrapper'), 500, {
+			offset: -80
+		});
+		window.appRouter.setMapMode('animation');
+	},
+
 	play: function() {
-console.log(this.map.layers);
-this.map.layers[1].destroy();
+		this.map.layers[1].destroy();
 		this.model.start();
 	},
 

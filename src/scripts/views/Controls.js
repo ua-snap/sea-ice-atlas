@@ -4,6 +4,7 @@
 client.Views.MapControlsView = Backbone.View.extend({
 
 	events: {
+		'click' : 'focus',
 		'change select' : 'updateDate'
 	},
 
@@ -12,6 +13,13 @@ client.Views.MapControlsView = Backbone.View.extend({
 	},
 	
 	template: JST['src/scripts/templates/MapControls.ejs'],
+
+	focus: function() {
+		$.scrollTo( $('#mapGroupWrapper'), 500, {
+			offset: -80
+		});
+		window.appRouter.setMapMode('map');
+	},
 
 	render: function() {
 
@@ -43,6 +51,7 @@ client.Views.MapControlsView = Backbone.View.extend({
 		var attr = {};
 		attr[event.target.name] = event.target.value;
 		this.model.set(attr);
+		event.stopImmediatePropagation();
 	}
 
 });

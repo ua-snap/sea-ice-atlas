@@ -3,18 +3,29 @@
 
 client.Views.ChartView = Backbone.View.extend({
 
+	hasRendered: false,
+
         initialize: function() {
                 _.bindAll(this, 'render', 'drawCharts', 'populateCharts');
 		this.model.on('change', this.render, this);
         },
 
 	render: function() {
+		if( false===this.hasRendered ) {
+			$('#concentrationGraphControls').on('click', function() {
+				$.scrollTo($('#chartWrapper'), 500, {
+					offset: -80
+				} );
+			});
+		}
+		$('#chartWrapper').show();
+		$('#concentrationGraphControls').show();
 		this.populateCharts();
 	},
 
         drawCharts: function() {
 		
-                $('#chart').highcharts({
+                $('#chart').show().highcharts({
                         title: {
                                 text: 'Sea Ice Concentration for ' + moment(this.model.get('month'), 'MM').format('MMMM') + ' at ' + this.model.get('lat') + ' / ' + this.model.get('lon'),
                                 x: -20,
@@ -48,6 +59,19 @@ client.Views.ChartView = Backbone.View.extend({
                                 data: this.values
                         }]
                 });
+
+		// Update text in sidebar
+		$('#concentrationGraphControls p').text(
+			_.template(
+				'<%= month %> Average Concentration',
+				{ month: moment(this.model.get('month'), 'MM').format('MMMM') }
+			)
+		);
+
+		$.scrollTo($('#chartWrapper'), 500, {
+			offset: -80
+		} );
+
         },
 
 	populateCharts: function() {

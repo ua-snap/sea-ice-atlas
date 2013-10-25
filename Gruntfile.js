@@ -16,7 +16,7 @@ module.exports = function (grunt) {
                     compress: true
                 },
                 files: {
-                		dest: 'public/css/style.css',
+                		dest: 'build/style.css',
                 		src: 'src/less/style.less'
                 }
         },
@@ -28,7 +28,6 @@ module.exports = function (grunt) {
 			src: 'default/*',
 			dest: 'public/theme',
 			expand: true
-  
         		}
         },
 
@@ -98,16 +97,27 @@ module.exports = function (grunt) {
         					'build/lib/momentjs/moment.js', // depends on Underscore.
         					'build/lib/q/q.js',
         					'build/lib/highcharts/highcharts.js',
-        					'build/lib/proj4/proj4.js'
+        					'build/lib/proj4/proj4.js',
+        					'build/lib/jquery.scrollTo/jquery.scrollTo.js',
+        					'build/lib/bootstrap-slider/bootstrap-slider.js',
+        					'build/lib/d3/d3.js'
         				]
         			}
         		},
-        		// This is what pull together all of our custom application files.
+        		// This is what pulls together all of our custom application files.
         		app: {
         			files: {
         				'public/js/client.js': [
         					'build/bower.js',
         					'build/app.js'
+        				]
+        			}
+        		},
+        		css: {
+        			files: {
+        				'public/css/style.css': [
+        					'build/style.css',
+        					'build/lib/bootstrap-slider/slider.css'
         				]
         			}
         		}
@@ -155,7 +165,7 @@ module.exports = function (grunt) {
             },
             less: {
             	files: ['src/less/*.less'],
-            	tasks: ['less'],
+            	tasks: ['less', 'concat'],
             	options: {
             		livereload: reloadPort
             	}

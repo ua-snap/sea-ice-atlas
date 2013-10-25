@@ -7,7 +7,7 @@ window.client = {
     Views: {},
     Routers: {},
     init: function () {
-        var appRouter = new client.Routers.ApplicationRouter();
+        window.appRouter = new client.Routers.ApplicationRouter();
 
         // Avoid pushState unless we configure the server to handle that properly.
         Backbone.history.start({pushState:false});
