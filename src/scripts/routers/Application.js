@@ -39,13 +39,13 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 				$.scrollTo( $('#mapGroupWrapper'), 500, {
 					offset: -80
 				});
-	
+
 				$('#mapControls').removeClass('active');
 				$('#mapAnimationControls').addClass('active');
-				$('#concentrationGraphControls').hide();
-				$('#thresholdGraphicControls').hide();
-				$('#chartWrapper').hide();
-				$('#openWaterGraphic').hide();
+				$('#concentrationGraphControls').hide('fast');
+				$('#thresholdGraphicControls').hide('fast');
+				$('#chartWrapper').hide('fast');
+				$('#openWaterGraphic').hide('fast');
 
 				break;
 		}

@@ -22,7 +22,7 @@ client.Views.ThresholdGraphicView = Backbone.View.extend({
 				} );
 			});
 	        }
-	        $('#thresholdGraphicControls').show();
+	        $('#thresholdGraphicControls').show('slow');
 
 	},
 

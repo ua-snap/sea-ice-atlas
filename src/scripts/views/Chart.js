@@ -18,8 +18,8 @@ client.Views.ChartView = Backbone.View.extend({
 				} );
 			});
 		}
-		$('#chartWrapper').show();
-		$('#concentrationGraphControls').show();
+		$('#chartWrapper').show('fast');
+		$('#concentrationGraphControls').show('slow');
 		this.populateCharts();
 	},
 
