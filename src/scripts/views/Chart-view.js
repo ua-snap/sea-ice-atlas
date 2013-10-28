@@ -15,7 +15,7 @@ client.Views.ChartView = Backbone.View.extend({
         drawCharts: function() {
 		
         	function formatCoord(coord) {
-                	return Math.abs(Math.round(coord*100)/100).toFixed(2);
+                	return Math.abs(Math.round(coord*10)/10).toFixed(1);
         	}
 
                 $('#chart').highcharts({
