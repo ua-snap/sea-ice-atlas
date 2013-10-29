@@ -40,6 +40,7 @@ client.Views.ChartView = Backbone.View.extend({
                                         width: 1,
                                         color: '#808080'
                                 }],
+                                min: 0,
                                 max: 100
                         },
                         tooltip: {
