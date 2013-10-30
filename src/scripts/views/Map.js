@@ -5,7 +5,6 @@ client.Views.MapView = Backbone.View.extend({
 	initialize: function() {
 
 		// When the layer changes, update the map
-		this.model.on('change:month change:year', this.loadLayer, this);
 		_.bindAll(this, 'setCurrentLayer','renderBaseLayer','loadLayer', 'render', 'coordinateClicked');
 
 		this.destProj = new OpenLayers.Projection('EPSG:3338');
@@ -107,7 +106,7 @@ client.Views.MapView = Backbone.View.extend({
 	},
 
 	loadLayer: function() {
-
+		console.log('Rendering: map layer')
 		var layerLoadedPromise = Q.defer();
 
 		var oldLayer = this.currentLayer;
@@ -148,7 +147,7 @@ client.Views.MapView = Backbone.View.extend({
 		return layerLoadedPromise.promise;
 	},
 
-	coordinateClicked: function(e) {		
+	coordinateClicked: _.debounce(function(e) {		
 		var lonlat = this.map.getLonLatFromPixel(e.xy);
 
 		var to = '+proj=aea +lat_1=55 +lat_2=65 +lat_0=50 +lon_0=-154 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs';
@@ -159,5 +158,5 @@ client.Views.MapView = Backbone.View.extend({
 			'lon' : reprojected[0],
 			'lat' : reprojected[1]
 		});
-	}
+	}, 500)
 });

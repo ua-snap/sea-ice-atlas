@@ -1,24 +1,16 @@
 /*global client, Backbone, _ */
 'use strict';
 
-// Utility needed to keep affixed content in check
-$(document).ready(function () {
-
-/*
-* Clamped-width. 
-* Usage:
-*  <div data-clampedwidth=".myParent">This long content will force clamped width</div>
-*
-* Author: LV
-*/
-
-
-});
+function showLocationBasedGraphics() {
+        $('#thresholdGraphicControls').show('slow');
+	$('#concentrationGraphControls').show('slow');
+}
 
 client.Routers.ApplicationRouter = Backbone.Router.extend({
 	routes: {
 		'' : 'index',
-		'date/:year/:month': 'renderByDate'
+		'date/:year/:month': 'renderByDate',
+		'location/:year/:month/:lat/:lon/:concentration': 'renderByLocation'
 	},
 
 	// Default view
@@ -28,27 +20,107 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 	},
 
 	// This code resets the GUi when switching between the animation and map modes.
-	mapMode: 'map',
+	// Start in an undefined state so that when restoring state from URL load, we can
+	// always set up predictably here.
+	mapMode: undefined,
 	setMapMode: function(mode) {
+
+		// Don't do any work if we're already in the desired mode.
+		if(mode == this.mapMode) { return; }
+		this.mapMode = mode;
+
+		console.log('old mode =['+this.mapMode+'] new mode=['+mode+']')
+		console.log('swapping map mode to '+mode)
+		
 		switch(mode) {
+
 			case 'map':
+
 				$('#mapControls').addClass('active');
 				$('#mapAnimationControls').removeClass('active');
+	
+				// Binding handlers to respond to changes on the model.				
+				this.mapModel.on('change:lat change:lon change:month',
+					_.debounce(
+						_.bind(this.chartView.render, this.chartView)
+					, 500, true)
+				, this.chartView);
+
+				this.mapModel.on('change:lat change:lon change:concentration',
+					_.debounce(
+						_.bind(this.thresholdGraphicView.render, this.thresholdGraphicView)
+					, 500, true)
+				, this.thresholdGraphicView);
+
+				this.mapModel.on('change:month change:year',
+					_.debounce(
+						_.bind(this.mapView.loadLayer, this.mapView)
+					, 500, true)
+				, this.mapView);
+				
+
+				// Unbind animation event handlers
+				//this.mapAnimatorModel.off('change:layerIndex', animationMapWatchLayerIndex);
+
 				break;
+		
 			case 'animation':
+				// Scroll to map
 				$.scrollTo( $('#mapGroupWrapper'), 500, {
 					offset: -80
 				});
 
+				// Unbind observers related to chart/graph visualizations
+				this.mapModel.off('change:month change:year change:lat change:lon change:concentration');
+
+				// Remove lat/lon information
+				this.mapModel.unset('lat');
+				this.mapModel.unset('lon');
+
+				// Swap around screen display for this mode
 				$('#mapControls').removeClass('active');
 				$('#mapAnimationControls').addClass('active');
 				$('#concentrationGraphControls').hide('fast');
 				$('#thresholdGraphicControls').hide('fast');
 				$('#chartWrapper').hide('fast');
-				$('#openWaterGraphic').hide('fast');
+				$('#graphicWrapper').hide('fast');
+
+				// Bind relevant observers
+				this.mapAnimatorModel.on('change:layerIndex', function animationMapWatchLayerIndex() {
+					this.mapModel.set({
+						month: this.mapAnimatorModel.get('month'),
+						year: this.mapAnimatorModel.get('year')
+					});
+				}, this);
+
+				// When the user clicks on a Map control, swap the map mode
+				$('#mapControls').on('click', _.bind(function setModeToMap() {
+					
+					// Stop animation
+					this.mapAnimatorModel.stop();
+
+					// Reset to map mode
+					this.setMapMode('map');
+
+				}, this));
 
 				break;
 		}
+	},
+
+	// User arrived via bookmark
+	renderByLocation: function(year, month, lat, lon, concentration) {
+		this.checkIfRenderLayout();
+		this.mapModel.set({
+			year: year,
+			month: month,
+			lat: lat,
+			lon: lon,
+			concentration: concentration
+		}, {silent:true}); // silent because otherwise it triggers a change event, unwanted here.
+		this.renderMap();
+		this.setMapMode('map'); // force state reconstruction
+		this.mapModel.trigger('change:lat'); // Force render to reveal charts
 	},
 
 	// User arrived via bookmark
@@ -59,6 +131,8 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 			month: month
 		}, {silent:true}); // silent because otherwise it triggers a change event, unwanted here.
 		this.renderMap();
+		this.setMapMode('map'); // force state reconstruction
+		this.mapModel.trigger('change:month'); // force render to reveal chart
 	},
 
 	checkIfRenderLayout: function() {
@@ -80,13 +154,6 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 			this.mapAnimatorModel = new client.Models.MapAnimatorModel();
 			this.mapAnimatorModel.mapModel = this.mapModel;
 
-			this.mapAnimatorModel.on('change:layerIndex', function() {
-				this.mapModel.set({
-					month: this.mapAnimatorModel.get('month'),
-					year: this.mapAnimatorModel.get('year')
-				});
-			}, this);
-			
 			this.mapAnimatorView = new client.Views.MapAnimatorView({
 				el: $('#mapAnimationControls'),
 				model: this.mapAnimatorModel,
@@ -103,6 +170,8 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 			$('#mapAnimationControls').show();
 			$('#loadingMap').hide();
 
+			// Complete event binding + rebuilding GUI.
+			this.setMapMode('map');
 
 		}, this));
 
@@ -121,7 +190,7 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 		this.thresholdGraphicView = new client.Views.ThresholdGraphicView({model: this.mapModel});
 
 		// When the user changes the controls, update the name of the layer being referenced
-		this.mapModel.on('change', this.updateDate, this);
+		this.mapModel.on('change', this.updateLocation, this);
 		
 		// Render initial layout
 		this.appView.render();
@@ -129,9 +198,13 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 	},
 
 	// Updates URL for bookmarking
-	updateDate: function() {
-		this.navigate('date/' + this.mapModel.get('year') + '/' + this.mapModel.get('month'));
-	}
+	updateLocation: function() {
+		if( this.mapModel.get('lat') && this.mapModel.get('lon')) {
+			this.navigate(_.template('location/<%= year %>/<%= month %>/<%= lat %>/<%= lon %>/<%= concentration %>', this.mapModel.toJSON()));
+		} else {
+			this.navigate('date/' + this.mapModel.get('year') + '/' + this.mapModel.get('month'));	
+		}
+	},
 });
 
 function clampSidebarWidth() {

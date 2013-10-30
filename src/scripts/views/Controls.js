@@ -4,22 +4,12 @@
 client.Views.MapControlsView = Backbone.View.extend({
 
 	events: {
-		'click' : 'focus',
 		'change select' : 'updateDate'
 	},
-
 	initialize: function() {
 		this.model.on('change', this.updateControls, this);
 	},
-	
 	template: JST['src/scripts/templates/MapControls.ejs'],
-
-	focus: function() {
-		$.scrollTo( $('#mapGroupWrapper'), 500, {
-			offset: -80
-		});
-		window.appRouter.setMapMode('map');
-	},
 
 	render: function() {
 
@@ -48,10 +38,10 @@ client.Views.MapControlsView = Backbone.View.extend({
 	// If we need to do a lot of these, we should replace this with some proper model binding module
 	// such as http://nytimes.github.io/backbone.stickit/
 	updateDate: function(event) {
+		event.stopImmediatePropagation();
 		var attr = {};
 		attr[event.target.name] = event.target.value;
 		this.model.set(attr);
-		event.stopImmediatePropagation();
 	}
 
 });
