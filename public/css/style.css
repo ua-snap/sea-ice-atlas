@@ -879,6 +879,11 @@ h3{margin-top:25px}
 #applicationWrapper .affix{position:fixed;top:80px}
 #applicationWrapper .affix-top{position:fixed;top:60px}
 #applicationWrapper #concentrationGraphControls:hover,#applicationWrapper #thresholdGraphicControls:hover{cursor:pointer}
+#wrapper{width:100%;height:100%;margin:0px}
+.chart{font-family:Arial,sans-serif;font-size:12px}
+.axis path,.axis line{fill:none;stroke:#000;shape-rendering:crispEdges}
+.bar{fill:#33b5e5}
+.bar-running{fill:#669900}
 
 /*!
  * Slider for Bootstrap

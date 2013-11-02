@@ -76,7 +76,7 @@ module.exports = function (grunt) {
 	        targetDir: './build/lib',
 	        layout: 'byType',
 	        install: true,
-	        verbose: false,
+	        verbose: true,
 	        cleanTargetDir: false,
 	        cleanBowerDir: false
 	      }
@@ -100,7 +100,8 @@ module.exports = function (grunt) {
         					'build/lib/proj4/proj4.js',
         					'build/lib/jquery.scrollTo/jquery.scrollTo.js',
         					'build/lib/bootstrap-slider/bootstrap-slider.js',
-        					'build/lib/d3/d3.js'
+        					'build/lib/d3/d3.js',
+                            'src/vendor/gantt-chart-d3.js'
         				]
         			}
         		},
