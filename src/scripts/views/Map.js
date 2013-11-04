@@ -28,37 +28,6 @@ client.Views.MapView = Backbone.View.extend({
 	renderBaseLayer: function() {
 		this.baseLayerLoadPromise = Q.defer();
 
-                OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
-                        model: this.model,
-			coordinateClicked: this.coordinateClicked,
-
-                        defaultHandlerOptions: {
-                                'single': true,
-                                'double': false,
-                                'pixelTolerance': 0,
-                                'stopSingle': false,
-                                'stopDouble': false
-                        },
-
-                        initialize: function(options) {
-
-                                this.handlerOptions = OpenLayers.Util.extend(
-                                        {}, this.defaultHandlerOptions
-                                );
-
-                                OpenLayers.Control.prototype.initialize.apply(
-                                        this, arguments
-                                );
-
-                                this.handler = new OpenLayers.Handler.Click(
-                                        this, {
-                                                'click': this.coordinateClicked
-                                        }, this.handlerOptions
-                                );
-
-                        },
-                });
-
 		var extent = new OpenLayers.Bounds(-9036842.762,-9036842.762, 9036842.762, 9036842.762);
 
 		this.map = new OpenLayers.Map('map',{
@@ -90,11 +59,8 @@ client.Views.MapView = Backbone.View.extend({
 
 		this.map.addLayers([ginaLayer]);
 		this.map.setCenter( new OpenLayers.LonLat(118829.786, 1510484.872).transform(this.map.displayProjection, this.map.projection),4);
+		this.createClickHandler();
 		this.hasRendered = true;
-		
-		var click = new OpenLayers.Control.Click();
-                this.map.addControl(click);
-                click.activate();
 
 		return this.baseLayerLoadPromise.promise;
 	},
@@ -147,6 +113,47 @@ client.Views.MapView = Backbone.View.extend({
 		return layerLoadedPromise.promise;
 	},
 
+	createClickHandler: function() {
+		OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
+			coordinateClicked: this.coordinateClicked,
+
+			defaultHandlerOptions: {
+				'single': true,
+				'double': false,
+				'pixelTolerance': 0,
+				'stopSingle': false,
+				'stopDouble': false
+			},
+
+			initialize: function(options) {
+				this.handlerOptions = OpenLayers.Util.extend(
+					{}, this.defaultHandlerOptions
+				);
+
+				OpenLayers.Control.prototype.initialize.apply(
+					this, arguments
+				);
+
+				this.handler = new OpenLayers.Handler.Click(
+					this, {
+						'click': this.coordinateClicked
+					}, this.handlerOptions
+				);
+			},
+		});
+		
+		this.click = new OpenLayers.Control.Click();
+		this.map.addControl(this.click);
+	},
+
+	activateClickHandler: function() {
+        this.click.activate();
+	},
+	
+	deactivateClickHandler: function() {
+        this.click.deactivate();
+	},
+	
 	coordinateClicked: _.debounce(function(e) {		
 		var lonlat = this.map.getLonLatFromPixel(e.xy);
 
