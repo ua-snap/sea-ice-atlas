@@ -92,6 +92,8 @@ client.Views.MapView = Backbone.View.extend({
 		this.map.setCenter( new OpenLayers.LonLat(118829.786, 1510484.872).transform(this.map.displayProjection, this.map.projection),4);
 		this.hasRendered = true;
 		
+		this.markers = new OpenLayers.Layer.Markers("Markers");
+
 		var click = new OpenLayers.Control.Click();
                 this.map.addControl(click);
                 click.activate();
@@ -125,6 +127,7 @@ client.Views.MapView = Backbone.View.extend({
 				visibility: true
 			}
 		);
+
 		this.map.addLayers([this.layer[layerName]]);
 		this.layer[layerName].setOpacity(0);
 		this.layer[layerName].events.register('loadend', this, function(layer) {
@@ -153,6 +156,13 @@ client.Views.MapView = Backbone.View.extend({
 		var to = '+proj=aea +lat_1=55 +lat_2=65 +lat_0=50 +lon_0=-154 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs';
 		var from = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs';
 		var reprojected = proj4(to, from, [lonlat.lon, lonlat.lat]);
+
+		this.markers.clearMarkers();
+		this.map.addLayer(this.markers);
+		var size = new OpenLayers.Size(21,25);
+		var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+		var icon = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker.png', new OpenLayers.Size(21, 25), offset);
+		this.markers.addMarker(new OpenLayers.Marker(lonlat, icon));
 
 		this.model.set({
 			'lon' : reprojected[0],
