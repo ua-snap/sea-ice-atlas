@@ -76,11 +76,12 @@ exports.data.openwater = function(request, response) {
 		// Get the month GET parameter.
 		var lon = parseFloat(request.query.lon);
 		var lat = parseFloat(request.query.lat);
+		var concentration = parseInt(request.query.concentration,10)
 
 		// Pull presence of sea ice concentration over a certain threshold from 
 		// PostGIS database as boolean values, based on second week of every
 		// month of every year.
-		var query = client.query("SELECT date, (CASE WHEN concentration > 30 THEN true ELSE false END) AS ice FROM (SELECT date, nth_value(concentration, 2) OVER (PARTITION BY date) AS concentration FROM (SELECT to_char(date, 'YYYY-MM') AS date, COALESCE(ST_Value(rast, 1, ST_SetSRID(ST_Point(" + lon + ", " + lat + "), 3338)), 0) AS concentration FROM rasters) AS allvalues ORDER BY date) AS partitioned GROUP BY date, concentration ORDER BY date;", function(err, result) {
+		var query = client.query("SELECT date, (CASE WHEN concentration >= "+concentration+" THEN true ELSE false END) AS ice FROM (SELECT date, nth_value(concentration, 2) OVER (PARTITION BY date) AS concentration FROM (SELECT to_char(date, 'YYYY-MM') AS date, COALESCE(ST_Value(rast, 1, ST_SetSRID(ST_Point(" + lon + ", " + lat + "), 3338)), 0) AS concentration FROM rasters) AS allvalues ORDER BY date) AS partitioned GROUP BY date, concentration ORDER BY date;", function(err, result) {
 
 			if(err) {
 				response.writeHead(500, {"Content-Type": "text/plain"});
