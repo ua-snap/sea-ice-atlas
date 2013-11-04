@@ -17,7 +17,6 @@ client.Views.ChartView = Backbone.View.extend({
 			&& false === _.isUndefined(this.model.get('lon'))
 			&& false === _.isNaN(this.model.get('lon'))
 		) {
-			console.log('Chart: rendering')
 		
 			if( false===this.hasRendered ) {
 				$('#concentrationGraphControls').on('click', function() {
@@ -39,6 +38,10 @@ client.Views.ChartView = Backbone.View.extend({
 	                	return Math.abs(Math.round(coord*10)/10).toFixed(1);
 	        	};
 
+	        	Highcharts.setOptions({
+		    colors: ['#B2E1FE']
+		});
+
                 $('#chart').show().highcharts({
                         chart: {
                                 type: 'column'
@@ -59,7 +62,7 @@ client.Views.ChartView = Backbone.View.extend({
                                 plotLines: [{
                                         value: 0,
                                         width: 1,
-                                        color: '#808080'
+                                        color: '#B2E1FE'
                                 }],
                                 min: 0,
                                 max: 100

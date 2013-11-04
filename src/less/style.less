@@ -175,27 +175,23 @@ h3 {
 
 }
 
-#wrapper {
-	width: 100%;
-	height: 100%;
-	margin: 0px;
-}
-
 .chart {
-	font-family: Arial, sans-serif;
-	font-size: 12px;
+	
+		path, line {
+			fill: none;
+			stroke: #333333;
+			color: #333333;
+			shape-rendering: crispEdges;
+		}
+	
+
+	.bar {
+		fill: #B2E1FE;
+	}
+
+	.bar-running {
+		fill: #B2E1FE;
+	}	
 }
 
-.axis path,.axis line {
-	fill: none;
-	stroke: #000;
-	shape-rendering: crispEdges;
-}
 
-.bar {
-	fill: #33b5e5;
-}
-
-.bar-running {
-	fill: #669900;
-}
