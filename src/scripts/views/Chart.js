@@ -39,7 +39,7 @@ client.Views.ChartView = Backbone.View.extend({
 	        	};
 
 	        	Highcharts.setOptions({
-		    colors: ['#B2E1FE']
+		    colors: ['#9cc5de']
 		});
 
                 $('#chart').show().highcharts({
