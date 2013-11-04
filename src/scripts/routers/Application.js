@@ -38,7 +38,9 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 
 				$('#mapControls').addClass('active');
 				$('#mapAnimationControls').removeClass('active');
-	
+
+				this.mapView.activateClickHandler();
+
 				// Binding handlers to respond to changes on the model.				
 				this.mapModel.on('change:lat change:lon change:month',
 					_.debounce(
@@ -58,6 +60,7 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 					, 500, true)
 				, this.mapView);
 				
+
 
 				// Unbind animation event handlers
 				//this.mapAnimatorModel.off('change:layerIndex', animationMapWatchLayerIndex);
@@ -84,6 +87,8 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 				$('#thresholdGraphicControls').hide('fast');
 				$('#chartWrapper').hide('fast');
 				$('#graphicWrapper').hide('fast');
+
+				this.mapView.deactivateClickHandler();
 
 				// Bind relevant observers
 				this.mapAnimatorModel.on('change:layerIndex', function animationMapWatchLayerIndex() {
