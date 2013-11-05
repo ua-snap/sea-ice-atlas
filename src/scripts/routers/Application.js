@@ -28,9 +28,6 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 		// Don't do any work if we're already in the desired mode.
 		if(mode == this.mapMode) { return; }
 		this.mapMode = mode;
-
-		console.log('old mode =['+this.mapMode+'] new mode=['+mode+']')
-		console.log('swapping map mode to '+mode)
 		
 		switch(mode) {
 
@@ -60,14 +57,13 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 					, 500, true)
 				, this.mapView);
 				
-
-
 				// Unbind animation event handlers
 				//this.mapAnimatorModel.off('change:layerIndex', animationMapWatchLayerIndex);
 
 				break;
 		
 			case 'animation':
+			
 				// Scroll to map
 				$.scrollTo( $('#mapGroupWrapper'), 500, {
 					offset: -80

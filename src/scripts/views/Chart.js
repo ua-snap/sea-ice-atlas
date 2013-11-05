@@ -18,15 +18,19 @@ client.Views.ChartView = Backbone.View.extend({
 			&& false === _.isNaN(this.model.get('lon'))
 		) {
 		
-			if( false===this.hasRendered ) {
+			$('#chartWrapper').show('fast');
+			$('#concentrationGraphControls').show('slow');
+
+			if( false === this.hasRendered ) {
+				console.log('binding chart scroll')
 				$('#concentrationGraphControls').on('click', function() {
 					$.scrollTo($('#chartWrapper'), 500, {
 						offset: -80
 					} );
 				});
+				this.hasRendered = true;
 			}
-			$('#chartWrapper').show('fast');
-			$('#concentrationGraphControls').show('slow');
+
 			this.populateCharts();
 
 		}

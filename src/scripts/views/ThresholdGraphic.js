@@ -17,11 +17,11 @@ client.Views.ThresholdGraphicView = Backbone.View.extend({
 			&& false === _.isUndefined(this.model.get('lon'))
 			&& false === _.isNaN(this.model.get('lon'))
 			) {
-			console.log('ThresholdChart: Rendering')
 
 		$('#graphicWrapper').show();
 		$('#thresholdGraphicControls').show();
 		if( false === this.hasRendered ) {
+		
 			$("#thresholdSlider").slider();
 			$("#thresholdSlider").on('slide', function(slideEvt) {
 				$("#thresholdSliderLabel").text(slideEvt.value);
@@ -35,6 +35,7 @@ client.Views.ThresholdGraphicView = Backbone.View.extend({
 				} );
 			});
 			this.hasRendered==true
+		
 		}
 		this.loadData()
 	}
@@ -68,7 +69,6 @@ drawGraphic: function() {
 			var start = moment('01-01-2013','MM-DD-YYYY').toDate()
 			var end = moment('01-01-2013','MM-DD-YYYY').toDate()
 			tasks.push({startDate:start, endDate:end, taskName:i, status:'RUNNING'})
-			console.log('missing date: '+i);
 		}
 
 		//otherwise, loop through existing events
