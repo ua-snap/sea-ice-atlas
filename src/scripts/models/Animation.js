@@ -67,13 +67,13 @@ function parseToDate(idx) {
         buffer: function() {
 
             // Array of promises which, when all resolved, mean the buffer is populated with valid layers.
-            this.buffer = [];
+            this.layerBuffer = [];
             var bufferIndex = this.layerIndex;
 
             // Trigger layer loading for the first 10 layers, obtain promises + act when they're all resolved;
             // Throttle this to fire one request every 100 milliseconds to avoid flooding the server.
             var bufferInterval = setInterval(_.bind(function() {
-                this.buffer.push(this.view.loadLayer(--bufferIndex));
+                this.layerBuffer.push(this.view.loadLayer(--bufferIndex));
                 if (12 <= (this.layerIndex - bufferIndex)) {
                     clearInterval(bufferInterval);
                 }
@@ -85,7 +85,6 @@ function parseToDate(idx) {
         start: function() {
 
             this.enumerateLayers();
-
             this.buffer();
             this.view.showBuffering();
 
@@ -94,7 +93,7 @@ function parseToDate(idx) {
             // delaying the first by 100ms (that delay means this code needs to be delayed as well)
             setTimeout(_.bind(function() {
                 // Wait until the buffer is full, then start cycling.
-                Q.allSettled(this.buffer).then(_.bind(function startUpdater(results) {
+                Q.allSettled(this.layerBuffer).then(_.bind(function startUpdater(results) {
                     this.view.hideBuffering();
                     this.startPlaying();
                 }, this));

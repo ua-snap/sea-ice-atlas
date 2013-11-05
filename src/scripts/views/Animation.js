@@ -35,8 +35,18 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 		window.appRouter.setMapMode('animation');
 	},
 
+	resetLayers: function() {
+		console.log(this.map.layers);
+		for( var i = 1; i < this.map.layers.length; i++ ) {
+			// If the layer is defined and can be purged, destroy it.
+			if(this.map.layers[i]) {
+				this.map.layers[i].destroy();
+			}
+		}
+	},
+
 	play: function() {
-		this.map.layers[1].destroy();
+		this.resetLayers();
 		this.model.start();
 	},
 
@@ -69,7 +79,6 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 
 	loadLayer: function(layerIndex) {
 
-		console.log('loading layer ' + this.model.layers[layerIndex]);
 		this.promises[this.model.layers[layerIndex]] = Q.defer();
 
 		this.layers[this.model.layers[layerIndex]] = new OpenLayers.Layer.WMS(
@@ -91,11 +100,6 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 
 		// When the "loadend" event is triggered on the layer, resolve its initial loading promise.
 		this.layers[this.model.layers[layerIndex]].events.register('loadend', this, function(layer) {
-			var distance = this.model.layerIndex - layer.object.layerIndex;
-			
-			console.log('Finished loading layer: ' + this.model.layers[layer.object.layerIndex]);
-			console.log('Distance to empty buffer: ' + distance);
-
 			this.promises[this.model.layers[layer.object.layerIndex]].resolve(layer);
 		});
 		
