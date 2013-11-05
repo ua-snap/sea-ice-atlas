@@ -8,7 +8,8 @@ client.Models = client.Models || {};
     client.Models.MapModel = Backbone.Model.extend({
         defaults: {
             month: 12,
-            year: 2012
+            year: 2012,
+            concentration: 30
         }
     });
 

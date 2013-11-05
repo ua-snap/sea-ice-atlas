@@ -1,6 +1,7 @@
 // Pull in Bootstrap and override with our customizations as required
 
 @import "../../bower_components/bootstrap/less/bootstrap.less";
+@import (less) "../../bower_components/bootstrap-slider/slider.css";
 @import "./mixins.less";
 @import "./variables.less";
 
@@ -143,6 +144,7 @@ h3 {
 
 // Styles in the main app
 #applicationWrapper {
+
 	#mapWrapper {
 		position: relative;
 	}
@@ -153,4 +155,42 @@ h3 {
 		left: 5px;
 		z-index: 1000;
 	}
+
+	// Used in sidebar
+	.affix {
+		position: fixed;
+		top: 80px;
+	}
+
+	.affix-top {
+		position: fixed;
+		top: 60px;
+	}
+
+	#concentrationGraphControls, #thresholdGraphicControls {
+		&:hover {
+			cursor: pointer;
+		}
+	}
+
 }
+
+.chart {
+	
+	path, line {
+		fill: none;
+		stroke: #333333;
+		color: #333333;
+		shape-rendering: crispEdges;
+	}
+
+	.bar {
+		fill: #9cc5de;
+	}
+
+	.bar-running {
+		fill: #9cc5de;
+	}	
+}
+
+
