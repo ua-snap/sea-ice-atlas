@@ -1,9 +1,9 @@
 // Pull in Bootstrap and override with our customizations as required
 
 @import "../../bower_components/bootstrap/less/bootstrap.less";
-@import (less) "../../bower_components/bootstrap-slider/slider.css";
 @import "./mixins.less";
 @import "./variables.less";
+@import (less) "../vendor/slider/css/slider.css";
 
 body {
 	padding-top: 50px;
@@ -173,6 +173,10 @@ h3 {
 		}
 	}
 
+}
+
+#thresholdTarget {
+	margin-top: 1em;
 }
 
 .chart {

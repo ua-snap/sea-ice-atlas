@@ -22,7 +22,9 @@ client.Views.ThresholdGraphicView = Backbone.View.extend({
 		$('#thresholdGraphicControls').show();
 		if( false === this.hasRendered ) {
 		
-			$("#thresholdSlider").slider();
+			$("#thresholdSlider").slider({
+				handle: 'round'
+			});
 			$("#thresholdSlider").on('slide', function(slideEvt) {
 				$("#thresholdSliderLabel").text(slideEvt.value);
 			});

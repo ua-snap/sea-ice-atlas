@@ -24,7 +24,6 @@
     "highcharts": "~3.0.5",
     "proj4": "~1.4.1",
     "jquery.scrollTo": "~1.4.6",
-    "bootstrap-slider": "*",
     "d3": "~3.3.8"
   }
 }
