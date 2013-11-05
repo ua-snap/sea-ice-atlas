@@ -154,11 +154,11 @@ client.Views.MapView = Backbone.View.extend({
 	},
 
 	activateClickHandler: function() {
-        this.click.activate();
+        	this.map.controls[1].activate();
 	},
 	
 	deactivateClickHandler: function() {
-        this.click.deactivate();
+        	this.map.controls[1].deactivate();
 	},
 	
 	coordinateClicked: _.debounce(function(e) {		
