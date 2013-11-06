@@ -12,3 +12,4 @@ exports.glossary = function(req, res) { res.render('glossary', { title: 'Sea Ice
 exports.download = function(req, res) { res.render('download', { title: 'Sea Ice Atlas: Download', active:'download' }); }
 exports.about = function(req, res) { res.render('about', { title: 'Sea Ice Atlas: About', active:'about' }); }
 exports.credits = function(req, res) { res.render('credits', { title: 'Sea Ice Atlas: Credits' }); }
+exports.disclaimer = function(req, res) { res.render('disclaimer', { title: 'Sea Ice Atlas: Disclaimer' }); }

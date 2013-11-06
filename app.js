@@ -46,6 +46,7 @@ app.get('/glossary', contentRoutes.glossary);
 app.get('/about', contentRoutes.about);
 app.get('/download', contentRoutes.download);
 app.get('/credits', contentRoutes.credits);
+app.get('/disclaimer', contentRoutes.disclaimer);
 app.get('/data/concentration', dataRoutes.data.concentration);
 app.get('/data/openwater', dataRoutes.data.openwater);
 
