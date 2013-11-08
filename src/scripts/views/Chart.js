@@ -51,7 +51,7 @@ client.Views.ChartView = Backbone.View.extend({
                                 type: 'column'
                         },
                         title: {
-                                text: 'Sea Ice Concentration for ' + moment(this.model.get('month'), 'MM').format('MMMM') + ' at ' + formatCoord(this.model.get('lat')) + 'N ' + formatCoord(this.model.get('lon')) + 'W',
+                                text: 'Sea Ice Concentration for ' + moment(this.model.get('month'), 'MM').format('MMMM') + ' at ' + formatCoord(this.model.get('lat')) + '°N ' + formatCoord(this.model.get('lon')) + '°W',
                                 x: -20,
                                 margin: 20
                         },
