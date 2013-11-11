@@ -38,11 +38,11 @@ client.Views.ChartView = Backbone.View.extend({
 
         drawCharts: function() {
 
-	        	function formatCoord(coord) {
-	                	return Math.abs(Math.round(coord*10)/10).toFixed(1);
-	        	};
+	       	function formatCoord(coord) {
+	               	return Math.abs((Math.round(coord * 4) / 4)).toFixed(2);
+	       	};
 
-	        	Highcharts.setOptions({
+	       	Highcharts.setOptions({
 		    colors: ['#9cc5de']
 		});
 
