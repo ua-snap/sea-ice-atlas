@@ -52,11 +52,11 @@ block content
 											p
 													| 10 tenths &ldquo;compact&rdquo;
 								
-						// Controls
-						a.left.carousel-control(data-slide='prev', href='#ice-carousel')
-							span.glyphicon.glyphicon-chevron-left
-						a.right.carousel-control(data-slide='next', href='#ice-carousel')
-							span.glyphicon.glyphicon-chevron-right
+					// Controls
+					a.left.carousel-control(data-slide='prev', href='#ice-carousel')
+						span.glyphicon.glyphicon-chevron-left
+					a.right.carousel-control(data-slide='next', href='#ice-carousel')
+						span.glyphicon.glyphicon-chevron-right
 
 			.panel.panel-info.pull-right
 				.panel-heading
@@ -67,34 +67,35 @@ block content
 					strong The Historical Sea Ice Atlas calculates and visualizes these aspects of sea ice measurements
 					p
 					strong Sea ice area:&nbsp;&nbsp;
-					| Ice extent minus the open water area within the ice edge. To estimate ice area, 
-					| scientists calculate the percentage of sea ice in each pixel, multiply by the 
-					| pixel area, and total the amounts. To estimate ice extent, scientists set a 
+					| Ice extent minus the open water area within the ice edge. To estimate ice extent, scientists set a 
 					| threshold percentage, and count every pixel meeting or exceeding that threshold 
-					| as "ice-covered." SNAP uses a threshold percentage of 15% to 100%, depending on user's context.
+					| as "ice-covered." To estimate ice area, 
+					| scientists calculate the percentage of sea ice in each pixel, multiply by the 
+					| pixel area, and total the amounts. The Historical Sea Ice Atlas uses a threshold percentage of 15%&ndash;100%, 
+					| depending on user's context.
 
 					p
 					strong Sea ice concentration:&nbsp;&nbsp;
-					| Amount of sea ice covering an area, typically reported as the ratio of sea ice 
+					| Amount of sea ice covering an area, typically the ratio of sea ice 
 					| to water, designated as a fraction (8/10) or percentage (80%) of sea ice coverage. 
-					| Less than 30% sea ice concentration is considered navigable by ship, while 
-					| greater than 90% sea ice concentration is considered solid ice. Sea ice 
-					| concentration is often estimated from aerial (flight) surveys or satellite imagery.
+					| <30% sea ice concentration is considered navigable by ship, while 
+					| >90% sea ice concentration is considered solid ice. 
+					| Often estimated from flight surveys or satellite imagery.
 
 					p
 					strong Sea ice extent:&nbsp;&nbsp;
-					| The total area covered by some amount of sea ice at a given time, including 
-					| open water between ice floes. For the Historical Sea Ice Atlas, ice is considered 
-					| present if sea ice concentration is above 15%. Thus, sea ice extent is the area of 
-					| sea that is covered by at least 15% ice for a specific date. The Historical Sea Ice 
+					| Total area covered by some amount of sea ice at a given time, including 
+					| open water between  floes. The Atlas considers sea ice &ldquot;present&rdquo; 
+					| if sea ice concentration is >15%. Thus, sea ice extent is the area of 
+					| sea covered by at least 15% ice for a specific date. The  
 					| Atlas reports monthly averages, so the sea ice extent for a given month represents 
 					| the measured or interpolated sea ice extent closest to the middle of that month.
 
 					p
 					strong Sea ice thickness:&nbsp;&nbsp;
-					| Average thickness from the ice surface to the underside of the ice of a specified 
-					| sea ice extent. Thickness can be measured directly by taking an ice core or drilling 
-					| through the ice, but satellites allow for faster data collection of ice thickness.
+					| Average thickness from sea ice surface-to-underside of a specified 
+					| sea ice extent. Can be measured directly by coring or drilling, 
+					| but satellites allow for faster collection of thickness data.
  
 			p
 			strong Anchor ice:&nbsp;&nbsp;
