@@ -54,7 +54,7 @@ setwd('.')
 # create separate GeoTIFFs for sea ice concentration and sea ice source data
 for(varName in varNames) {
 	outPrefix = str_c(varName, '_sic_mean_pct_weekly_ak')
-	#seaIceConvert(ncFilePath, outDirPath, outFormat, beginDate, endDate, outPrefix, varName)
+	seaIceConvert(ncFilePath, outDirPath, outFormat, beginDate, endDate, outPrefix, varName)
 }
 
 # connect to PostgreSQL to populate PostGIS raster table
