@@ -61,7 +61,7 @@ for(varName in varNames) {
 drv <- dbDriver('PostgreSQL')
 con <- dbConnect(drv, host='localhost', port='30303', user='sea_ice_atlas_user', password='', dbname='sea_ice_atlas')
 
-createStatement = 'CREATE TABLE "rasters" ("date" date PRIMARY KEY, "rid" serial, "rast" raster)'
+createStatement = 'CREATE TABLE "rasters_new" ("date" date PRIMARY KEY, "rid" serial, "rast" raster)'
 dbGetQuery(con, createStatement)
 
 # get a list of all the concentration GeoTIFFs that were created by the writeRaster() function
@@ -93,7 +93,7 @@ for(outputTiff in outputTiffs) {
 	pattern = 'VALUES \\(\'(.*?)\''
 	queryParts <- str_match(sqlQuery, pattern)
 	rasterData = queryParts[2]
-	insertStatement = paste('INSERT INTO "rasters" ("date", "rast") VALUES (\'', formattedDate, '\',\'', rasterData, '\'::raster)', sep='')
+	insertStatement = paste('INSERT INTO "rasters_new" ("date", "rast") VALUES (\'', formattedDate, '\',\'', rasterData, '\'::raster)', sep='')
 	dbGetQuery(con, insertStatement)
 }
 
@@ -104,12 +104,15 @@ outputTiffs <-list.files(path=outDirPath, pattern='^seaice_source.*\\.tif$')
 for(outputTiff in outputTiffs) {
 }
 
-# the raster2pgsql command did this, so we're adding it back in
-indexStatement = 'CREATE INDEX "rasters_rast_gist" ON "rasters" USING gist (st_convexhull("rast"))'
+# the raster2pgsql command did this, so we're adding it back in;
+# index names must be unique per-database, not per-table, so we either need to come up
+# with a new index name each time, or remove the index from the previous version of the
+# rasters table
+indexStatement = 'CREATE INDEX "rasters_new_rast_gist" ON "rasters_new" USING gist (st_convexhull("rast"))'
 dbGetQuery(con, indexStatement)
 
 # the raster2pgsql command did this, so we're adding it back in
-analyzeStatement = 'ANALYZE "rasters"'
+analyzeStatement = 'ANALYZE "rasters_new"'
 dbGetQuery(con, analyzeStatement)
 
 dbDisconnect(con)
