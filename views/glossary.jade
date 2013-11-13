@@ -5,6 +5,60 @@ block content
 		.container
 			h1 Sea ice glossary
 
+			#ice-carousel.carousel.slide.pull-right
+					// Indicators
+					ol.carousel-indicators
+							li.active(data-slide-to='0', data-target='#ice-carousel')
+							li(data-slide-to='1', data-target='#ice-carousel')
+							li(data-slide-to='2', data-target='#ice-carousel')
+							li(data-slide-to='3', data-target='#ice-carousel')
+							li(data-slide-to='4', data-target='#ice-carousel')
+							li(data-slide-to=‘5’, data-target='#ice-carousel')
+
+					
+					// Wrapper for slides
+					.carousel-inner
+							.item.active
+								img(alt=‘very open drift’, src='img/1-2-tenths.jpg')
+								.carousel-caption
+											p
+													| 1&ndash;2 tenths “very open drift”
+
+							.item
+								img(alt=‘open to very open drift’, src='img/3-4-tenths.jpg')
+								.carousel-caption
+											p
+													| 3&ndash;4 tenths “open to very open drift”
+							
+							.item
+								img(alt=‘open drift’, src='img/5-6-tenths.jpg')
+								.carousel-caption
+											p
+													| 5&ndash;6 tenths “open drift”
+							
+							.item
+								img(alt=‘close pack’, src='img/7-8-tenths.jpg')
+								.carousel-caption
+											p
+													| 7&ndash;8 tenths “close pack”
+							.item
+								img(alt=‘very close pack’, src='img/9-tenths.jpg')
+								.carousel-caption
+											p
+													| 9 tenths “very close pack”
+							.item
+								img(alt=‘compact’, src='img/10-tenths.jpg')
+								.carousel-caption
+											p
+													| 10 tenths “compact”
+								
+						// Controls
+						a.left.carousel-control(data-slide='prev', href='#ice-carousel')
+							span.glyphicon.glyphicon-chevron-left
+						a.right.carousel-control(data-slide='next', href='#ice-carousel')
+							span.glyphicon.glyphicon-chevron-right
+					
+
 			.panel.panel-info.pull-right
 				.panel-heading
 					h4.panel-title Atlas-specific sea ice  terms
