@@ -1,9 +1,9 @@
 // Pull in Bootstrap and override with our customizations as required
 
 @import "../../bower_components/bootstrap/less/bootstrap.less";
-@import (less) "../../bower_components/bootstrap-slider/slider.css";
 @import "./mixins.less";
 @import "./variables.less";
+@import (less) "../vendor/slider/css/slider.css";
 
 body {
 	padding-top: 50px;
@@ -144,6 +144,11 @@ blockquote {
 	}
 }
 
+.panel.panel-info.pull-right {
+	width: 380px;
+	margin-left: 40px;
+	border: 1px solid red;
+}
 // Styles in the main app
 #applicationWrapper {
 
@@ -177,6 +182,10 @@ blockquote {
 
 }
 
+#thresholdTarget {
+	margin-top: 1em;
+}
+
 .chart {
 	
 	path, line {
@@ -194,5 +203,3 @@ blockquote {
 		fill: #9cc5de;
 	}	
 }
-
-
