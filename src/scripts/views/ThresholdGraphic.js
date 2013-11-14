@@ -66,7 +66,7 @@ drawGraphic: function() {
 		
 	})
 
-	for(var i = 1953; i <= 2012; i++ ) {
+	for(var i = 2012; i >= 1953; i-- ) {
 		if(!(datesUsed[i])) {
 			var start = moment('01-01-2013','MM-DD-YYYY').toDate()
 			var end = moment('01-01-2013','MM-DD-YYYY').toDate()
