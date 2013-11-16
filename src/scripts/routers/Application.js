@@ -39,6 +39,12 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 				this.mapView.activateClickHandler();
 
 				// Binding handlers to respond to changes on the model.				
+				this.mapModel.on('change:lat change:lon',
+					_.debounce(
+						_.bind(this.mapControlsView.render, this.mapControlsView)
+					, 500, true)
+				, this.mapControlsView);
+
 				this.mapModel.on('change:lat change:lon change:month',
 					_.debounce(
 						_.bind(this.chartView.render, this.chartView)
@@ -54,6 +60,12 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 				this.mapModel.on('change:month change:year',
 					_.debounce(
 						_.bind(this.mapView.loadLayer, this.mapView)
+					, 500, true)
+				, this.mapView);
+				
+				this.mapModel.on('change:lat change:lon',
+					_.debounce(
+						_.bind(this.mapView.drawMarker, this.mapView)
 					, 500, true)
 				, this.mapView);
 				

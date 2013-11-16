@@ -38,10 +38,6 @@ client.Views.ChartView = Backbone.View.extend({
 
         drawCharts: function() {
 
-	       	function formatCoord(coord) {
-	               	return Math.abs((Math.round(coord * 4) / 4)).toFixed(2);
-	       	};
-
 	       	Highcharts.setOptions({
 		    colors: ['#9cc5de']
 		});
@@ -51,7 +47,7 @@ client.Views.ChartView = Backbone.View.extend({
                                 type: 'column'
                         },
                         title: {
-                                text: 'Sea Ice Concentration for ' + moment(this.model.get('month'), 'MM').format('MMMM') + ' at ' + formatCoord(this.model.get('lat')) + '°N ' + formatCoord(this.model.get('lon')) + '°W',
+                                text: 'Sea Ice Concentration for ' + moment(this.model.get('month'), 'MM').format('MMMM') + ' at ' + this.formatCoord(this.model.get('lat')) + '°N ' + this.formatCoord(this.model.get('lon')) + '°W',
                                 x: -20,
                                 margin: 20
                         },
@@ -109,5 +105,10 @@ client.Views.ChartView = Backbone.View.extend({
 	
 		}, this)).done(this.drawCharts);
 	
+	},
+
+	formatCoord: function(coord) {
+		return Math.abs((Math.round(coord * 4) / 4)).toFixed(2);
 	}
+
 });
