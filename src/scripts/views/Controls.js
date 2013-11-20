@@ -68,7 +68,7 @@ client.Views.MapControlsView = Backbone.View.extend({
 	},
 
 	formatCoord: function formatCoord(coord) {
-		return Math.round((coord * 4) / 4).toFixed(2);
+		return (Math.round(coord * 4) / 4).toFixed(2);
 	}
 
 });
