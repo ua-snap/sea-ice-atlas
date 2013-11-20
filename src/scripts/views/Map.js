@@ -60,15 +60,8 @@ client.Views.MapView = Backbone.View.extend({
 
 		this.map.addLayers([ginaLayer]);
 		this.map.setCenter( new OpenLayers.LonLat(118829.786, 1510484.872).transform(this.map.displayProjection, this.map.projection),4);
-		this.createClickHandler();
 		this.hasRendered = true;
 		
-		this.markers = new OpenLayers.Layer.Markers("Markers");
-
-		var click = new OpenLayers.Control.Click();
-                this.map.addControl(click);
-                click.activate();
-
 		return this.baseLayerLoadPromise.promise;
 	},
 
@@ -117,7 +110,7 @@ client.Views.MapView = Backbone.View.extend({
 
 		});
 		this.setCurrentLayer(this.model.get('year'), this.model.get('month'));
-		
+
 		return layerLoadedPromise.promise;
 	},
 
@@ -152,14 +145,24 @@ client.Views.MapView = Backbone.View.extend({
 		
 		this.click = new OpenLayers.Control.Click();
 		this.map.addControl(this.click);
+
+		if(true === _.isUndefined(this.markers)) {
+			this.markers = new OpenLayers.Layer.Markers("Markers");
+                	this.click.activate();
+		}
+
 	},
 
 	activateClickHandler: function() {
-        	this.map.controls[1].activate();
+		if(true === _.isUndefined(this.click)) {
+			this.createClickHandler();
+		}
+		
+        	this.map.controls[0].activate();
 	},
 	
 	deactivateClickHandler: function() {
-        	this.map.controls[1].deactivate();
+        	this.map.controls[0].deactivate();
 	},
 	
 	coordinateClicked: _.debounce(function(e) {		
@@ -181,5 +184,6 @@ client.Views.MapView = Backbone.View.extend({
 		var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
 		var icon = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker.png', new OpenLayers.Size(21, 25), offset);
 		this.markers.addMarker(new OpenLayers.Marker(lonlat, icon));
+		this.markers.setZIndex(500);
 	}
 });
