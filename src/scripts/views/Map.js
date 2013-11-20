@@ -162,6 +162,7 @@ client.Views.MapView = Backbone.View.extend({
 	},
 	
 	deactivateClickHandler: function() {
+		this.markers.clearMarkers();
         	this.map.controls[0].deactivate();
 	},
 	

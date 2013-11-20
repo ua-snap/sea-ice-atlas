@@ -89,6 +89,8 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 				$('#thresholdGraphicControls').hide('fast');
 				$('#chartWrapper').hide('fast');
 				$('#graphicWrapper').hide('fast');
+				$('#lat').val('');
+				$('#lon').val('');
 
 				this.mapView.deactivateClickHandler();
 
