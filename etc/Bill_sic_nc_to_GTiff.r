@@ -18,7 +18,19 @@ seaIceConvert <- function(ncFilePath, outDirPath, outFormat, beginDate, endDate,
 	b <- brick(ncFilePath, varname=varName)
 
 	# make the sequence of dates to identify the layers in the new RasterBrick() and pass those new identifiers to the names()
-	dates=seq(as.Date(beginDate), as.Date(endDate), length.out=nlayers(b))
+	years <- seq(1953, 2012)
+	months <- seq(1, 12)
+	days <- c(1, 8, 15, 23)
+	dates = c()
+
+	for(year in years) {
+		for(month in months) {
+			for(day in days) {
+				dates <- c(dates, sprintf("%04d-%02d-%02d", year, month, day))
+			}
+		}
+	}
+
 	names(b) <- gsub('-','_',as.character(dates))
 
 	# write out the rasters
@@ -27,12 +39,14 @@ seaIceConvert <- function(ncFilePath, outDirPath, outFormat, beginDate, endDate,
 
 ncFilePath = '~/alaska.seaice.allweeks.nc'
 outDirPath = '~/output'
+tmpDir = '~/tmp'
 outFormat =  'GTiff'
 beginDate = '1953/1/1'
 endDate = '2012/12/31'
 
 # we're going to create separate files for each of the two variables, for each date
-varNames <- c('seaice_conc', 'seaice_source')
+# we might need to include "seaice_source" in this list in the future
+varNames <- c('seaice_conc')
 
 # set a working directory
 setwd('.')
@@ -44,8 +58,11 @@ for(varName in varNames) {
 }
 
 # connect to PostgreSQL to populate PostGIS raster table
-drv <- dbDriver("PostgreSQL")
-con <- dbConnect(drv, host="hermes", user="sea_ice_atlas_user", password="", dbname="sea_ice_atlas")
+drv <- dbDriver('PostgreSQL')
+con <- dbConnect(drv, host='localhost', port='30303', user='sea_ice_atlas_user', password='', dbname='sea_ice_atlas')
+
+createStatement = 'CREATE TABLE "rasters_new" ("date" date PRIMARY KEY, "rid" serial, "rast" raster)'
+dbGetQuery(con, createStatement)
 
 # get a list of all the concentration GeoTIFFs that were created by the writeRaster() function
 outputTiffs <-list.files(path=outDirPath, pattern='^seaice_conc.*\\.tif$') 
@@ -57,24 +74,26 @@ for(outputTiff in outputTiffs) {
 	dateParts <- str_match(outputTiff, pattern)
 	formattedDate = paste(dateParts[2], dateParts[3], dateParts[4], sep='-')
 	filePath = paste(outDirPath, dateParts[1], sep='/')
+	tifFilePath = paste(tmpDir, '/concentration_reproj.tif', sep='')
+	sqlFilePath = paste(tmpDir, '/concentration_reproj.sql', sep='')
 
 	# translate GeoTIFF into EPSG:3338
-	syscall = paste("gdal_translate -of Gtiff -co tfw=yes -a_ullr -180 80.375 -120 40.125 -a_srs EPSG:3338", filePath, "~/tmp/concentration_reproj.tif", sep=" ")
+	syscall = paste('gdal_translate -of Gtiff -co tfw=yes -a_ullr -180 80.375 -120 40.125 -a_srs EPSG:3338', filePath, tifFilePath, sep=' ')
 	system(syscall)
 
 	# convert this GeoTIFF into a PostGIS SQL script
-	syscall = '/usr/pgsql-9.2/bin/raster2pgsql -r ~/tmp/concentration_reproj.tif -s 3338 -I > ~/tmp/concentration_reproj.sql'
+	syscall = paste('/usr/pgsql-9.2/bin/raster2pgsql -r', tifFilePath, '-s 3338 -I > ', sqlFilePath, sep=' ')
 	system(syscall)
 
 	# read the contents of this SQL script
-	contents <- readLines('~/tmp/concentration_reproj.sql')
-	sqlQuery <- paste(contents, collapse="\n")
+	contents <- readLines(sqlFilePath)
+	sqlQuery <- paste(contents, collapse='\n')
 
 	# pull raster data out of the SQL script and throw away the rest
 	pattern = 'VALUES \\(\'(.*?)\''
 	queryParts <- str_match(sqlQuery, pattern)
 	rasterData = queryParts[2]
-	insertStatement = paste('INSERT INTO "test" ("date", "rast") VALUES (\'', formattedDate, '\',\'', rasterData, '\'::raster)', sep='')
+	insertStatement = paste('INSERT INTO "rasters_new" ("date", "rast") VALUES (\'', formattedDate, '\',\'', rasterData, '\'::raster)', sep='')
 	dbGetQuery(con, insertStatement)
 }
 
@@ -85,12 +104,15 @@ outputTiffs <-list.files(path=outDirPath, pattern='^seaice_source.*\\.tif$')
 for(outputTiff in outputTiffs) {
 }
 
-# the raster2pgsql command did this, so we're adding it back in
-indexStatement = 'CREATE INDEX "test_rast_gist" ON "test" USING gist (st_convexhull("rast"))'
+# the raster2pgsql command did this, so we're adding it back in;
+# index names must be unique per-database, not per-table, so we either need to come up
+# with a new index name each time, or remove the index from the previous version of the
+# rasters table
+indexStatement = 'CREATE INDEX "rasters_new_rast_gist" ON "rasters_new" USING gist (st_convexhull("rast"))'
 dbGetQuery(con, indexStatement)
 
 # the raster2pgsql command did this, so we're adding it back in
-analyzeStatement = 'ANALYZE "test"'
+analyzeStatement = 'ANALYZE "rasters_new"'
 dbGetQuery(con, analyzeStatement)
 
 dbDisconnect(con)
