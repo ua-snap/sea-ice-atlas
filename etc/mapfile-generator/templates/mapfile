@@ -14,7 +14,7 @@ MAP
                 EXTENSION "png"
         END
         PROJECTION
-                "init=epsg:3338"
+                "init=epsg:3857"
         END
         WEB
                 IMAGEPATH "/var/www/html/seaice-reprojected-weekly"
@@ -22,7 +22,7 @@ MAP
                 METADATA
                         "wms_title" "Sea Ice Atlas"
                         "wms_onlineresource" "http://tiles.snap.uaf.edu/cgi-bin/mapserv?map=hsia.map"
-                        "wms_srs" "EPSG:3338"
+                        "wms_srs" "EPSG:3857"
                         "wms_enable_request" "*"
                 END
         END
@@ -30,7 +30,7 @@ MAP
         LEGEND
                 STATUS ON
                 LABEL
-                        COLOR 222 235 247
+                        COLOR 0 0 0
                         SHADOWCOLOR 1 1 1
                         SHADOWSIZE 2 2
                         ANTIALIAS true
