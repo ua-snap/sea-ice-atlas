@@ -77,12 +77,14 @@ for(outputTiff in outputTiffs) {
 	tifFilePath = paste(tmpDir, '/concentration_reproj.tif', sep='')
 	sqlFilePath = paste(tmpDir, '/concentration_reproj.sql', sep='')
 
-	# translate GeoTIFF into EPSG:3338
-	syscall = paste('gdal_translate -of Gtiff -co tfw=yes -a_ullr -180 80.375 -120 40.125 -a_srs EPSG:3338', filePath, tifFilePath, sep=' ')
+	# translate GeoTIFF into EPSG:3857
+	syscall = paste('gdal_translate -of Gtiff -co tfw=yes -a_ullr -180 80.375 -120 40.125 -a_srs EPSG:3857', filePath, tifFilePath, sep=' ')
+	system(syscall)
+	syscall = paste('gdalwarp -t_srs EPSG:3857', tifFilePath, tifFilePath, sep=' ')
 	system(syscall)
 
 	# convert this GeoTIFF into a PostGIS SQL script
-	syscall = paste('/usr/pgsql-9.2/bin/raster2pgsql -r', tifFilePath, '-s 3338 -I > ', sqlFilePath, sep=' ')
+	syscall = paste('/usr/pgsql-9.2/bin/raster2pgsql -r', tifFilePath, '-s 3857 -I > ', sqlFilePath, sep=' ')
 	system(syscall)
 
 	# read the contents of this SQL script
@@ -97,12 +99,6 @@ for(outputTiff in outputTiffs) {
 	dbGetQuery(con, insertStatement)
 }
 
-# get a list of all the source GeoTIFFs that were created by the writeRaster() function
-outputTiffs <-list.files(path=outDirPath, pattern='^seaice_source.*\\.tif$') 
-
-# to do: add the data source rasters as secondary bands
-for(outputTiff in outputTiffs) {
-}
 
 # the raster2pgsql command did this, so we're adding it back in;
 # index names must be unique per-database, not per-table, so we either need to come up
