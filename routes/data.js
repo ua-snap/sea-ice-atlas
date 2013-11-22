@@ -28,7 +28,7 @@ exports.data.concentration = function(request, response) {
 
 		// Pull all dates and corresponding sea ice concentration values for the second
 		// week of a particular month from PostGIS database.
-		var query = client.query( { name: "concentration", text: "SELECT date, concentration FROM (SELECT year AS date, nth_value(concentration, 2) OVER (PARTITION BY year) AS concentration FROM (SELECT date, COALESCE(ST_Value(rast, 1, ST_SetSRID(ST_Point($1, $2), 3338)), 0) AS concentration FROM rasters) AS allvalues CROSS JOIN generate_series(1953, 2012) AS year WHERE date::text LIKE year || '-' || $3 || '-%' ORDER BY year) AS partitioned GROUP BY date, concentration ORDER BY date", values: [lon, lat, month] }, function(err, result) {
+		var query = client.query( { name: "concentration", text: "SELECT date, concentration FROM (SELECT year AS date, nth_value(concentration, 2) OVER (PARTITION BY year) AS concentration FROM (SELECT date, COALESCE(ST_Value(rast, 1, ST_SetSRID(ST_Point($1, $2), 3857)), 0) AS concentration FROM rasters_new) AS allvalues CROSS JOIN generate_series(1953, 2012) AS year WHERE date::text LIKE year || '-' || $3 || '-%' ORDER BY year) AS partitioned GROUP BY date, concentration ORDER BY date", values: [lon, lat, month] }, function(err, result) {
 
 			if(err) {
 				response.writeHead(500, {"Content-Type": "text/plain"});
@@ -81,7 +81,7 @@ exports.data.openwater = function(request, response) {
 		// Pull presence of sea ice concentration over a certain threshold from 
 		// PostGIS database as boolean values, based on second week of every
 		// month of every year.
-		var query = client.query( { name: "openwater", text: "SELECT date, (CASE WHEN concentration >= $1 THEN true ELSE false END) AS ice FROM (SELECT date, nth_value(concentration, 2) OVER (PARTITION BY date) AS concentration FROM (SELECT to_char(date, 'YYYY-MM') AS date, COALESCE(ST_Value(rast, 1, ST_SetSRID(ST_Point($2, $3), 3338)), 0) AS concentration FROM rasters) AS allvalues ORDER BY date) AS partitioned GROUP BY date, concentration ORDER BY date", values: [concentration, lon, lat] }, function(err, result) {
+		var query = client.query( { name: "openwater", text: "SELECT date, (CASE WHEN concentration >= $1 THEN true ELSE false END) AS ice FROM (SELECT date, nth_value(concentration, 2) OVER (PARTITION BY date) AS concentration FROM (SELECT to_char(date, 'YYYY-MM') AS date, COALESCE(ST_Value(rast, 1, ST_SetSRID(ST_Point($2, $3), 3857)), 0) AS concentration FROM rasters_new) AS allvalues ORDER BY date) AS partitioned GROUP BY date, concentration ORDER BY date", values: [concentration, lon, lat] }, function(err, result) {
 
 			if(err) {
 				response.writeHead(500, {"Content-Type": "text/plain"});

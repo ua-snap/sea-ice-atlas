@@ -31,6 +31,7 @@ client.Views.MapView = Backbone.View.extend({
 
 		this.map = new OpenLayers.Map({
 			div: 'map',
+			controls: [],
 			allOverlays: true,
 			projection: this.mapProj,
 			resolutions: [70600.334078125001, 35300.1670390625, 17650.08351953125, 8825.0417597656251, 4412.5208798828126, 2206.2604399414063, 1103.1302199707031, 551.56510998535157, 275.78255499267578, 137.89127749633789, 68.945638748168946, 34.472819374084473, 17.236409687042237, 8.6182048435211183, 4.3091024217605591, 2.1545512108802796, 1.0772756054401398, 0.53863780272006989, 0.26931890136003495, 0.13465945068001747]
@@ -39,10 +40,7 @@ client.Views.MapView = Backbone.View.extend({
 		var gmap = new OpenLayers.Layer.Google("Google Terrain", {visibility: true});
 
 		// note that first layer must be visible
-		this.map.addLayers([gmap]);
-
-		this.map.addControl(new OpenLayers.Control.LayerSwitcher());
-		
+		this.map.addLayers([gmap]);		
 		this.map.setCenter( new OpenLayers.LonLat(-16828376.147264, 9307322.121985), 4);
 		this.createClickHandler();
 		this.hasRendered = true;
@@ -149,11 +147,9 @@ client.Views.MapView = Backbone.View.extend({
 	
 	coordinateClicked: _.debounce(function(e) {		
 		var lonlat = this.map.getLonLatFromPixel(e.xy);
-
-		var to = '+proj=aea +lat_1=55 +lat_2=65 +lat_0=50 +lon_0=-154 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs';
+		var to = '+proj=merc +lon_0=0 +k=1 +x_0=0 +y_0=0 +a=6378137 +b=6378137 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs';
 		var from = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs';
 		var reprojected = proj4(to, from, [lonlat.lon, lonlat.lat]);
-
 		this.markers.clearMarkers();
 		this.map.addLayer(this.markers);
 		var size = new OpenLayers.Size(21,25);
