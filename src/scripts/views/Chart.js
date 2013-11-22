@@ -5,9 +5,9 @@ client.Views.ChartView = Backbone.View.extend({
 
 	hasRendered: false,
 
-        initialize: function() {
-                _.bindAll(this, 'render', 'drawCharts', 'populateCharts');
-        },
+	initialize: function() {
+		_.bindAll(this, 'render', 'drawCharts', 'populateCharts');
+	},
 
 	render: function() {
 
@@ -36,57 +36,57 @@ client.Views.ChartView = Backbone.View.extend({
 		}
 	},
 
-        drawCharts: function() {
+	drawCharts: function() {
 
-	       	Highcharts.setOptions({
-		    colors: ['#9cc5de']
+		Highcharts.setOptions({
+			colors: ['#9cc5de']
 		});
 
-                $('#chart').show().highcharts({
-                        chart: {
-                                type: 'column'
-                        },
-                        title: {
-                                text: _.template(
-					'Sea Ice Concentration for <%= month %> at <%= lat %> <%= lon %>',
+		$('#chart').show().highcharts({
+			chart: {
+				type: 'column'
+			},
+			title: {
+				text: _.template(
+				'Sea Ice Concentration for <%= month %> at <%= lat %> <%= lon %>',
 					{
 						month: moment(this.model.get('month'), 'MM').format('MMMM'),
 						lat: Math.abs(this.model.get('lat')) + '°N',
 						lon: Math.abs(this.model.get('lon')) + '°W'
 					}
 			),
-                                x: -20,
-                                margin: 20
-                        },
-                        xAxis: {
-                                categories: this.dates,
-                                tickInterval: 5
-                        },
-                        yAxis: {
-                                title: {
-                                        text: 'Percentage'
-                                },
-                                plotLines: [{
-                                        value: 0,
-                                        width: 1,
-                                        color: '#B2E1FE'
-                                }],
-                                min: 0,
-                                max: 100
-                        },
-                        tooltip: {
-                                valueSuffix: '%'
-                        },
-                        legend: {
-                                enabled: false
-                        },
-                        series: [{
-                                data: this.values
-                        }],
-                        credits: {
-                                enabled: false
-                        }
-                });
+			x: -20,
+				margin: 20
+			},
+			xAxis: {
+				categories: this.dates,
+				tickInterval: 5
+			},
+			yAxis: {
+				title: {
+					text: 'Percentage'
+				},
+				plotLines: [{
+					value: 0,
+					width: 1,
+					color: '#B2E1FE'
+				}],
+				min: 0,
+				max: 100
+			},
+			tooltip: {
+				valueSuffix: '%'
+			},
+			legend: {
+				enabled: false
+			},
+			series: [{
+				data: this.values
+			}],
+			credits: {
+				enabled: false
+			}
+		});
 
 		// Update text in sidebar
 		$('#concentrationGraphControls p').text(
