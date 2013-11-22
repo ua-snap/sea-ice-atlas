@@ -9,6 +9,26 @@ body {
 	padding-top: 50px;
 }
 
+#footer-logos {
+  float:right;
+  padding-bottom: 5px;
+  li {
+    display:inline;
+    list-style-type:none;
+    padding:0 25px 0 -35px;
+  }
+  a img {
+    opacity:0.45;
+    -webkit-transition:opacity 0.2s ease-in-out;
+    -moz-transition:opacity 0.2s ease-in-out;
+    -o-transition:opacity 0.2s ease-in-out;
+    transition:opacity 0.2s ease-in-out;
+  }
+}
+#footer-logos a:hover img, a:focus img {
+  opacity:1;
+}
+
 // Used in index.jade
 .jumbotron.banner {
 	background-image: url(../img/ice_montage_1900_satellite_duo.jpg);
@@ -46,9 +66,14 @@ body {
 	height: 325px;
 	}
 }
+.row.boxes .container {
+	max-width: 100%;
+	margin-top: 10px;
+}
 
 .well.well-small {
-	margin: 10px;
+	margin: 10px 15px 0 15px;
+	background-color: hsla(203, 40%, 80%, .3);
 	
 	img {
 		float: right;
@@ -57,7 +82,7 @@ body {
 	p {
 		font-size: 85%;
 		margin: 5px 10px 0 10px;
-		color: gray;
+		color: #3E454C;
 	}
 }
 
@@ -102,7 +127,7 @@ p.caption {
 
 .panel.panel-primary.pull-right {
 	width: 280px;
-	box-shadow: 5px 5px 5px silver;
+	box-shadow: 5px 5px 5px #74828f;
 }
 
 .panel img {
@@ -112,13 +137,13 @@ p.caption {
 blockquote {
 	padding: 10px 20px;
 	margin: 0 0 20px;
-	border-left: 5px solid #7ecefd;
+	border-left: 5px solid #1C70A6;
 
 	p {
 	font-size: 15.5px;
 	font-weight: 300;
 	line-height: 1.25;
-	color: #6db3db;
+	color: #1C70A6;
 	}
 
 	p:last-child {
@@ -130,13 +155,13 @@ blockquote {
 #ice-carousel.carousel.slide.pull-right {
 	margin-top: 0;
 	width: 400px;
-	box-shadow: 5px 5px 5px silver;
+	box-shadow: 5px 5px 5px #74828f;
 }
 .panel.panel-info.pull-right {
         width: 350px;
         margin-left: 40px;
         clear: right;
-	box-shadow: 5px 5px 5px silver;
+	box-shadow: 5px 5px 5px #74828f;
 	border: 3px solid #7ECEFD;
 
 	p {
@@ -150,8 +175,8 @@ blockquote {
 
 .carousel-caption {
 	background-color: #3E454C;
-	padding: 0 55px 20px 55px;
-	margin: 0 -50px 0 -50px;
+	padding: 0 30px 20px 30px;
+	margin: 0 -60px 0 -60px;
   	opacity: 0.7;
   	filter:alpha(opacity=70); // For IE8 and earlier 
 
