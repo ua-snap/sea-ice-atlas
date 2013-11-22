@@ -176,8 +176,12 @@ client.Views.MapView = Backbone.View.extend({
 		this.markers.addMarker(new OpenLayers.Marker(lonlat, icon));
 
 		this.model.set({
-			'lon' : reprojected[0],
-			'lat' : reprojected[1]
+			'lon' : this.roundCoord(reprojected[0]),
+			'lat' : this.roundCoord(reprojected[1])
 		});
-	}, 500)
+	}, 500),
+
+	roundCoord: function(coord) {
+		return (Math.round(coord * 4) / 4).toFixed(2);
+	}
 });
