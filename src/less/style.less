@@ -29,6 +29,31 @@ body {
   opacity:1;
 }
 
+ul.nav.navbar-nav li a {
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+	-webkit-border-radius: 14px;
+	-moz-border-radius: 12px;
+	border-radius: 12px;
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+ul.nav.navbar-nav li a:hover, ul.nav.navbar-nav li a:focus  {
+	background: rgba(255, 255, 255, 0.15);
+	color: @brand-warning;
+	-webkit-transform-origin: center;
+	-moz-transform-origin: center;
+	-o-transform-origin: center;
+	-webkit-transition-origin: center;
+	transition-origin: center;
+	-webkit-transform: scale(1.07);
+	-moz-transform: scale(1.07);
+	-o-transform: scale(1.07);
+	transform: scale(1.07);
+}
+
 // Used in index.jade
 .jumbotron.banner {
 	background-image: url(../img/ice_montage_1900_satellite_duo.jpg);
@@ -46,10 +71,12 @@ body {
 		color: @reverse-text-color;
 		line-height: .8;
 		font-size: 2.4em;
+		text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
 	}
 
 	p {
 		color: @reverse-text-color;
+		text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
 	}
 
 	small {
@@ -65,10 +92,58 @@ body {
 	padding-left: 0px;
 	height: 325px;
 	}
+
+	a.btn.btn-primary.btn-lg {
+		-webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+		-moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+		-o-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+		box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+		-webkit-transition: all 0.3s ease-in-out;
+		-moz-transition: all 0.3s ease-in-out;
+		-o-transition: all 0.3s ease-in-out;
+		transition: all 0.3s ease-in-out;
+		border: 1px solid @brand-info;
+	}
+		a:hover, a:focus {
+			-webkit-transform-origin: center;
+			-moz-transform-origin: center;
+			-o-transform-origin: center;
+			-webkit-transition-origin: center;
+			transition-origin: center;
+			-webkit-transform: scale(1.07);
+			-moz-transform: scale(1.07);
+			-o-transform: scale(1.07);
+			transform: scale(1.07);
+		}
 }
+
 .row.boxes .container {
 	max-width: 100%;
 	margin-top: 10px;
+
+	a.btn.btn-primary {
+	-webkit-box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
+	-o-box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
+	box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+	border: 1px solid @brand-info;
+	}
+
+	a:hover, a:focus {
+		-webkit-transform-origin: center;
+		-moz-transform-origin: center;
+		-o-transform-origin: center;
+		-webkit-transition-origin: center;
+		transition-origin: center;
+		-webkit-transform: scale(1.05);
+		-moz-transform: scale(1.05);
+		-o-transform: scale(1.05);
+		transform: scale(1.05);
+		}
 }
 
 .well.well-small {
