@@ -1,4 +1,5 @@
 var pg = require('pg');
+var moment = require('moment');
 
 exports.data = {};
 
@@ -126,7 +127,7 @@ exports.data.openwater = function(request, response) {
 					ice = iceBooleans[year][i][1];
 
 					if(!iceBegin && ice) {
-						iceBegin = year + '-' + month + '-01';
+						iceBegin = moment(year + '-' + month, 'YYYY-MM').startOf('month').format('YYYY-MM-DD');
 					}
 
 					if(iceBegin && !ice) {
@@ -136,7 +137,7 @@ exports.data.openwater = function(request, response) {
 						continue;
 					}
 
-					iceEnd = year + '-' + month + '-01';
+					iceEnd = moment(year + '-' + month, 'YYYY-MM').endOf('month').format('YYYY-MM-DD');
 
 					if(iceBegin && month == 12) {
 						dateRanges.push([iceBegin, iceEnd]);

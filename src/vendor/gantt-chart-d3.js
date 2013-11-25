@@ -60,8 +60,8 @@ d3.gantt = function() {
 
     var initAxis = function() {
 
-    timeDomainStart = moment('2013-01-01', 'YYYY-MM-DD').toDate();
-    timeDomainEnd = moment('2013-12-01', 'YYYY-MM-DD').toDate();
+    timeDomainStart = moment('2013-01', 'YYYY-MM').startOf('month').toDate();
+    timeDomainEnd = moment('2013-12', 'YYYY-MM').endOf('month').toDate();
 
 	x = d3.time.scale().domain([ timeDomainStart, timeDomainEnd ]).range([ 0, width ]).clamp(true);
 	y = d3.scale.ordinal().domain(taskTypes).rangeRoundBands([ 0, height - margin.top - margin.bottom ], .1);
