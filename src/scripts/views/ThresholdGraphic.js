@@ -22,6 +22,10 @@ client.Views.ThresholdGraphicView = Backbone.View.extend({
 		$('#thresholdGraphicControls').show();
 		if( false === this.hasRendered ) {
 		
+			// For restoring from URL, update the default properties
+			$("#thresholdSliderLabel").text(this.model.get('concentration'));
+			$('#thresholdSlider').attr('data-slider-value', this.model.get('concentration'));
+			
 			$("#thresholdSlider").slider({
 				handle: 'round'
 			});

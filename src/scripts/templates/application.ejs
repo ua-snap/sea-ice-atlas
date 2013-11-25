@@ -36,14 +36,15 @@
 		</div>
 		<div id="chartWrapper" style="display: none">
 			<h3>Average sea ice concentration</h3>
+			<p>The graph below shows the historical concentrations of ice in the specified month at the point you selected on the map.  You can change the selected month using the controls in the left sidebar.</p>
 			<div id="chart"></div>
 		</div>
 		<div id="graphicWrapper" style="display: none">
 			<h3>Open Water Over Time</h3>
-
+				<p>This interactive chart lets you explore historical ice concentrations at the point you selected on the map.  By adjusting the threshold slider below, the chart will update to show bars where the ice concentration <strong>exceeds</strong> the % ice threshold you have selected.</p>
 				<div>
 				<input id="thresholdSlider" type="text" data-slider-id="thresholdSliderControl" data-slider-min="1" data-slider-max="100" data-slider-step="1" data-slider-value="30"/>
-	      			<span>Threshold: <span id="thresholdSliderLabel">30</span></span>
+	      			<span>&nbsp;Threshold: <span id="thresholdSliderLabel">30</span>&#37;</span>
 	      			</div>
 	      			<div id="thresholdTarget"></div>
 			<div id="openWaterGraphic"></div>
