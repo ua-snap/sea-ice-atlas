@@ -160,8 +160,8 @@ client.Views.MapView = Backbone.View.extend({
 		var reprojected = proj4(this.proj3857, this.proj4326, [lonlat.lon, lonlat.lat]);
 
 		this.model.set({
-			'lon' : reprojected[0],
-			'lat' : reprojected[1]
+			'lon' : this.roundCoord(reprojected[0]),
+			'lat' : this.roundCoord(reprojected[1])
 		});
 	}, 500),
 
@@ -175,5 +175,9 @@ client.Views.MapView = Backbone.View.extend({
 		var icon = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker.png', new OpenLayers.Size(21, 25), offset);
 		this.markers.addMarker(new OpenLayers.Marker(lonlat, icon));
 		this.markers.setZIndex(500);
-	}
+	},
+
+	roundCoord: function(coord) {
+ 		return (Math.round(coord * 4) / 4).toFixed(2);
+   	}
 });
