@@ -67,7 +67,6 @@ drawGraphic: function() {
 		// Push this entry onto a hash to keep track of possibly missing years
 		if(!(datesUsed[taskName])) { datesUsed[taskName] = []; }
 		datesUsed[taskName].push(rowObject);
-		
 	})
 
 	for(var i = 2012; i >= 1953; i-- ) {
@@ -104,7 +103,6 @@ drawGraphic: function() {
 
 	var gantt = d3.gantt().taskTypes(taskNames).taskStatus(taskStatus).tickFormat(format);
 	gantt(tasks);
-	;
 
 },
 
