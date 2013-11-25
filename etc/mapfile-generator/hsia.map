@@ -30,7 +30,7 @@ MAP
         LEGEND
                 STATUS ON
                 LABEL
-                        COLOR 222 235 247
+                        COLOR 0 0 0
                         SHADOWCOLOR 1 1 1
                         SHADOWSIZE 2 2
                         ANTIALIAS true

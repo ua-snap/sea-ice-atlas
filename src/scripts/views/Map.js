@@ -7,9 +7,6 @@ client.Views.MapView = Backbone.View.extend({
 		// When the layer changes, update the map
 		_.bindAll(this, 'setCurrentLayer','renderBaseLayer','loadLayer', 'render', 'coordinateClicked');
 
-		this.destProj = new OpenLayers.Projection('EPSG:3338');
-		this.sourceProj = new OpenLayers.Projection('EPSG:4326');
-		this.mapProj = new OpenLayers.Projection('EPSG:3857');
 	},
 
 	layer: {}, // will be populated with buffering
@@ -33,8 +30,7 @@ client.Views.MapView = Backbone.View.extend({
 			div: 'map',
 			controls: [],
 			allOverlays: true,
-			projection: this.mapProj,
-			resolutions: [70600.334078125001, 35300.1670390625, 17650.08351953125, 8825.0417597656251, 4412.5208798828126, 2206.2604399414063, 1103.1302199707031, 551.56510998535157, 275.78255499267578, 137.89127749633789, 68.945638748168946, 34.472819374084473, 17.236409687042237, 8.6182048435211183, 4.3091024217605591, 2.1545512108802796, 1.0772756054401398, 0.53863780272006989, 0.26931890136003495, 0.13465945068001747]
+			projection: new OpenLayers.Projection('EPSG:3857')
 		});
 
 		var gmap = new OpenLayers.Layer.Google("Google Terrain", {visibility: true});
@@ -69,7 +65,7 @@ client.Views.MapView = Backbone.View.extend({
 
 		this.layer[layerName] = new OpenLayers.Layer.WMS(
 			'Cache WMS Sea Ice Atlas',
-			'http://tiles.snap.uaf.edu/cgi-bin/mapserv?map=/var/www/html/g-hsia.map',
+			'http://tiles.snap.uaf.edu/tilecache/tilecache.py/2.11.0/',
 			{
 				projection: 'EPSG:3857',
 				layers: _.template('seaice_conc_sic_mean_pct_weekly_ak_<%= year %>_<%= month %>_average', this.model.toJSON()),

@@ -1,9 +1,9 @@
 
 [[% layerName %]]
 type=WMS
-url=http://tiles.snap.uaf.edu/cgi-bin/mapserv?map=/var/www/html/hsia.map
+url=http://tiles.snap.uaf.edu/cgi-bin/mapserv?map=/var/www/html/g-hsia.map
 layers=[% layerName %]
-bbox=-9036842.762,-9036842.762,9036842.762,9036842.762
+bbox=-20037507.539,4012018.979,20032653.675,17445063.500
+spherical_mercator=true
 extent_type=loose
-srs=EPSG:3338
-
+srs=EPSG:3857
