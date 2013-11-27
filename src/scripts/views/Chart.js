@@ -57,7 +57,7 @@ client.Views.ChartView = Backbone.View.extend({
                         },
                         yAxis: {
                                 title: {
-                                        text: 'Percentage'
+                                        text: null
                                 },
                                 plotLines: [{
                                         value: 0,
