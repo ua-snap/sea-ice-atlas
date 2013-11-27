@@ -2,11 +2,14 @@
 'use strict';
 
 client.Views.MapView = Backbone.View.extend({
-	initialize: function() {
+	ol3857: new OpenLayers.Projection('EPSG:3857'),
+	ol4326: new OpenLayers.Projection('EPSG:4326'),
+	proj3857: '+proj=merc +lon_0=0 +k=1 +x_0=0 +y_0=0 +a=6378137 +b=6378137 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
+	proj4326: '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs',
 
+	initialize: function() {
 		// When the layer changes, update the map
 		_.bindAll(this, 'setCurrentLayer','renderBaseLayer','loadLayer', 'render', 'coordinateClicked');
-
 	},
 
 	layer: {}, // will be populated with buffering
@@ -96,7 +99,7 @@ client.Views.MapView = Backbone.View.extend({
 
 		});
 		this.setCurrentLayer(this.model.get('year'), this.model.get('month'));
-		
+
 		return layerLoadedPromise.promise;
 	},
 
@@ -131,27 +134,30 @@ client.Views.MapView = Backbone.View.extend({
 		
 		this.click = new OpenLayers.Control.Click();
 		this.map.addControl(this.click);
+
+		if(true === _.isUndefined(this.markers)) {
+			this.markers = new OpenLayers.Layer.Markers("Markers");
+                	this.click.activate();
+		}
+
 	},
 
 	activateClickHandler: function() {
-        	this.map.controls[1].activate();
+		if(true === _.isUndefined(this.click)) {
+			this.createClickHandler();
+		}
+		
+        	this.map.controls[0].activate();
 	},
 	
 	deactivateClickHandler: function() {
-        	this.map.controls[1].deactivate();
+		this.markers.clearMarkers();
+        	this.map.controls[0].deactivate();
 	},
 	
 	coordinateClicked: _.debounce(function(e) {		
 		var lonlat = this.map.getLonLatFromPixel(e.xy);
-		var to = '+proj=merc +lon_0=0 +k=1 +x_0=0 +y_0=0 +a=6378137 +b=6378137 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs';
-		var from = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs';
-		var reprojected = proj4(to, from, [lonlat.lon, lonlat.lat]);
-		this.markers.clearMarkers();
-		this.map.addLayer(this.markers);
-		var size = new OpenLayers.Size(21,25);
-		var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
-		var icon = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker.png', new OpenLayers.Size(21, 25), offset);
-		this.markers.addMarker(new OpenLayers.Marker(lonlat, icon));
+		var reprojected = proj4(this.proj3857, this.proj4326, [lonlat.lon, lonlat.lat]);
 
 		this.model.set({
 			'lon' : this.roundCoord(reprojected[0]),
@@ -159,7 +165,19 @@ client.Views.MapView = Backbone.View.extend({
 		});
 	}, 500),
 
+	drawMarker: function() {
+		var reprojected = proj4(this.proj4326, this.proj3857, [this.model.get('lon'), this.model.get('lat')]);
+		var lonlat = new OpenLayers.LonLat(reprojected[0], reprojected[1]);
+		this.markers.clearMarkers();
+		this.map.addLayer(this.markers);
+		var size = new OpenLayers.Size(21,25);
+		var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+		var icon = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker.png', new OpenLayers.Size(21, 25), offset);
+		this.markers.addMarker(new OpenLayers.Marker(lonlat, icon));
+		this.markers.setZIndex(500);
+	},
+
 	roundCoord: function(coord) {
-		return (Math.round(coord * 4) / 4).toFixed(2);
-	}
+ 		return (Math.round(coord * 4) / 4).toFixed(2);
+   	}
 });

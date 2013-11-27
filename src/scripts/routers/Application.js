@@ -28,7 +28,7 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 		// Don't do any work if we're already in the desired mode.
 		if(mode == this.mapMode) { return; }
 		this.mapMode = mode;
-		
+
 		switch(mode) {
 
 			case 'map':
@@ -54,6 +54,12 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 				this.mapModel.on('change:month change:year',
 					_.debounce(
 						_.bind(this.mapView.loadLayer, this.mapView)
+					, 500, true)
+				, this.mapView);
+
+				this.mapModel.on('change:lat change:lon',
+					_.debounce(
+						_.bind(this.mapView.drawMarker, this.mapView)
 					, 500, true)
 				, this.mapView);
 				
@@ -83,6 +89,8 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 				$('#thresholdGraphicControls').hide('fast');
 				$('#chartWrapper').hide('fast');
 				$('#graphicWrapper').hide('fast');
+				$('#lat').val('');
+				$('#lon').val('');
 
 				this.mapView.deactivateClickHandler();
 
@@ -120,6 +128,7 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 			concentration: concentration
 		}, {silent:true}); // silent because otherwise it triggers a change event, unwanted here.
 		this.renderMap();
+
 		this.setMapMode('map'); // force state reconstruction
 		this.mapModel.trigger('change:lat'); // Force render to reveal charts
 	},
@@ -148,7 +157,6 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 		// mapView.render() returns a promise on initial run.  TODO: this may break if base map has already 
 		// rendered, fix/defend.
 		this.mapView.render().then(_.bind(function() {
-
 			this.mapControlsView = new client.Views.MapControlsView({el: $('#mapControls'), model: this.mapModel});
 			this.mapControlsView.render();
 
