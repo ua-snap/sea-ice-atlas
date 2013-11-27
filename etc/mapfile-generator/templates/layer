@@ -15,17 +15,17 @@
                 CLASS
                         NAME "0-30%"
                         EXPRESSION ([pixel] >= 0 AND [pixel] < 30)
-                        COLOR 73 53 202
+                        COLOR 194 194 201
                 END
                 CLASS
                         NAME "30-90%"
                         EXPRESSION ([pixel] >= 30 AND [pixel] < 90)
-                        COLOR 94 90 223
+                        COLOR 144 143 170
                 END
                 CLASS
                         NAME "90-100%"
                         EXPRESSION ([pixel] >= 90)
-                        COLOR 182 180 216
+                        COLOR 116 112 142
                 END
         END
 
