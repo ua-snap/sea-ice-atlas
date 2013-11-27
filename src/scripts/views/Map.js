@@ -31,9 +31,14 @@ client.Views.MapView = Backbone.View.extend({
 
 		this.map = new OpenLayers.Map({
 			div: 'map',
-			controls: [],
+			//controls: [],
 			allOverlays: true,
 			projection: new OpenLayers.Projection('EPSG:3857')
+		});
+
+		// Prevent scroll wheel from zooming
+		_.each( this.map.getControlsByClass('OpenLayers.Control.Navigation'), function(e) {
+			e.disableZoomWheel();
 		});
 
 		var gmap = new OpenLayers.Layer.Google("Google Terrain", {visibility: true});

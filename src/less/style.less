@@ -269,8 +269,9 @@ blockquote {
 
 	#legend {
 		position: absolute;
-		bottom: 28px;
+		bottom: 3px;
 		left: 3px;
+		width: 250px;
 		z-index: 1000;
 	}
 
@@ -308,6 +309,10 @@ blockquote {
 	margin-top: 1em;
 }
 
+.list-group-item.active .list-group-item-text, .list-group-item.active:hover .list-group-item-text {
+	color: darken(@list-group-active-bg, 40%);
+}
+
 .chart {
 	
 	path, line {
@@ -318,10 +323,7 @@ blockquote {
 	}
 
 	.bar {
-		fill: rgb(116, 112, 142);
+		fill: rgb(171, 171, 183);
 	}
 
-	.bar-running {
-		fill: rgb(116, 112, 142);
-	}	
 }

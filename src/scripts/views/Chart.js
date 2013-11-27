@@ -39,12 +39,12 @@ client.Views.ChartView = Backbone.View.extend({
         drawCharts: function() {
 
 		Highcharts.setOptions({
-			colors: ['#74708E']
+			colors: ['#ABABB7']
 		});
 
                 $('#chart').show().highcharts({
                         chart: {
-                                type: 'column'
+                                type: 'line'
                         },
                         title: {
                                 text: 'Sea Ice Concentration for ' + moment(this.model.get('month'), 'MM').format('MMMM') + ' at ' + this.formatCoord(this.model.get('lat')) + '°N ' + this.formatCoord(this.model.get('lon')) + '°W',
@@ -74,6 +74,7 @@ client.Views.ChartView = Backbone.View.extend({
                                 enabled: false
                         },
                         series: [{
+                        		name: 'Concentration',
                                 data: this.values
                         }],
                         credits: {
