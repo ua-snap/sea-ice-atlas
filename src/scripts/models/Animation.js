@@ -103,6 +103,13 @@ function parseToDate(idx) {
 
         startPlaying: function() {
 
+            // This prevents multiple instances of the updater from running concurrently.
+            // Before adding this, quickly switching between animation modes could cause the
+            // animations to run crazy fast.
+            if(false === _.isUndefined(this.updater)) {
+                clearInterval(this.updater);
+            }
+
             // Once the next ten layers are loaded, start switching between the layers
             this.updater = setInterval(_.bind(function switchToPreviousLayer() {
                 var oldLayerIndex = this.layerIndex;
