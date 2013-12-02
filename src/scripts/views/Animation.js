@@ -4,7 +4,7 @@
 client.Views.MapAnimatorView = Backbone.View.extend({
 	initialize: function() {
 
-		_.bindAll(this, 'play', 'pause', 'setSequentialMode', 'setMonthlyMode',
+		_.bindAll(this, 'play', 'pause', 'setMode', 'playSequentialMode', 'playMonthlyMode',
 			'render', 'showLayer', 'loadLayer', 'hideLayer', 'showBuffering', 'hideBuffering');
 		// Set up some shortcuts
 		this.map = this.options.mapView.map;
@@ -22,10 +22,10 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 
 	events: {
 		'click' : 'focus',
-		'click #mapAnimationSequential' : 'setSequentialMode',
-		'click #mapAnimationMonthly' : 'setMonthlyMode',
-		'click #mapAnimationPlay' : 'play',
-		'click #mapAnimationPause' : 'pause'
+		'click #sequentialAnimationPlay' : 'playSequentialMode',
+		'click #sequentialAnimationPause' : 'pause',
+		'click #monthlyAnimationPlay' : 'playMonthlyMode',
+		'click #monthlyAnimationPause' : 'pause'
 	},
 
 	focus: function(event) {
@@ -45,23 +45,28 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 		}
 	},
 
-	play: function() {
+	setMode: _.debounce(function(mode) {
+		this.model.set({mode:mode});
+		this.model.enumerateLayers();
+	}, 1000, true),
+
+	play: _.debounce(function() {
 		this.resetLayers();
 		this.model.start();
-	},
+	}, 1000, true),
 
 	pause: function() {
 		this.model.stop();
 	},
 
-	setSequentialMode: function() {
-		this.model.set({mode:'sequential'});
-		this.model.enumerateLayers();
+	playSequentialMode: function() {
+		this.setMode('sequential');
+		this.play();
 	},
 
-	setMonthlyMode: function() {
-		this.model.set({mode:'monthly'});
-		this.model.enumerateLayers();
+	playMonthlyMode: function() {
+		this.setMode('monthly');
+		this.play();
 	},
 
 	render: function() {
