@@ -195,7 +195,7 @@ p.well {
 }
 
 p.caption {
-	color: gray;
+	color: #ABABB7;
 	font-size: 90%;
 	font-style: italic;
 }
@@ -223,6 +223,33 @@ blockquote {
 
 	p:last-child {
 	margin-bottom: 0;
+	}
+}
+
+// Used in download.jade
+p {
+	a.btn.btn-warning {
+	-webkit-box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
+	-o-box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
+	box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+	border: 1px solid @brand-info;
+
+	}
+	a:hover, a:focus {
+		-webkit-transform-origin: center;
+		-moz-transform-origin: center;
+		-o-transform-origin: center;
+		-webkit-transition-origin: center;
+		transition-origin: center;
+		-webkit-transform: scale(1.07);
+		-moz-transform: scale(1.07);
+		-o-transform: scale(1.07);
+		transform: scale(1.07);
 	}
 }
 
