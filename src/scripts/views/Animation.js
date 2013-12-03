@@ -36,10 +36,10 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 	},
 
 	resetLayers: function() {
-		console.log(this.map.layers);
-		for( var i = 1; i < this.map.layers.length; i++ ) {
+		for( var i = 1; i <= this.map.layers.length; i++ ) {
 			// If the layer is defined and can be purged, destroy it.
-			if(this.map.layers[i]) {
+			if( false === _.isUndefined(this.map.layers[i])) {
+				this.map.layers[i].setOpacity(0);
 				this.map.layers[i].destroy();
 			}
 		}
@@ -47,7 +47,6 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 
 	setMode: _.debounce(function(mode) {
 		this.model.set({mode:mode});
-		this.model.enumerateLayers();
 	}, 1000, true),
 
 	play: _.debounce(function() {
@@ -83,7 +82,6 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 	},
 
 	loadLayer: function(layerIndex) {
-
 		this.promises[this.model.layers[layerIndex]] = Q.defer();
 
 		this.layers[this.model.layers[layerIndex]] = new OpenLayers.Layer.WMS(
@@ -125,10 +123,10 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 	},
 
 	showBuffering: function() {
-		$('#animationBuffering').show();
+		$('#animationBuffering').show(400);
 	},
 
 	hideBuffering: function() {
-		$('#animationBuffering').hide();
+		$('#animationBuffering').hide(400);
 	}
 });

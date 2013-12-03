@@ -29,9 +29,12 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 		if(mode == this.mapMode) { return; }
 		this.mapMode = mode;
 
+
 		switch(mode) {
 
 			case 'map':
+				try {
+					this.mapAnimatorView.resetLayers();
 
 				$('#mapControls').addClass('active');
 				$('#mapAnimationControls').removeClass('active');
@@ -63,8 +66,7 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 					, 500, true)
 				, this.mapView);
 				
-				// Unbind animation event handlers
-				//this.mapAnimatorModel.off('change:layerIndex', animationMapWatchLayerIndex);
+				} catch(e) { console.log(e) }
 
 				break;
 		
@@ -128,8 +130,6 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 			concentration: concentration
 		}, {silent:true}); // silent because otherwise it triggers a change event, unwanted here.
 		this.renderMap();
-
-		this.setMapMode('map'); // force state reconstruction
 		this.mapModel.trigger('change:lat'); // Force render to reveal charts
 	},
 
@@ -141,8 +141,6 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 			month: month
 		}, {silent:true}); // silent because otherwise it triggers a change event, unwanted here.
 		this.renderMap();
-		this.setMapMode('map'); // force state reconstruction
-		this.mapModel.trigger('change:month'); // force render to reveal chart
 	},
 
 	checkIfRenderLayout: function() {
@@ -173,14 +171,13 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 			this.mapAnimatorModel.view = this.mapAnimatorView;
 			this.mapAnimatorView.render();
 
-			this.mapView.loadLayer(this.mapModel.get('year'), this.mapModel.get('month'));
-
 			$('#mapControls').show();
 			$('#mapAnimationControls').show();
 			$('#loadingMap').hide();
 
 			// Complete event binding + rebuilding GUI.
 			this.setMapMode('map');
+			this.mapView.loadLayer(this.mapModel.get('year'), this.mapModel.get('month'));
 
 		}, this));
 
