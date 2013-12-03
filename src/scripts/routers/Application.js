@@ -28,44 +28,42 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 		// Don't do any work if we're already in the desired mode.
 		if(mode == this.mapMode) { return; }
 		this.mapMode = mode;
+		this.mapAnimatorView.resetLayers();
 
 		switch(mode) {
 
 			case 'map':
 
-				$('#mapControls').addClass('active');
-				$('#mapAnimationControls').removeClass('active');
+					$('#mapControls').addClass('active');
+					$('#mapAnimationControls').removeClass('active');
 
-				this.mapView.activateClickHandler();
+					this.mapView.activateClickHandler();
 
-				// Binding handlers to respond to changes on the model.				
-				this.mapModel.on('change:lat change:lon change:month',
-					_.debounce(
-						_.bind(this.chartView.render, this.chartView)
-					, 500, true)
-				, this.chartView);
+					// Binding handlers to respond to changes on the model.				
+					this.mapModel.on('change:lat change:lon change:month',
+						_.debounce(
+							_.bind(this.chartView.render, this.chartView)
+						, 500, true)
+					, this.chartView);
 
-				this.mapModel.on('change:lat change:lon change:concentration',
-					_.debounce(
-						_.bind(this.thresholdGraphicView.render, this.thresholdGraphicView)
-					, 500, true)
-				, this.thresholdGraphicView);
+					this.mapModel.on('change:lat change:lon change:concentration',
+						_.debounce(
+							_.bind(this.thresholdGraphicView.render, this.thresholdGraphicView)
+						, 500, true)
+					, this.thresholdGraphicView);
 
-				this.mapModel.on('change:month change:year',
-					_.debounce(
-						_.bind(this.mapView.loadLayer, this.mapView)
-					, 500, true)
-				, this.mapView);
+					this.mapModel.on('change:month change:year',
+						_.debounce(
+							_.bind(this.mapView.loadLayer, this.mapView)
+						, 500, true)
+					, this.mapView);
 
-				this.mapModel.on('change:lat change:lon',
-					_.debounce(
-						_.bind(this.mapView.drawMarker, this.mapView)
-					, 500, true)
-				, this.mapView);
+					this.mapModel.on('change:lat change:lon',
+						_.debounce(
+							_.bind(this.mapView.drawMarker, this.mapView)
+						, 500, true)
+					, this.mapView);
 				
-				// Unbind animation event handlers
-				//this.mapAnimatorModel.off('change:layerIndex', animationMapWatchLayerIndex);
-
 				break;
 		
 			case 'animation':
@@ -128,8 +126,6 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 			concentration: concentration
 		}, {silent:true}); // silent because otherwise it triggers a change event, unwanted here.
 		this.renderMap();
-
-		this.setMapMode('map'); // force state reconstruction
 		this.mapModel.trigger('change:lat'); // Force render to reveal charts
 	},
 
@@ -141,8 +137,6 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 			month: month
 		}, {silent:true}); // silent because otherwise it triggers a change event, unwanted here.
 		this.renderMap();
-		this.setMapMode('map'); // force state reconstruction
-		this.mapModel.trigger('change:month'); // force render to reveal chart
 	},
 
 	checkIfRenderLayout: function() {
@@ -173,14 +167,13 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 			this.mapAnimatorModel.view = this.mapAnimatorView;
 			this.mapAnimatorView.render();
 
-			this.mapView.loadLayer(this.mapModel.get('year'), this.mapModel.get('month'));
-
 			$('#mapControls').show();
 			$('#mapAnimationControls').show();
 			$('#loadingMap').hide();
 
 			// Complete event binding + rebuilding GUI.
 			this.setMapMode('map');
+			this.mapView.loadLayer(this.mapModel.get('year'), this.mapModel.get('month'));
 
 		}, this));
 

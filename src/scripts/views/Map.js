@@ -42,10 +42,15 @@ client.Views.MapView = Backbone.View.extend({
 		});
 
 		var gmap = new OpenLayers.Layer.Google("Google Terrain", {visibility: true});
+		
+		this.map.addLayers([gmap]);
+		this.map.setBaseLayer(gmap);
 
-		// note that first layer must be visible
-		this.map.addLayers([gmap]);		
-		this.map.setCenter( new OpenLayers.LonLat(-16828376.147264, 9307322.121985), 4);
+		google.maps.event.addListener(gmap.mapObject, 'tilesloaded', _.bind(function() {
+			this.baseLayerLoadPromise.resolve();
+		}, this));
+
+		this.map.setCenter( new OpenLayers.LonLat(-153, 65).transform('EPSG:4326', 'EPSG:3857'), 4);
 		this.createClickHandler();
 		this.hasRendered = true;
 		
@@ -55,7 +60,6 @@ client.Views.MapView = Backbone.View.extend({
                 this.map.addControl(click);
                 click.activate();
 
-		this.baseLayerLoadPromise.resolve();
 		return this.baseLayerLoadPromise.promise;
 	},
 
@@ -88,8 +92,8 @@ client.Views.MapView = Backbone.View.extend({
 
 		this.map.addLayers([this.layer[layerName]]);
 		this.layer[layerName].setOpacity(0);
-		this.layer[layerName].events.register('loadend', this, function(layer) {
-			
+		this.layer[layerName].events.register('loadend', this, function displayLoadedLayer(layer) {
+
 			layerLoadedPromise.resolve();
 			this.layer[layerName].setOpacity(1);
 
@@ -97,7 +101,7 @@ client.Views.MapView = Backbone.View.extend({
 				false === _.isUndefined(oldLayer)
 				&& false === _.isUndefined(this.layer[oldLayer])
 			) {
-				this.map.removeLayer(this.layer[oldLayer]);
+				this.layer[oldLayer].destroy();
 			}
 	
 			$('#mapTitle').text('Historical Sea Ice Concentration, ' + moment(_.template('<%= year %>-<%= month %>', this.model.toJSON()), 'YYYY-MM').format('MMMM YYYY'));

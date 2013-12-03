@@ -3,14 +3,14 @@
 client.Models = client.Models || {};
 
 (function() {
-    'use strict';
+	'use strict';
 
-    client.Models.MapModel = Backbone.Model.extend({
-        defaults: {
-            month: '01',
-            year: 1953,
-            concentration: 30
-        }
-    });
+	client.Models.MapModel = Backbone.Model.extend({
+		defaults: {
+			month: '01',
+			year: 1953,
+			concentration: 30
+		}
+	});
 
 })();
