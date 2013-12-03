@@ -45,7 +45,7 @@ client.Views.MapView = Backbone.View.extend({
 		
 		this.map.addLayers([gmap]);
 		this.map.setBaseLayer(gmap);
-		
+
 		google.maps.event.addListener(gmap.mapObject, 'tilesloaded', _.bind(function() {
 			this.baseLayerLoadPromise.resolve();
 		}, this));
@@ -70,7 +70,6 @@ client.Views.MapView = Backbone.View.extend({
 	},
 
 	loadLayer: function() {
-		console.log('loading layer!')
 		var layerLoadedPromise = Q.defer();
 
 		var oldLayer = this.currentLayer;

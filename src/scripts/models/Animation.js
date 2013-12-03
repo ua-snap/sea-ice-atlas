@@ -54,7 +54,7 @@ function parseToDate(idx) {
 					for (i = startMonth; i <= 12; i++) {
 						this.layers.push(startYear + '_' + pad(i));
 					}
-					
+
 					for (i = startYear + 1; i <= 2012; i++) {
 						for (var j = 1; j <= 12; j++) {
 							this.layers.push(i + '_' + pad(j));
@@ -120,7 +120,7 @@ function parseToDate(idx) {
 
 			// Once the next ten layers are loaded, start switching between the layers
 			this.updater = setInterval(_.bind(function switchToPreviousLayer() {
-				
+
 				// Set properties so other objects know that the layers have changed
 				this.set(_.extend({
 					layerIndex: this.layerIndex
@@ -128,7 +128,7 @@ function parseToDate(idx) {
 
 				this.view.showLayer(this.layerIndex);
 
-				if(this.layerIndex > 0) {
+				if (this.layerIndex > 0) {
 					this.view.hideLayer(this.layerIndex - 1);
 				}
 
@@ -139,7 +139,7 @@ function parseToDate(idx) {
 				}
 
 				// Only continue to buffer valid data layers
-				if( (this.layerIndex + 10) <= this.layers.length ) {
+				if ((this.layerIndex + 10) <= this.layers.length) {
 					this.view.loadLayer(this.layerIndex + 10);
 				}
 
