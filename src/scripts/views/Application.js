@@ -8,6 +8,14 @@ client.Views.ApplicationView = Backbone.View.extend({
 
 	render: function() {
 		this.$el.html(this.template(this.model.toJSON()));
+		this.$el.find('#controlsWrapper').affix({
+			offset: {
+				top: 20,
+				bottom: function() {
+					return (this.bottom = $('footer#footer.well.well-small').outerHeight(true) + 10)
+				}
+			}
+		})
 	}
 
 });
