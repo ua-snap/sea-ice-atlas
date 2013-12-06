@@ -35,18 +35,88 @@
 			</div>
 		</div>
 		<div id="chartWrapper" style="display: none">
-			<h3>Average sea ice concentration</h3>
-			<p>The graph below shows the historical concentrations of ice in the specified month at the point you selected on the map.  You can change the selected month using the controls in the left sidebar.</p>
+			<h4>Average monthly sea ice concentrations for all years</h4>
+				<p>Percent ice cover for your chosen month at your location.
+				Use &ldquo;select by date&rdquo; at upper left to choose another month.</p>
+
+			<button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#chartModalInfo">
+			  More information&hellip;
+			</button>
+
+			<div class="modal fade" id="chartModalInfo" tabindex="-1">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button class="close" data-dismiss="modal"type="button">x</button>
+							<h4 class="modal-title" id="chartModalInfoLabel">Average monthly sea ice concentrations for all years</h4>
+						</div>
+						<div class="modal-body">
+							<p>This graph shows sea ice concentrations
+							(percent ice cover) for your chosen month at
+							the location you clicked on the map. Use the
+							&ldquo;select by date&rdquo; menu at upper left to choose
+							another month to view. No need to change the
+							year because you are already viewing the entire
+							time series of data.</p>
+							<p><a href="/glossary.jade">Learn more about
+							how sea ice concentrations are defined and
+							described.</a></p>
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-default btn-sm" data-dismiss="modal" type="button">Got it!</button>
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+
 			<div id="chart"></div>
 		</div>
 		<div id="graphicWrapper" style="display: none">
-			<h3>Open water over time</h3>
-				<p>This interactive chart lets you explore historical ice concentrations at the point you selected on the map.  By adjusting the threshold slider below, the chart will update to show bars where the ice concentration <strong>exceeds</strong> the % ice threshold you have selected.</p>
-				<div>
+			<h4>Open water over time (gray bars = ice cover)</h4>
+
+			<p>Sea ice concentrations for the entire time series at your
+			location. Use the slider-bar control to change the minimum
+			threshold.  <button id="chartModalInfoButton2" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#chartModalInfo2"> More information&hellip; </button>  </p>
+
+
+
+				<div class="modal fade" id="chartModalInfo2" tabindex="-1">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button class="close" data-dismiss="modal"
+								type="button">×</button>
+
+								<h4 class="modal-title" id="chartModalInfo2Label">Open water for all years (gray bars = ice over)</h4>
+							</div>
+
+							<div class="modal-body">
+								<p>This graph shows historical sea ice
+								concentrations (percent ice cover) for the
+								entire time series at the point you clicked on
+								the map. The gray bars initially show ice cover
+								that exceeds the default threshold
+								concentration of 30% for your location. Move
+								the blue dot on the slider bar below to make
+								the chart show where the ice concentration
+								exceeds your selected threshold.</p>
+
+								<p><a href="/glossary.jade">Learn more about
+								how sea ice concentrations are defined and
+								described.</a></p>
+							</div>
+
+							<div class="modal-footer">
+								<button class="btn btn-default btn-sm" data-dismiss="modal" type="button">Got it!</utton>
+							</div>
+						</div>
+					</div>
+				</div>
+			<div>
 				<input id="thresholdSlider" type="text" data-slider-id="thresholdSliderControl" data-slider-min="1" data-slider-max="100" data-slider-step="1" data-slider-value="30"/>
 	      			<span>&nbsp;Threshold: <span id="thresholdSliderLabel">30</span>&#37;</span>
-	      			</div>
-	      			<div id="thresholdTarget"></div>
+      			</div>
+      			<div id="thresholdTarget"></div>
 			<div id="openWaterGraphic"></div>
 		</div>
 	</div>
