@@ -31,7 +31,7 @@ client.Views.MapView = Backbone.View.extend({
 
 		this.map = new OpenLayers.Map({
 			div: 'map',
-			//controls: [],
+			controls: [],
 			allOverlays: true,
 			projection: new OpenLayers.Projection('EPSG:3857')
 		});
@@ -55,10 +55,6 @@ client.Views.MapView = Backbone.View.extend({
 		this.hasRendered = true;
 		
 		this.markers = new OpenLayers.Layer.Markers("Markers");
-
-		var click = new OpenLayers.Control.Click();
-                this.map.addControl(click);
-                click.activate();
 
 		return this.baseLayerLoadPromise.promise;
 	},
@@ -156,7 +152,7 @@ client.Views.MapView = Backbone.View.extend({
 			this.createClickHandler();
 		}
 		
-        	this.map.controls[0].activate();
+		this.map.controls[0].activate();
 	},
 	
 	deactivateClickHandler: function() {
