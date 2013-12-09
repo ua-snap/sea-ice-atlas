@@ -5,7 +5,7 @@
 			<div data-clampedwidth=".col-md-3" id="controlsWrapper">
 				<a id="loadingMap" class="list-group-item">
 					<h4 class="list-group-item-header">
-						<img src="img/ajax-loader.gif" /> Loading map...&hellip;
+						<img src="img/ajax-loader.gif" /> Loading map&nbsp;...&hellip;
 					</h4>
 				</a>
 				<a id="mapControls" class="list-group-item active" style="display: none"></a>
@@ -34,14 +34,10 @@
 				<img id="legend" src="img/legend2.png" />
 			</div>
 		</div>
-		<div id="chartWrapper" style="display: none">
-			<h4>Average monthly sea ice concentrations for all years</h4>
+		<div id="chartWrapper" style="display: none;">
+			<h4>Average monthly sea ice concentrations for all years&nbsp;&nbsp;<button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#chartModalInfo"> More info</button></h4>
 				<p>Percent ice cover for your chosen month at your location.
-				Use &ldquo;select by date&rdquo; at upper left to choose another month.</p>
-
-			<button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#chartModalInfo">
-			  More information&hellip;
-			</button>
+				Use &ldquo;select by date&rdquo; at left to choose another month.</p>
 
 			<div class="modal fade" id="chartModalInfo" tabindex="-1">
 				<div class="modal-dialog">
@@ -54,16 +50,16 @@
 							<p>This graph shows sea ice concentrations
 							(percent ice cover) for your chosen month at
 							the location you clicked on the map. Use the
-							&ldquo;select by date&rdquo; menu at upper left to choose
+							&ldquo;select by date&rdquo; menu at left to choose
 							another month to view. No need to change the
 							year because you are already viewing the entire
 							time series of data.</p>
-							<p><a href="/glossary.jade">Learn more about
+							<p><a href="/glossary">Learn more about
 							how sea ice concentrations are defined and
 							described.</a></p>
 						</div>
 						<div class="modal-footer">
-							<button class="btn btn-default btn-sm" data-dismiss="modal" type="button">Got it!</button>
+							<button class="btn btn-warning btn-sm" data-dismiss="modal" type="button">Got it!</button>
 						</div>
 					</div><!-- /.modal-content -->
 				</div><!-- /.modal-dialog -->
@@ -71,12 +67,10 @@
 
 			<div id="chart"></div>
 		</div>
-		<div id="graphicWrapper" style="display: none">
-			<h4>Open water over time (gray bars = ice cover)</h4>
+		<div id="graphicWrapper" style="display: none; margin-top:50px;">
+			<h4>Open water for all years (gray bars = ice cover)&nbsp;&nbsp;<button id="chartModalInfoButton2" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#chartModalInfo2">More info</button> </h4>
 
-			<p>Sea ice concentrations for the entire time series at your
-			location. Use the slider-bar control to change the minimum
-			threshold.  <button id="chartModalInfoButton2" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#chartModalInfo2"> More information&hellip; </button>  </p>
+			<p>Ice concentrations at your location for the entire time series. Use slider-bar control to change the minimum	threshold.   </p>
 
 
 
@@ -86,8 +80,9 @@
 							<div class="modal-header">
 								<button class="close" data-dismiss="modal"
 								type="button">×</button>
-
-								<h4 class="modal-title" id="chartModalInfo2Label">Open water for all years (gray bars = ice over)</h4>
+								<p>&nbsp;</p>
+								<p>&nbsp;</p>
+								<h4 class="modal-title" id="chartModalInfo2Label">Open water for all years (gray bars = ice cover)</h4>
 							</div>
 
 							<div class="modal-body">
@@ -95,19 +90,19 @@
 								concentrations (percent ice cover) for the
 								entire time series at the point you clicked on
 								the map. The gray bars initially show ice cover
-								that exceeds the default threshold
+								that exceeds the default threshold (limit) of
 								concentration of 30% for your location. Move
 								the blue dot on the slider bar below to make
 								the chart show where the ice concentration
 								exceeds your selected threshold.</p>
 
-								<p><a href="/glossary.jade">Learn more about
+								<p><a href="/glossary">Learn more about
 								how sea ice concentrations are defined and
 								described.</a></p>
 							</div>
 
 							<div class="modal-footer">
-								<button class="btn btn-default btn-sm" data-dismiss="modal" type="button">Got it!</utton>
+								<button class="btn btn-warning btn-sm" data-dismiss="modal" type="button">Got it!</utton>
 							</div>
 						</div>
 					</div>
