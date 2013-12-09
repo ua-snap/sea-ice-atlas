@@ -31,8 +31,8 @@ client.Views.MapView = Backbone.View.extend({
 
 		this.map = new OpenLayers.Map({
 			div: 'map',
-			//controls: [],
 			allOverlays: true,
+			zoomMethod: null,
 			projection: new OpenLayers.Projection('EPSG:3857')
 		});
 
