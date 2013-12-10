@@ -28,7 +28,7 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 		// Don't do any work if we're already in the desired mode.
 		if(mode == this.mapMode) { return; }
 		this.mapMode = mode;
-		this.mapAnimatorView.resetLayers();
+		//this.mapAnimatorView.resetLayers();
 
 		switch(mode) {
 
