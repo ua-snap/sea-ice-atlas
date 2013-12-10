@@ -71,7 +71,6 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 
 	showLayer: function(layerIndex) {
 		if( 'undefined' === typeof this.layers[this.model.layers[layerIndex]]) {
-			console.log('+++ Asked to show undefined layer: ' + layerIndex);
 			return;
 		}
 		$('#mapTitle').text('Historical Sea Ice Concentration, ' + moment(this.model.layers[layerIndex], 'YYYY_MM').format('MMMM YYYY'));
@@ -111,7 +110,6 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 
 	hideLayer: function(layerIndex) {
 		if( 'undefined' === typeof this.layers[this.model.layers[layerIndex]]) {
-			console.log('--- Asked to HIDE undefined layer: ' + layerIndex);
 			return;
 		}
 		// Hide, but don't destroy yet.
