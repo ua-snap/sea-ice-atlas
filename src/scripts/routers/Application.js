@@ -33,7 +33,7 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 		switch(mode) {
 
 			case 'map':
-
+					
 					$('#mapControls').addClass('active');
 					$('#mapAnimationControls').removeClass('active');
 
@@ -63,6 +63,9 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 							_.bind(this.mapView.drawMarker, this.mapView)
 						, 500, true)
 					, this.mapView);
+
+					// Reload the map, if needed.
+					this.mapModel.trigger('change:month');
 				
 				break;
 		

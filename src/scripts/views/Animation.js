@@ -38,7 +38,6 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 	resetLayers: function() {
 		var k = this.map.getLayersBy('isBaseLayer', false);
 		_.each(k, _.bind(function(e, i, l) {
-			console.log(e);
 			this.map.removeLayer(e);
 		}, this));
 	},

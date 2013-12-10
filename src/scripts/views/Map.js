@@ -89,17 +89,16 @@ client.Views.MapView = Backbone.View.extend({
 				visibility: true
 			}
 		);
-console.log('adding layer!')
+
 		this.map.addLayers([this.layer[layerName]]);
-		this.layer[layerName].setOpacity(0);
 		this.layer[layerName].events.register('loadend', this, function displayLoadedLayer(layer) {
 
 			layerLoadedPromise.resolve();
-			this.layer[layerName].setOpacity(1);
 
 			if( 
 				false === _.isUndefined(oldLayer)
 				&& false === _.isUndefined(this.layer[oldLayer])
+				&& false === (layerName === oldLayer)
 			) {
 				this.layer[oldLayer].destroy();
 			}
