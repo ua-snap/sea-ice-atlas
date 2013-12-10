@@ -182,7 +182,6 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 
 			// Complete event binding + rebuilding GUI.
 			this.setMapMode('map');
-			this.mapView.loadLayer(this.mapModel.get('year'), this.mapModel.get('month'));
 
 			mapRendered.resolve();
 
