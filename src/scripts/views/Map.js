@@ -76,7 +76,7 @@ client.Views.MapView = Backbone.View.extend({
 		var layerName = this.model.get('year') + '_' + this.model.get('month');
 
 		this.layer[layerName] = new OpenLayers.Layer.WMS(
-			'Cache WMS Sea Ice Atlas',
+			layerName,
 			'http://tiles.snap.uaf.edu/tilecache/tilecache.py/2.11.0/',
 			{
 				projection: 'EPSG:3857',
@@ -145,7 +145,7 @@ client.Views.MapView = Backbone.View.extend({
 
 		if(true === _.isUndefined(this.markers)) {
 			this.markers = new OpenLayers.Layer.Markers("Markers");
-                	this.click.activate();
+	                	this.click.activate();
 		}
 
 	},
@@ -160,7 +160,7 @@ client.Views.MapView = Backbone.View.extend({
 	
 	deactivateClickHandler: function() {
 		this.markers.clearMarkers();
-        	this.map.controls[0].deactivate();
+	        	this.map.controls[0].deactivate();
 	},
 	
 	coordinateClicked: _.debounce(function(e) {		
