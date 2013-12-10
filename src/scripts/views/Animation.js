@@ -36,13 +36,11 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 	},
 
 	resetLayers: function() {
-		for( var i = 1; i <= this.map.layers.length; i++ ) {
-			// If the layer is defined and can be purged, destroy it.
-			if( false === _.isUndefined(this.map.layers[i])) {
-				this.map.layers[i].setOpacity(0);
-				this.map.layers[i].destroy();
-			}
-		}
+		var k = this.map.getLayersBy('isBaseLayer', false);
+		_.each(k, _.bind(function(e, i, l) {
+			console.log(e);
+			this.map.removeLayer(e);
+		}, this));
 	},
 
 	setMode: _.debounce(function(mode) {

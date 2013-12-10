@@ -42,10 +42,13 @@ client.Views.MapView = Backbone.View.extend({
 			e.disableZoomWheel();
 		});
 
-		var gmap = new OpenLayers.Layer.Google("Google Terrain", {visibility: true});
+		var gmap = new OpenLayers.Layer.Google("Google Terrain", {
+			visibility: true,
+			isBaseLayer: true
+		});
 		
 		this.map.addLayers([gmap]);
-		this.map.setBaseLayer(gmap);
+		this.map.layers[0].isBaseLayer = true;
 
 		google.maps.event.addListener(gmap.mapObject, 'tilesloaded', _.bind(function() {
 			this.baseLayerLoadPromise.resolve();
@@ -86,7 +89,7 @@ client.Views.MapView = Backbone.View.extend({
 				visibility: true
 			}
 		);
-
+console.log('adding layer!')
 		this.map.addLayers([this.layer[layerName]]);
 		this.layer[layerName].setOpacity(0);
 		this.layer[layerName].events.register('loadend', this, function displayLoadedLayer(layer) {

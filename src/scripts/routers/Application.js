@@ -28,7 +28,7 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 		// Don't do any work if we're already in the desired mode.
 		if(mode == this.mapMode) { return; }
 		this.mapMode = mode;
-		//this.mapAnimatorView.resetLayers();
+		this.mapAnimatorView.resetLayers();
 
 		switch(mode) {
 
@@ -138,7 +138,7 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 			year: year,
 			month: month
 		}, {silent:true}); // silent because otherwise it triggers a change event, unwanted here.
-		this.renderMap().then(_bind(function() {
+		this.renderMap().then(_.bind(function() {
 			this.mapModel.trigger('change:month');
 		}, this));
 	},
