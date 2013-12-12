@@ -46,7 +46,7 @@ client.Views.ChartView = Backbone.View.extend({
                                 type: 'line'
                         },
                         title: {
-                                text: 'Sea Ice Concentration for ' + moment(this.model.get('month'), 'MM').format('MMMM') + ' at ' + this.formatCoord(this.model.get('lat')) + '°N ' + this.formatCoord(this.model.get('lon')) + '°W',
+                                text: 'Sea ice concentration for ' + moment(this.model.get('month'), 'MM').format('MMMM') + ' at ' + this.formatCoord(this.model.get('lat')) + '°N ' + this.formatCoord(this.model.get('lon')) + '°W',
                                 x: -20,
                                 margin: 20
                         },
@@ -73,7 +73,7 @@ client.Views.ChartView = Backbone.View.extend({
                                 enabled: false
                         },
                         series: [{
-                        		name: 'Concentration',
+                        		name: 'concentration',
                                 data: this.values
                         }],
                         credits: {
@@ -84,7 +84,7 @@ client.Views.ChartView = Backbone.View.extend({
 		// Update text in sidebar
 		$('#concentrationGraphControls p').text(
 			_.template(
-				'<%= month %> Average Concentration',
+				'Go to <%= month %> ice concentration',
 				{ month: moment(this.model.get('month'), 'MM').format('MMMM') }
 			)
 		);

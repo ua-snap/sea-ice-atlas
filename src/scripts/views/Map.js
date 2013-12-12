@@ -103,7 +103,7 @@ client.Views.MapView = Backbone.View.extend({
 				this.layer[oldLayer].destroy();
 			}
 	
-			$('#mapTitle').text('Historical Sea Ice Concentration, ' + moment(_.template('<%= year %>-<%= month %>', this.model.toJSON()), 'YYYY-MM').format('MMMM YYYY'));
+			$('#mapTitle').text('Historical sea ice concentration, ' + moment(_.template('<%= year %>-<%= month %>', this.model.toJSON()), 'YYYY-MM').format('MMMM YYYY'));
 
 		});
 		this.setCurrentLayer(this.model.get('year'), this.model.get('month'));
