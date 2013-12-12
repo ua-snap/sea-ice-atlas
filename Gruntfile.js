@@ -67,6 +67,18 @@ neuter: {
 	}
 },
 
+shell: {
+	openlayers: {
+		options: {
+			stdout: true,
+			execOptions: {
+				cwd: 'bower_components/openlayers/build'
+			}
+		},
+		command: './build.py full'
+	}
+},
+
 // This copies out the "main" bower files -- the ones to be consumed by our application --
 // from the bower_components directory into the build directory where we'll concat and
 // minify them.
@@ -90,8 +102,8 @@ concat: {
 			files: {
 				// We're enumerating these manually to ensure dependencies go OK.  Bad + good.
 				'build/bower.js': [
-				'build/lib/jquery/**/*.js',
-				'build/lib/bootstrap/**/*.js',
+					'build/lib/jquery/**/*.js',
+					'build/lib/bootstrap/**/*.js',
 					'build/lib/underscore/underscore-min.js', // Neither Backbone nor Underscore really place nice with Bower.
 					'build/lib/backbone/backbone-min.js', // depends on Underscore.
 					'build/lib/momentjs/moment.js', // depends on Underscore.
@@ -99,7 +111,8 @@ concat: {
 					'build/lib/highcharts/highcharts.js',
 					'build/lib/proj4/proj4.js',
 					'build/lib/jquery.scrollTo/jquery.scrollTo.js',
-					'build/lib/d3/d3.js'
+					'build/lib/d3/d3.js',
+					'build/lib/openlayers/build/OpenLayers.js'
 					]
 				}
 			},
@@ -205,6 +218,7 @@ grunt.registerTask('delayed-livereload', 'Live reload after the node server has 
 
 grunt.loadNpmTasks('grunt-develop');
 grunt.loadNpmTasks('grunt-neuter');
+grunt.loadNpmTasks('grunt-shell');
 grunt.loadNpmTasks('grunt-contrib-watch');
 grunt.loadNpmTasks('grunt-bower-task');
 grunt.loadNpmTasks('grunt-contrib-clean');
@@ -213,7 +227,7 @@ grunt.loadNpmTasks('grunt-contrib-concat');
 grunt.loadNpmTasks('grunt-contrib-copy');
 grunt.loadNpmTasks('grunt-contrib-jst');
 
-grunt.registerTask('default', ['clean', 'less', 'bower', 'jst', 'neuter', 'concat', 'copy', 'develop', 'watch']);
+grunt.registerTask('default', ['clean', 'less', 'bower', 'jst', 'neuter', 'shell', 'concat', 'copy', 'develop', 'watch']);
 
 
 };
