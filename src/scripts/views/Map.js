@@ -31,8 +31,9 @@ client.Views.MapView = Backbone.View.extend({
 
 		this.map = new OpenLayers.Map({
 			div: 'map',
-			//controls: [],
 			allOverlays: true,
+			zoomMethod: null,
+			controls: [],
 			projection: new OpenLayers.Projection('EPSG:3857')
 		});
 
@@ -41,10 +42,13 @@ client.Views.MapView = Backbone.View.extend({
 			e.disableZoomWheel();
 		});
 
-		var gmap = new OpenLayers.Layer.Google("Google Terrain", {visibility: true});
+		var gmap = new OpenLayers.Layer.Google("Google Terrain", {
+			visibility: true,
+			isBaseLayer: true
+		});
 		
 		this.map.addLayers([gmap]);
-		this.map.setBaseLayer(gmap);
+		this.map.layers[0].isBaseLayer = true;
 
 		google.maps.event.addListener(gmap.mapObject, 'tilesloaded', _.bind(function() {
 			this.baseLayerLoadPromise.resolve();
@@ -55,10 +59,6 @@ client.Views.MapView = Backbone.View.extend({
 		this.hasRendered = true;
 		
 		this.markers = new OpenLayers.Layer.Markers("Markers");
-
-		var click = new OpenLayers.Control.Click();
-                this.map.addControl(click);
-                click.activate();
 
 		return this.baseLayerLoadPromise.promise;
 	},
@@ -76,7 +76,7 @@ client.Views.MapView = Backbone.View.extend({
 		var layerName = this.model.get('year') + '_' + this.model.get('month');
 
 		this.layer[layerName] = new OpenLayers.Layer.WMS(
-			'Cache WMS Sea Ice Atlas',
+			layerName,
 			'http://tiles.snap.uaf.edu/tilecache/tilecache.py/2.11.0/',
 			{
 				projection: 'EPSG:3857',
@@ -91,15 +91,14 @@ client.Views.MapView = Backbone.View.extend({
 		);
 
 		this.map.addLayers([this.layer[layerName]]);
-		this.layer[layerName].setOpacity(0);
 		this.layer[layerName].events.register('loadend', this, function displayLoadedLayer(layer) {
 
 			layerLoadedPromise.resolve();
-			this.layer[layerName].setOpacity(1);
 
 			if( 
 				false === _.isUndefined(oldLayer)
 				&& false === _.isUndefined(this.layer[oldLayer])
+				&& false === (layerName === oldLayer)
 			) {
 				this.layer[oldLayer].destroy();
 			}
@@ -146,7 +145,7 @@ client.Views.MapView = Backbone.View.extend({
 
 		if(true === _.isUndefined(this.markers)) {
 			this.markers = new OpenLayers.Layer.Markers("Markers");
-                	this.click.activate();
+	                	this.click.activate();
 		}
 
 	},
@@ -156,12 +155,12 @@ client.Views.MapView = Backbone.View.extend({
 			this.createClickHandler();
 		}
 		
-        	this.map.controls[0].activate();
+		this.map.controls[0].activate();
 	},
 	
 	deactivateClickHandler: function() {
 		this.markers.clearMarkers();
-        	this.map.controls[0].deactivate();
+	        	this.map.controls[0].deactivate();
 	},
 	
 	coordinateClicked: _.debounce(function(e) {		

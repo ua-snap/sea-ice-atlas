@@ -22,7 +22,6 @@ client.Views.ChartView = Backbone.View.extend({
 			$('#concentrationGraphControls').show('slow');
 
 			if( false === this.hasRendered ) {
-				console.log('binding chart scroll')
 				$('#concentrationGraphControls').on('click', function() {
 					$.scrollTo($('#chartWrapper'), 500, {
 						offset: -80

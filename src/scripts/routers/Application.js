@@ -33,7 +33,7 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 		switch(mode) {
 
 			case 'map':
-
+					
 					$('#mapControls').addClass('active');
 					$('#mapAnimationControls').removeClass('active');
 
@@ -63,6 +63,9 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 							_.bind(this.mapView.drawMarker, this.mapView)
 						, 500, true)
 					, this.mapView);
+
+					// Reload the map, if needed.
+					this.mapModel.trigger('change:month');
 				
 				break;
 		
@@ -125,8 +128,10 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 			lon: lon,
 			concentration: concentration
 		}, {silent:true}); // silent because otherwise it triggers a change event, unwanted here.
-		this.renderMap();
-		this.mapModel.trigger('change:lat'); // Force render to reveal charts
+		this.renderMap().then(_.bind(function() {
+			this.mapModel.trigger('change:lat'); // Force render to reveal charts
+		}, this));
+		
 	},
 
 	// User arrived via bookmark
@@ -136,7 +141,9 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 			year: year,
 			month: month
 		}, {silent:true}); // silent because otherwise it triggers a change event, unwanted here.
-		this.renderMap();
+		this.renderMap().then(_.bind(function() {
+			this.mapModel.trigger('change:month');
+		}, this));
 	},
 
 	checkIfRenderLayout: function() {
@@ -147,6 +154,8 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 	},
 
 	renderMap: function() {
+
+		var mapRendered = Q.defer();
 
 		// mapView.render() returns a promise on initial run.  TODO: this may break if base map has already 
 		// rendered, fix/defend.
@@ -173,10 +182,12 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 
 			// Complete event binding + rebuilding GUI.
 			this.setMapMode('map');
-			this.mapView.loadLayer(this.mapModel.get('year'), this.mapModel.get('month'));
+
+			mapRendered.resolve();
 
 		}, this));
 
+		return mapRendered.promise;
 	},
 
 	// Flag to indicate if the main app layout has rendered or not

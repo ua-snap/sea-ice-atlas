@@ -232,6 +232,19 @@ ul.nav.navbar-nav li a:hover, ul.nav.navbar-nav li a:focus  {
 	margin-bottom: 2em;
 }
 
+.slider-track {
+	background-color: #878787;
+	background-image: -moz-linear-gradient(top, #858585, #898989);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#858585), to(#898989));
+	background-image: -webkit-linear-gradient(top, #858585, #898989);
+	background-image: -o-linear-gradient(top, #858585, #898989);
+	background-image: linear-gradient(to bottom, #858585, #898989);
+}
+
+.slider-handle {
+	opacity: 1.0;
+}
+
 // Used in about.jade
 .about .panel {
 	width: 40ex;
@@ -354,7 +367,7 @@ p {
 		z-index: 1000;
 	}
 
-	// Used in sidebar
+	// Sidebar formatting
 	.affix {
 		position: fixed;
 		margin-top: 30px;
@@ -366,6 +379,23 @@ p {
 
 	.affix-bottom {
 		position: absolute;
+	}
+
+	// When on a narrow screen, the sidebar needs to be in normal flow always
+	/* Medium devices (desktops, 992px and up) */
+@media (max-width: @screen-sm-max) {
+		.affix {
+			position: static;
+			margin-top: 1em;
+		}
+
+		.affix-top {
+			margin-top: 1em;
+		}
+
+		.affix-bottom {
+			position: static;
+		}
 	}
 
 	#concentrationGraphControls, #thresholdGraphicControls {

@@ -36,13 +36,10 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 	},
 
 	resetLayers: function() {
-		for( var i = 1; i <= this.map.layers.length; i++ ) {
-			// If the layer is defined and can be purged, destroy it.
-			if( false === _.isUndefined(this.map.layers[i])) {
-				this.map.layers[i].setOpacity(0);
-				this.map.layers[i].destroy();
-			}
-		}
+		var k = this.map.getLayersBy('isBaseLayer', false);
+		_.each(k, _.bind(function(e, i, l) {
+			this.map.removeLayer(e);
+		}, this));
 	},
 
 	setMode: _.debounce(function(mode) {
@@ -74,7 +71,6 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 
 	showLayer: function(layerIndex) {
 		if( 'undefined' === typeof this.layers[this.model.layers[layerIndex]]) {
-			console.log('+++ Asked to show undefined layer: ' + layerIndex);
 			return;
 		}
 		$('#mapTitle').text('Historical Sea Ice Concentration, ' + moment(this.model.layers[layerIndex], 'YYYY_MM').format('MMMM YYYY'));
@@ -114,7 +110,6 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 
 	hideLayer: function(layerIndex) {
 		if( 'undefined' === typeof this.layers[this.model.layers[layerIndex]]) {
-			console.log('--- Asked to HIDE undefined layer: ' + layerIndex);
 			return;
 		}
 		// Hide, but don't destroy yet.
