@@ -101,7 +101,12 @@ drawGraphic: function() {
 
 	var format = "%b";
 
-	var gantt = d3.gantt().taskTypes(taskNames).taskStatus(taskStatus).tickFormat(format);
+	var size = {
+		width: $('#thresholdTarget').width() - 40,
+		height: $('#thresholdTarget').width() * 0.625
+	}
+
+	var gantt = d3.gantt(size).taskTypes(taskNames).taskStatus(taskStatus).tickFormat(format);
 	gantt(tasks);
 
 },
