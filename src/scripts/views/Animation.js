@@ -81,7 +81,7 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 		this.promises[this.model.layers[layerIndex]] = Q.defer();
 
 		this.layers[this.model.layers[layerIndex]] = new OpenLayers.Layer.WMS(
-			'Cache WMS Sea Ice Atlas',
+			this.model.layers[layerIndex],
 			'http://tiles.snap.uaf.edu/tilecache/tilecache.py/2.11.0/',
 			{
 				layers: 'seaice_conc_sic_mean_pct_weekly_ak_' + this.model.layers[layerIndex] + '_average',
@@ -109,12 +109,12 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 	},
 
 	hideLayer: function(layerIndex) {
+
 		if( 'undefined' === typeof this.layers[this.model.layers[layerIndex]]) {
 			return;
 		}
-		// Hide, but don't destroy yet.
-		// Timeout is to allow a bit of overlap with the newly-shown tile, to reduce flicker.
-		setTimeout( this.layers[this.model.layers[layerIndex]].setOpacity(0), 1000);
+
+		 this.layers[this.model.layers[layerIndex]].setOpacity(0);
 	},
 
 	showBuffering: function() {
