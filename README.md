@@ -38,7 +38,7 @@ Then, edit the ```config.json``` file to specify port & database connection.
 
 ### Building the project
 
-*Building the project* means being able to "compile" all the source into a web app you can use and run.  To run a development environment for the first time, the OpenLayers build process needs to run, so use: ```grunt openlayers```.  Afterwards (unless you've updated OpenLayers through Bower) you can just use ```grunt```.
+*Building the project* means being able to "compile" all the source into a web app you can use and run.  To run a development environment for the first time, the OpenLayers build process needs to run, so use: ```grunt build```.  Afterwards (unless you've updated OpenLayers through Bower) you can just use ```grunt```.
 
 Important stuff grunt is doing for us:
 
@@ -46,6 +46,25 @@ Important stuff grunt is doing for us:
  * Takes all LESS code (ours and others) and compiles it to a single file.
 
 *One nice but flaky thing* is that when you save changes to files, the build system will try and reload your current browser page.  When this works, it's wicked magic because it's like "live editing."  The sad news is that sometimes it's late/slow and won't work.  In some cases, you need to manually retrigger Grunt so it is _definitely_ rebuilding all the styles + code.
+
+### Deploying
+
+```forever``` is used to run the process, roughly along these lines:
+
+```bash
+cd /path/to/project
+forever start --append -l /var/log/hsia/forever.log -o /var/log/hsia/out.log -e /var/log/hsia/error.log ./app.js 
+```
+
+To update the server:
+
+```bash
+cd /path/to/project
+git pull
+forever restart 0
+```
+
+...where 0 is the number corresponding to the associated process to restart.  ```forever list``` first if there are multiple processes running on this server to ensure you've got the right number.
 
 ### Important files, locations
 
