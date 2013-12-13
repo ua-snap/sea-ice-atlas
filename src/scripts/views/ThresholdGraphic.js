@@ -40,7 +40,7 @@ client.Views.ThresholdGraphicView = Backbone.View.extend({
 					offset: -80
 				} );
 			});
-			this.hasRendered==true
+			this.hasRendered = true;
 		
 		}
 		this.loadData()
@@ -48,7 +48,6 @@ client.Views.ThresholdGraphicView = Backbone.View.extend({
 },
 
 drawGraphic: function() {
-	$('#thresholdTarget').empty()
 
 	var tasks = []
 	var datesUsed = {};
@@ -82,8 +81,6 @@ drawGraphic: function() {
 		});
 	}
 
-
-
 	var taskStatus = {
 	    "SUCCEEDED" : "bar",
 	};
@@ -105,6 +102,9 @@ drawGraphic: function() {
 		width: $('#thresholdTarget').width() - 40,
 		height: $('#thresholdTarget').width() * 0.625
 	}
+
+	// To prevent a page scroll jump upon resizing and/or updating the chart
+	$('#thresholdTarget').css('min-height', size.height).empty();	
 
 	var gantt = d3.gantt(size).taskTypes(taskNames).taskStatus(taskStatus).tickFormat(format);
 	gantt(tasks);
