@@ -36,6 +36,7 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 					
 					$('#mapControls').addClass('active');
 					$('#mapAnimationControls').removeClass('active');
+					$('#plottedDataHeader').hide();
 
 					this.mapView.activateClickHandler();
 
@@ -77,6 +78,8 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 		
 			case 'animation':
 			
+				$('#plottedDataHeader').hide();
+
 				// Scroll to map
 				$.scrollTo( $('#mapGroupWrapper'), 500, {
 					offset: -80
