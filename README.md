@@ -61,6 +61,7 @@ To update the server:
 ```bash
 cd /path/to/project
 git pull
+grunt build
 forever restart 0
 ```
 
