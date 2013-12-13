@@ -183,11 +183,19 @@ ul.nav.navbar-nav li a:hover, ul.nav.navbar-nav li a:focus  {
 //used in explore.jade and associated .ejs files
 .list-group-item-text p, label {
 	margin-bottom: 0;
-	color: black;
+	color: #3E454C;
 }
 .list-group-item-text small {
 	margin-bottom: 40px;
-	color: black;
+	color: #3E454C;
+}
+.glyphicon-circle-arrow-down {  //styles the down arrow glyphicons 
+	font-size: 175%;
+	color: #ff7b2b;
+	vertical-align: middle;
+}
+.jumptograph {  //centers text below down arrow glyphicons
+	margin-bottom: 0;
 }
 .btn-group {
 	margin-top: 5px;
@@ -414,12 +422,15 @@ p {
 	}
 
 	#mapControls_latlon label {
-		width: 30px;
+		width: 25px;
 	}
 
 	#mapControls_latlon #lat, #mapControls_latlon #lon {
-		width: 60px;
+		width: 65px;
 		text-align: right;
+		border-radius: 8px;
+		padding-right: 5px;
+		margin-left: 0;
 	}
 
 	#sequentialControls {
@@ -452,8 +463,8 @@ p {
 	
 	path, line {
 		fill: none;
-		stroke: #b0c6d9;
-		color: #b0c6d9;
+		stroke: rgb(171, 171, 183);
+		color: rgb(171, 171, 183);
 		shape-rendering: crispEdges;
 	}
 

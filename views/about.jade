@@ -112,9 +112,10 @@ block content
 			[ 'NSIDC', 'NSIDC Nimbus-7 SMMR Arctic Sea Ice Concentrations',new Date(1978, 1, 0),new Date(2013, 12, 0) ]]);
 
 			var options = {
-			timeline: { showRowLabels: true, singleColor: '#7ECEFD',
+			timeline: { showRowLabels: true, singleColor: '#7ecefd', colorByRowLabel: true,
 			rowLabelStyle: {fontName: 'Open Sans', fontSize: 13, color: '#3E454C' },
-				barLabelStyle: { fontName: 'Open Sans', fontSize: 11 } }
+				barLabelStyle: { fontName: 'Open Sans', fontSize: 11 } },
+			backgroundColor: '#E8F1FA'
 			};
 
 			chart.draw(dataTable, options);
