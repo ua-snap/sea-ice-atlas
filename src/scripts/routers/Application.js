@@ -66,7 +66,13 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 
 					// Reload the map, if needed.
 					this.mapModel.trigger('change:month');
-				
+
+					$(window).resize(
+						_.debounce(
+							_.bind(this.thresholdGraphicView.drawGraphic, this.thresholdGraphicView)
+						, 100, true)
+					);
+
 				break;
 		
 			case 'animation':
