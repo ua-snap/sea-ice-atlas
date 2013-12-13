@@ -36,6 +36,14 @@ client.Views.ChartView = Backbone.View.extend({
 	},
 
         drawCharts: function() {
+		$('#plottedDataHeader').text(_.template('Plotted data for selected location: <%= lat %>°N <%= lon %>°W', {
+			lat: this.formatCoord(this.model.get('lat')),
+			lon: this.formatCoord(this.model.get('lon'))
+		}));
+
+		$('#chartTitle').text(_.template('Sea ice concentration for <%= month %>', {
+			month: moment(this.model.get('month'), 'MM').format('MMMM')
+		}));
 
 		Highcharts.setOptions({
 			colors: ['#ABABB7']
@@ -45,11 +53,7 @@ client.Views.ChartView = Backbone.View.extend({
                         chart: {
                                 type: 'line'
                         },
-                        title: {
-                                text: 'Sea ice concentration for ' + moment(this.model.get('month'), 'MM').format('MMMM') + ' at ' + this.formatCoord(this.model.get('lat')) + '°N ' + this.formatCoord(this.model.get('lon')) + '°W',
-                                margin: 20,
-                                align: 'left'
-                        },
+                        title: null,
                         xAxis: {
                                 categories: this.dates,
                                 tickInterval: 5
