@@ -102,7 +102,8 @@ client.Views.MapView = Backbone.View.extend({
 			) {
 				this.layer[oldLayer].destroy();
 			}
-	
+			this.markers.setZIndex(1000);
+
 			$('#mapTitle').text('Historical sea ice concentration, ' + moment(_.template('<%= year %>-<%= month %>', this.model.toJSON()), 'YYYY-MM').format('MMMM YYYY'));
 
 		});
