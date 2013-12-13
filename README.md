@@ -38,7 +38,7 @@ Then, edit the ```config.json``` file to specify port & database connection.
 
 ### Building the project
 
-*Building the project* means being able to "compile" all the source into a web app you can use and run.  To run a development environment, it's ```grunt ```.
+*Building the project* means being able to "compile" all the source into a web app you can use and run.  To run a development environment for the first time, the OpenLayers build process needs to run, so use: ```grunt openlayers```.  Afterwards (unless you've updated OpenLayers through Bower) you can just use ```grunt```.
 
 Important stuff grunt is doing for us:
 

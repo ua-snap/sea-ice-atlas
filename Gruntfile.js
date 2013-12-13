@@ -227,7 +227,8 @@ grunt.loadNpmTasks('grunt-contrib-concat');
 grunt.loadNpmTasks('grunt-contrib-copy');
 grunt.loadNpmTasks('grunt-contrib-jst');
 
-grunt.registerTask('default', ['clean', 'less', 'bower', 'jst', 'neuter', 'shell', 'concat', 'copy', 'develop', 'watch']);
+grunt.registerTask('default', ['clean', 'less', 'bower', 'jst', 'neuter', 'concat', 'copy', 'develop', 'watch']);
+grunt.registerTask('openlayers', ['clean', 'less', 'shell', 'bower', 'jst', 'neuter', 'concat', 'copy', 'develop', 'watch']);
 
 
 };
