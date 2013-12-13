@@ -36,7 +36,7 @@ client.Views.ChartView = Backbone.View.extend({
 	},
 
         drawCharts: function() {
-		$('#plottedDataHeader').text(_.template('Plotted data for selected location: <%= lat %>°N <%= lon %>°W', {
+		$('#plottedDataHeader').show().html(_.template('Plotted data for selected location: <%= lat %>&deg;N <%= lon %>&deg;W', {
 			lat: this.formatCoord(this.model.get('lat')),
 			lon: this.formatCoord(this.model.get('lon'))
 		}));
