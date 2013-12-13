@@ -84,7 +84,7 @@ client.Views.ChartView = Backbone.View.extend({
 		// Update text in sidebar
 		$('#concentrationGraphControls p').text(
 			_.template(
-				'Go to <%= month %> ice concentration',
+				'Go to ice concentration for <%= month %>',
 				{ month: moment(this.model.get('month'), 'MM').format('MMMM') }
 			)
 		);
