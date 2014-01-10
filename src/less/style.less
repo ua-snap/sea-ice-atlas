@@ -13,16 +13,16 @@ body {
   float:right;
   padding-bottom: 5px;
   li {
-    display:inline;
-    list-style-type:none;
-    padding:0 25px 0 -35px;
+	display:inline;
+	list-style-type:none;
+	padding:0 25px 0 -35px;
   }
   a img {
-    opacity:0.45;
-    -webkit-transition:opacity 0.2s ease-in-out;
-    -moz-transition:opacity 0.2s ease-in-out;
-    -o-transition:opacity 0.2s ease-in-out;
-    transition:opacity 0.2s ease-in-out;
+	opacity:0.45;
+	-webkit-transition:opacity 0.2s ease-in-out;
+	-moz-transition:opacity 0.2s ease-in-out;
+	-o-transition:opacity 0.2s ease-in-out;
+	transition:opacity 0.2s ease-in-out;
   }
 }
 #footer-logos a:hover img, a:focus img {
@@ -64,7 +64,7 @@ ul.nav.navbar-nav li a:hover, ul.nav.navbar-nav li a:focus  {
 	font-size: 21px;
 	font-weight: 200;
 	color: @reverse-text-color;
-	margin: 0;
+	margin: 0 0 -5px 0;
 	max-width: 100%;
 
 	h1 {
@@ -119,7 +119,7 @@ ul.nav.navbar-nav li a:hover, ul.nav.navbar-nav li a:focus  {
 
 .row.boxes .container {
 	max-width: 100%;
-	margin-top: 10px;
+	margin-top: 0 0 10px 5px;
 
 	a.btn.btn-primary {
 	-webkit-box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
@@ -147,8 +147,10 @@ ul.nav.navbar-nav li a:hover, ul.nav.navbar-nav li a:focus  {
 }
 
 .well.well-small {
-	margin: 10px 15px 0 15px;
+	margin: 10px 15px -5px 15px;
 	background-color: hsla(203, 40%, 80%, .3);
+	border-radius: 8px;
+	padding: 5px 5px 10px 5px;
 	
 	img {
 		float: right;
@@ -161,12 +163,16 @@ ul.nav.navbar-nav li a:hover, ul.nav.navbar-nav li a:focus  {
 	}
 }
 
+.thumbnail {
+	border-radius: 12px;
+}
+
 .thumbnail > img {
 	display: block;
 	height: auto;
 	max-width: 100%;
-	margin: 0;
-	border-radius: 4px;
+	margin: 0 0 -10px 0;
+	border-radius: 12px;
 
 	p {
 	color: @reverse-text-color;
@@ -206,11 +212,20 @@ ul.nav.navbar-nav li a:hover, ul.nav.navbar-nav li a:focus  {
 }
 #mapwrapper {
 	margin-top: -6px;
+	border: 5px solid hsla(203, 40%, 80%, .3);
+	overflow:hidden;
+	-moz-border-radius:12px;
+	-webkit-border-radius:12px;
+	-o-border-radius:12px;
+	border-radius:12px;
 }
+
 #map {
 	height: 650px;
 	margin-top: -6px;
+	border: 5px solid hsla(203, 40%, 80%, .3);
 }
+
 #chartWrapper {
 	display: none;
 	background-color: hsla(203, 40%, 80%, .3);
@@ -257,6 +272,7 @@ ul.nav.navbar-nav li a:hover, ul.nav.navbar-nav li a:focus  {
 .about .panel {
 	width: 40ex;
 	margin: 1em 0 1em 1em;
+	border-radius: 12px;
 }
 
 #ice-carousel {
@@ -273,13 +289,26 @@ p.caption {
 	font-style: italic;
 }
 
-.panel.panel-primary.pull-right {
+.panel.pull-right {
 	width: 280px;
 	box-shadow: 5px 5px 5px #74828f;
+	border-radius: 12px;
+	border-color: #7ECEFD;
+
+	.panel-heading {
+		border: 1px solid #7ECEFD;
+		border-radius: 10px;
+		background-color: #7ECEFD;
+	}
+
+	h4 {
+		color: white;
+	}
 }
 
 .panel img {
 	margin-top: 10px;
+	border-radius: 12px;
 }
 
 blockquote {
@@ -328,23 +357,38 @@ p {
 
 // Used in glossary.jade
 #ice-carousel.carousel.slide.pull-right {
-	margin-top: 0;
+	margin: 0 0 20px 40px;
 	width: 400px;
 	box-shadow: 5px 5px 5px #74828f;
+	border: 2px solid #7ECEFD;
+	border-radius: 12px;
 }
+
+.carousel-inner {
+	border-radius: 10px;
+}
+
+&.left, &.right {  // left and right gradient backgrounds
+	border-radius: 10px;
+}
+
 .panel.panel-info.pull-right {
-        width: 350px;
-        margin-left: 40px;
-        clear: right;
-	box-shadow: 5px 5px 5px #74828f;
-	border: 3px solid #7ECEFD;
+		width: 400px;
+		margin-left: 40px;
+		clear: right;
+		box-shadow: 5px 5px 5px #74828f;
+		border: 2px solid #7ECEFD;
+		border-radius: 12px;
+
+		.panel-heading {
+			border-radius: 10px;
+			border: 1px solid #7ECEFD;
+			padding: 2px 7px 2px 7px;
+			line-height: 1.4em;
+		}
 
 	p {
 		font-size: 120%;
-	}
-
-	h4.panel-title {
-		font-weight: bold;
 	}
 }
 
@@ -352,8 +396,9 @@ p {
 	background-color: #3E454C;
 	padding: 0 30px 20px 30px;
 	margin: 0 -60px 0 -60px;
-  	opacity: 0.7;
-  	filter:alpha(opacity=70); // For IE8 and earlier 
+	opacity: 0.7;
+	filter:alpha(opacity=70); // For IE8 and earlier 
+	border-radius: 6px;
 
 	p {
 		font-size: 90%;
@@ -369,8 +414,8 @@ p {
 
 	#legend {
 		position: absolute;
-		bottom: 3px;
-		left: 3px;
+		bottom: 20px;
+		left: 595px;
 		width: 250px;
 		z-index: 1000;
 	}
