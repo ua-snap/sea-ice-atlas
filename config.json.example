@@ -6,5 +6,7 @@
 		"database":"sea_ice_atlas",
 		"host":"localhost",
 		"port":30303
-	}
+	},
+	"startYear": 1853,
+	"endYear": 2012
 }

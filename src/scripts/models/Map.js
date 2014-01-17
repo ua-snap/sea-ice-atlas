@@ -6,11 +6,14 @@ client.Models = client.Models || {};
 	'use strict';
 
 	client.Models.MapModel = Backbone.Model.extend({
-		defaults: {
-			month: '01',
-			year: 1953,
-			concentration: 30
+		defaults: function() {
+			return {
+				month: '01',
+				year: client.config.startYear,
+				concentration: 30
+			};
 		}
-	});
+	}
+	);
 
 })();

@@ -51,14 +51,19 @@ drawGraphic: function() {
 
 	var tasks = []
 	var datesUsed = {};
-	var dateIndex = 1953;
+	var dateIndex = client.config.startYear;
+
+	// Used below for ensuring we're displaying the final bar which spans to the next year.
+	var rolloverYear = client.config.endYear + 1;
+	
 	_.each(this.sourceData, function(e,i,l){
+
 		var startDate = moment(e[0],'YYYY-MM-DD').toDate()
 		var endDate = moment(e[1],'YYYY-MM-DD').toDate()
 		var taskName = startDate.getFullYear()
 
-		startDate.setFullYear(2013)
-		endDate.setFullYear(2013)
+		startDate.setFullYear(rolloverYear)
+		endDate.setFullYear(rolloverYear)
 		var rowObject = {
 			startDate:startDate, endDate:endDate, taskName:taskName, status:'RUNNING'
 		};
@@ -68,10 +73,10 @@ drawGraphic: function() {
 		datesUsed[taskName].push(rowObject);
 	})
 
-	for(var i = 2012; i >= 1953; i-- ) {
+	for(var i = client.config.endYear; i >= client.config.startYear; i-- ) {
 		if(!(datesUsed[i])) {
-			var start = moment('01-01-2013','MM-DD-YYYY').toDate()
-			var end = moment('01-01-2013','MM-DD-YYYY').toDate()
+			var start = moment('01-01-' + rolloverYear,'MM-DD-YYYY').toDate()
+			var end = moment('01-01-' + rolloverYear,'MM-DD-YYYY').toDate()
 			tasks.push({startDate:start, endDate:end, taskName:i, status:'RUNNING'})
 		}
 

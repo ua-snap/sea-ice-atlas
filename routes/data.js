@@ -23,13 +23,19 @@ exports.data.concentration = function(request, response) {
 		var month = parseInt(request.query.month, 10);
 		var lon = parseFloat(request.query.lon);
 		var lat = parseFloat(request.query.lat);
+		var startYear = request.app.get('config').get('startYear');
+		var endYear = request.app.get('config').get('endYear');
 
 		// Strangely, JavaScript doesn't have a better way to pad ints with zeros.
 		month = String('0' + month).slice(-2);
 
 		// Pull all dates and corresponding sea ice concentration values for the second
 		// week of a particular month from PostGIS database.
-		var query = client.query( { name: "concentration", text: "SELECT date, concentration FROM (SELECT year AS date, nth_value(concentration, 2) OVER (PARTITION BY year) AS concentration FROM (SELECT date, COALESCE(ST_Value(rast, 1, ST_SetSRID(ST_Point($1, $2), 3857)), 0) AS concentration FROM rasters_new) AS allvalues CROSS JOIN generate_series(1953, 2012) AS year WHERE date::text LIKE year || '-' || $3 || '-%' ORDER BY year) AS partitioned GROUP BY date, concentration ORDER BY date", values: [lon, lat, month] }, function(err, result) {
+		var query = client.query({
+			name: "concentration",
+			text: "SELECT date, concentration FROM (SELECT year AS date, nth_value(concentration, 2) OVER (PARTITION BY year) AS concentration FROM (SELECT date, COALESCE(ST_Value(rast, 1, ST_SetSRID(ST_Point($1, $2), 3857)), 0) AS concentration FROM rasters_new) AS allvalues CROSS JOIN generate_series($3::int, $4::int) AS year WHERE date::text LIKE year || '-' || $5 || '-%' ORDER BY year) AS partitioned GROUP BY date, concentration ORDER BY date",
+			values: [lon, lat, startYear, endYear, month]
+		}, function(err, result) {
 
 			if(err) {
 				response.writeHead(500, {"Content-Type": "text/plain"});
