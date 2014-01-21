@@ -12,9 +12,10 @@ var express = require('express')
 
 var app = express();
 
-// Establish config file connections, add it to the app
+// Establish config file connections, add it to the app + expose to templates
 conf.file({ file: './config.json' });
 app.set('config', conf);
+app.locals.config = conf.get();
 
 app.configure(function(){
   app.set('port', conf.get('port'));
