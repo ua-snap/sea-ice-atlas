@@ -6,5 +6,6 @@
 		"database":"sea_ice_atlas",
 		"host":"localhost",
 		"port":30303
-	}
+	},
+	"google_analytics_token":false
 }
