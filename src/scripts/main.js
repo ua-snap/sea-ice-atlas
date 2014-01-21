@@ -6,6 +6,15 @@ window.client = {
     Collections: {},
     Views: {},
     Routers: {},
+
+    // Application-wide configuration for client-side code.
+    // Note, also update the server-side configuration (in ~/config.json) when changing these values.
+    config: {
+    	// Used for driving GUI for date range for available data.
+    	startYear: 1853,
+    	endYear: 2012
+    },
+
     init: function () {
         window.appRouter = new client.Routers.ApplicationRouter();
 

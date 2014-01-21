@@ -7,5 +7,7 @@
 		"host":"localhost",
 		"port":30303
 	},
-	"google_analytics_token":false
+	"google_analytics_token":false,
+	"startYear":1853,
+	"endYear":2012
 }

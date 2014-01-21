@@ -15,7 +15,7 @@ client.Views.MapControlsView = Backbone.View.extend({
 
 		this.$el.html(this.template());
 
-		var range = _.range(1953, 2013);
+		var range = _.range(client.config.startYear, client.config.endYear + 1);
 		var yearSelect = $(this.$el.find('select.year')[0]);
 		_.each(range, function(year) {
 			yearSelect.append($('<option>', {
