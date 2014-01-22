@@ -19,7 +19,7 @@ gem install compass
 brew install node
 ```
 
-### Installation
+### Installation & configuration
 
 ```bash
 git clone git@github.com:ua-snap/sea-ice-atlas.git
@@ -34,7 +34,32 @@ The application also needs a configuration file set up.  From a fresh checkout:
 cp config.json.example config.json
 ```
 
-Then, edit the ```config.json``` file to specify port & database connection.
+Then, edit the ```config.json``` file to specify port & database connection.  The configuration file is documented below:
+
+```javascript
+{
+	// Port on which the application will run.
+	"port": 3000,
+
+	// Database connection information.
+	"database": {
+		"user":"sea_ice_atlas_user",
+		"password":"example",
+		"database":"sea_ice_atlas",
+		"host":"localhost",
+		"port":30303
+	},
+
+	// Analytics token.
+	// If set to Boolean false, Google analytics is not attached,
+	// otherwise should be set to a string with the property ID token.
+	"google_analytics_token":false,
+
+	// Start and end year ranges for the data.
+	"startYear":1853,
+	"endYear":2012
+}
+```
 
 ### Building the project
 
