@@ -79,7 +79,9 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 
 	loadLayer: function(layerIndex) {
 		this.promises[this.model.layers[layerIndex]] = Q.defer();
-
+		console.log('FIXME to load the right layers from config template');
+		console.log(this.model.layers[layerIndex]);
+		
 		this.layers[this.model.layers[layerIndex]] = new OpenLayers.Layer.WMS(
 			this.model.layers[layerIndex],
 			'http://tiles.snap.uaf.edu/tilecache/tilecache.py/2.11.0/',

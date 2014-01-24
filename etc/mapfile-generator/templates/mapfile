@@ -14,11 +14,11 @@ MAP
                 EXTENSION "png"
         END
         PROJECTION
-                "init=epsg:3857"
+                "init=epsg:4326"
         END
         WEB
-                IMAGEPATH "/var/www/html/seaice-reprojected-weekly"
-                IMAGEURL "/maps/"
+                IMAGEPATH "/var/www/html/seaice-monthly"
+                IMAGEURL "/seaice-monthly/"
                 METADATA
                         "wms_title" "Sea Ice Atlas"
                         "wms_onlineresource" "http://tiles.snap.uaf.edu/cgi-bin/mapserv?map=hsia.map"

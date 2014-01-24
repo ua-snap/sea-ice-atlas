@@ -19,7 +19,7 @@ gem install compass
 brew install node
 ```
 
-### Installation & configuration
+## Installation & configuration
 
 ```bash
 git clone git@github.com:ua-snap/sea-ice-atlas.git
@@ -57,7 +57,13 @@ Then, edit the ```config.json``` file to specify port & database connection.  Th
 
 	// Start and end year ranges for the data.
 	"startYear":1853,
-	"endYear":2012
+	"endYear":2012,
+
+	// Template string to define the name of individual map layers in
+	// the corresponding Mapserver/Tilecache configuration files.
+	// This is an underscore template.
+	"mapLayerNameTemplate":"seaice_conc_sic_mean_pct_monthly_ak_<%= year %>_<%= month %>"
+
 }
 ```
 
@@ -92,6 +98,23 @@ forever restart 0
 
 ...where 0 is the number corresponding to the associated process to restart.  ```forever list``` first if there are multiple processes running on this server to ensure you've got the right number.
 
+#### Database and data deployment
+
+Source data is provided in NetCDF format and needs to be turned into GeoTIFF and SQL rasters for MapServer and PostGIS, respectively.  This is done with the ```etc/netcdf2raster.r``` script.
+
+To deploy data for this application, the steps are:
+
+ 1. Obtain the updated data file, and be aware that if the file has structural changes some coding may be needed to support it.
+ 1. Modify the ```etc/netcdf2raster.r``` script as required to change paths/configuration, then run the file and it will eventually emit ~1,968 GeoTIFFs as well as an SQL file.  (*Note*, there may be warnings when this script runs, but it should be OK.)
+ 1. Generate the mapfile: update the ```etc/mapfile-generator/generateMapfile.pl``` tile with the correct date span (near line 46).
+ 1. Move the mapfile and the GeoTIFFs up to the production mapserver.
+ 1. Move the tilecache configuration file up to the appropriate location on the production mapserver.
+ 1. Regenerate the tilecache.  Delete all previous cache items, then run the ```etc/seedTilecache.sh``` script.
+ 1. Load the generated raster SQL file into PostGIS.  It may be wise to do this with a new table, not reusing the previous one.
+ 1. Update configurations on the application as appropriate, and restart the app as outlined above.
+
+## Development
+
 ### Important files, locations
 
 For *GUI development*, here's how things roll:
@@ -111,9 +134,3 @@ For *GUI development*, here's how things roll:
 *Scenario*: I want to override or change some styling choice site-wide.  I'd start by seeing if Bootstrap has this set up as a "variable" by checking in the Bootstrap source code, which will be in ```bower_components/bootstrap/less/variables.less```.  Bootstrap's set up to apply the effects of these variables globally, which is why I start by looking at what they've got.  I may fiddle around with them inside that file, but when I confirm I've found the right thing, I'd open ```src/less/variables.less``` and make my changes there, so I'm not changing anything in the Bootstrap original source.
 
 *Scenario*: I want to apply specific styles to one section of a page.  I'd identify how to write LESS rules that target that section (maybe wrap it in a div with a specific ID or class), then I'd add my LESS code to ```/src/less/style.less```.
-
-### Jenkins
-
-*Out of date!*
-
-Upon changes to the master branch (checked every 5 minutes), Jenkins runs ```grunt``` then copies the contents of the ```dist/``` to Icarus.  One gotcha: the "publish over ssh" plugin chokes on removing prefixes from dotfiles (in this case, ```.htaccess```) so those files are omitted from being copied to the production server.

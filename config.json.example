@@ -9,5 +9,7 @@
 	},
 	"google_analytics_token":false,
 	"startYear":1853,
-	"endYear":2012
+	"endYear":2012,
+	"mapLayerNameTemplate":"seaice_conc_sic_mean_pct_monthly_ak_<%= year %>_<%= month %>"
+	
 }
