@@ -15,9 +15,7 @@
 
 # if these librares are not present, they will need to be installed.
 library(raster)
-library(parallel)
 library(ncdf)
-library(rgdal)
 library(stringr)
 
 # When changing the script, change this back to warn=1.
@@ -32,16 +30,13 @@ ncFilePath = './observed.monthly.alaska.seaice.nc'
 # Directory where geotiffs will be written
 outDirPath = './output'
 
-# scratch/work directory
-tmpDir = './tmp'
-
 # start and end years
 startYear = 1850
 endYear = 2013
 
 # table name for generated SQL, suggest something of the form:
 # sql_raster_seaice_rev_x
-tableName = 'sql_raster_seaice_rev_a'
+tableName = 'sql_raster_seaice_rev_2014_1_27'
 
 setwd('.')
 
@@ -55,7 +50,7 @@ dates = c()
 
 for(year in years) {
 	for(month in months) {
-			dates <- c(dates, sprintf("%04d-%02d", year, month))
+			dates <- c(dates, sprintf("%04d-%02d-15", year, month))
 	}
 }
 
@@ -73,7 +68,7 @@ outputTiffs <-list.files(path=outDirPath, pattern='^seaice_conc.*\\.tif$')
 for(outputTiff in outputTiffs) {
 
 	# get the date from the GeoTIFF filename
-	pattern = '.*(\\d{4})_(\\d{2}).*'
+	pattern = '.*(\\d{4})_(\\d{2})_15.*'
 	dateParts <- str_match(outputTiff, pattern)
 	formattedDate = paste(dateParts[2], dateParts[3], '15', sep='-')
 	filePath = paste(outDirPath, dateParts[1], sep='/')

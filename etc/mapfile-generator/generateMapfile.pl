@@ -43,7 +43,7 @@ my $tt = Template->new({
 my $layers;
 my $cachelayers;
 
-foreach my $year (1850..1900) {
+foreach my $year (1850..2013) {
 	foreach my $month ("01".."12") {
 
 		my $layerName = "seaice_conc_sic_mean_pct_monthly_ak_${year}_${month}";

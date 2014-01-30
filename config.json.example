@@ -5,7 +5,8 @@
 		"password":"example",
 		"database":"sea_ice_atlas",
 		"host":"localhost",
-		"port":30303
+		"port":30303,
+		"table":"sql_raster_seaice_rev_2014_1_24"
 	},
 	"google_analytics_token":false,
 	"startYear":1853,
