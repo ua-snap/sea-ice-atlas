@@ -20,6 +20,10 @@ public/js
 public/css
 public/theme
 
+etc/*.sql
+etc/output
+etc/*.nc
+
 config.json
 
 sea-ice-atlas.sublime-workspace
