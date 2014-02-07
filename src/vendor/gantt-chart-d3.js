@@ -60,8 +60,10 @@ d3.gantt = function(size) {
 
     var initAxis = function() {
 
-    timeDomainStart = moment('2013-01', 'YYYY-MM').startOf('month').toDate();
-    timeDomainEnd = moment('2013-12', 'YYYY-MM').endOf('month').toDate();
+    // These values need to use the "rolloverDate" as described in src/views/ThresholdGraphic
+    // Meaning, end date + 1, so that all the values are lined up and have correct width.
+    timeDomainStart = moment((client.config.endDate + 1) + '-01', 'YYYY-MM').startOf('month').toDate();
+    timeDomainEnd = moment((client.config.endDate + 1) +'-12', 'YYYY-MM').endOf('month').toDate();
 
 	x = d3.time.scale().domain([ timeDomainStart, timeDomainEnd ]).range([ 0, width ]).clamp(true);
 	y = d3.scale.ordinal().domain(taskTypes).rangeRoundBands([ 0, height - margin.top - margin.bottom ], .1);
