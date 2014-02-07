@@ -113,7 +113,7 @@ To deploy data for this application, the steps are:
  	* Check the templates for the mapfile and layer if you need to edit URLs or file locations.
  1. Move the mapfile and the GeoTIFFs up to the production mapserver, copy to production directory.
  1. Move the tilecache configuration file up to the production mapserver, then merge it into the giant tilecache configuration file (Tilecache doesn't support multiple configs). 
- 1. Regenerate the tilecache.  Delete all previous cache items, then run the ```etc/seedTilecache.sh``` script.
+ 1. Regenerate the tilecache.  Delete all previous cache items, then run the ```etc/seedTilecache.sh``` script.  After generating the cache, ensure that permissions are correctly set on the individual directories such that Apache can read them.
  1. Load the generated raster SQL file into PostGIS.  It may be wise to do this with a new table, not reusing the previous one.
  1. Update configurations on the application as appropriate, and restart the app as outlined above.
 
