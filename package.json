@@ -11,7 +11,9 @@
     "less-middleware": "",
     "pg": "~2.7.0",
     "nconf": "~0.6.7",
-    "moment": "~2.4.0"
+    "moment": "~2.4.0",
+    "express-csv": "~0.6.0",
+    "underscore": "~1.5.2"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
