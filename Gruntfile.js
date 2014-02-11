@@ -175,8 +175,8 @@ module.exports = function(grunt) {
                 }
             },
             js: {
-                files: ['src/scripts/**/*.js'],
-                tasks: ['default', 'develop', 'delayed-livereload'],
+                files: ['src/scripts/**/*.js', 'src/vendor/**/*.js'],
+                tasks: ['jst', 'neuter', 'concat', 'copy', 'delayed-livereload'],
                 options: {
                     debounceDelay: 250
                 }
