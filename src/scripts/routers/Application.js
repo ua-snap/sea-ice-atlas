@@ -188,6 +188,7 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 			$('#mapControls').show();
 			$('#mapAnimationControls').show();
 			$('#loadingMap').hide();
+			$('#loadingExplore').hide();
 
 			// Complete event binding + rebuilding GUI.
 			this.setMapMode('map');

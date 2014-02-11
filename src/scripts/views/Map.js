@@ -57,7 +57,7 @@ client.Views.MapView = Backbone.View.extend({
 		this.map.setCenter( new OpenLayers.LonLat(-153, 65).transform('EPSG:4326', 'EPSG:3857'), 4);
 		this.createClickHandler();
 		this.hasRendered = true;
-		
+
 		this.markers = new OpenLayers.Layer.Markers("Markers");
 
 		return this.baseLayerLoadPromise.promise;
