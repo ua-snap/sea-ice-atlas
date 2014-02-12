@@ -105,7 +105,7 @@ drawGraphic: function() {
 
 	var size = {
 		width: $('#thresholdTarget').width() - 40,
-		height: $('#thresholdTarget').width() * 0.625
+		height: ($('#thresholdTarget').width() * 0.625) + 50
 	}
 
 	// To prevent a page scroll jump upon resizing and/or updating the chart

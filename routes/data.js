@@ -1,10 +1,11 @@
 var pg = require('pg');
 var moment = require('moment');
+var _ = require('underscore');
 
 exports.data = {};
 
-// This is the route to the sea ice concentration PostGIS JSON API.
-exports.data.concentration = function(request, response) {
+// Fetch the concentration values from the DB; used in two routes below.
+function fetchConcentration(request, response, callback) {
 
 	var client = new pg.Client(
 		request.app.get('config').get('database')
@@ -45,8 +46,6 @@ exports.data.concentration = function(request, response) {
 				return console.error('error running query', err);
 			}
 
-			response.writeHead(200, {"Content-Type": "application/json"});
-
 			// Create and populate rows object with date/concentration pairs.
 			var rows = {};
 			for(var i=0; i < result.rows.length; i++) {
@@ -57,11 +56,45 @@ exports.data.concentration = function(request, response) {
 
 			client.end();
 
-			// Convert rows object to JSON.
-			response.write(JSON.stringify(rows));
-			response.end();
+			// Invoke callback to handle data response
+			callback(rows);
+
 		});
 
+	});
+}
+
+// This is the route to the sea ice concentration PostGIS JSON API.
+exports.data.concentration = function(request, response) {
+
+	var rows = fetchConcentration(request, response, function(rows) {	
+		// Convert rows object to JSON.
+		response.writeHead(200, {"Content-Type": "application/json"});
+		response.write(JSON.stringify(rows));
+		response.end();	
+	});
+};
+
+// This is the route to the sea ice concentration PostGIS JSON API, returned as CSV.
+exports.data.concentrationCsv = function(request, response) {
+
+	var rows = fetchConcentration(request, response, function(rows) {	
+		
+		var lon = parseFloat(request.query.lon);
+		var lat = parseFloat(request.query.lat);
+		
+		// Wiggle the JSON format to play nice with json2csv
+		var rowsCsv = [];
+		rowsCsv.push({
+			"header1" : "Date",
+			"header2" : "% Ice Concentration at " + lat + "N, " + lon + "E"
+		});
+		_.each(rows, function(e, i, l) {
+			rowsCsv.push({"date":i, "concentration":e});
+		})
+
+		response.csv(rowsCsv);
+		
 	});
 };
 
