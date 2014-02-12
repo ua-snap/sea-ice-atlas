@@ -28,6 +28,13 @@ module.exports = function(grunt) {
                 src: 'default/*',
                 dest: 'public/theme',
                 expand: true
+            },
+            // Copy our build file so we're not using full OL.
+            openlayers_configuration: {
+                flatten: true,
+                expand: true,
+                src: 'etc/openlayers-build-configuration.cfg',
+                dest: 'bower_components/openlayers/build/'
             }
         },
 
@@ -75,7 +82,7 @@ module.exports = function(grunt) {
                         cwd: 'bower_components/openlayers/build'
                     }
                 },
-                command: './build.py full'
+                command: './build.py openlayers-build-configuration'
             }
         },
 
@@ -102,17 +109,17 @@ module.exports = function(grunt) {
                 files: {
                     // We're enumerating these manually to ensure dependencies go OK.  Bad + good.
                     'build/bower.js': [
-                            'build/lib/jquery/**/*.js',
-                            'build/lib/bootstrap/**/*.js',
-                            'build/lib/underscore/underscore-min.js', // Neither Backbone nor Underscore really place nice with Bower.
+                        'build/lib/jquery/**/*.js',
+                        'build/lib/bootstrap/**/*.js',
+                        'build/lib/underscore/underscore-min.js', // Neither Backbone nor Underscore really place nice with Bower.
                         'build/lib/backbone/backbone-min.js', // depends on Underscore.
                         'build/lib/momentjs/moment.js', // depends on Underscore.
                         'build/lib/q/q.js',
-                            'build/lib/highcharts/highcharts.js',
-                            'build/lib/proj4/proj4.js',
-                            'build/lib/jquery.scrollTo/jquery.scrollTo.js',
-                            'build/lib/d3/d3.js',
-                            'build/lib/openlayers/build/OpenLayers.js'
+                        'build/lib/highcharts/highcharts.js',
+                        'build/lib/proj4/proj4.js',
+                        'build/lib/jquery.scrollTo/jquery.scrollTo.js',
+                        'build/lib/d3/d3.js',
+                        'build/lib/openlayers/build/OpenLayers.js'
                     ]
                 }
             },
@@ -125,7 +132,7 @@ module.exports = function(grunt) {
 
                         // Non-bower vendor scripts
                         'src/vendor/gantt-chart-d3.js',
-                            'src/vendor/slider/js/bootstrap-slider.js',
+                        'src/vendor/slider/js/bootstrap-slider.js',
 
                         // Our app
                         'build/app.js'
@@ -142,7 +149,14 @@ module.exports = function(grunt) {
         },
 
         uglify: {
-
+            client: {
+                config: {
+                    mangle: false
+                },
+                files: {
+                    './public/js/client.js': ['public/js/client.js']
+                }
+            }
         },
 
         cssmin: {
@@ -175,8 +189,8 @@ module.exports = function(grunt) {
                 }
             },
             js: {
-                files: ['src/scripts/**/*.js', 'src/vendor/**/*.js'],
-                tasks: ['jst', 'neuter', 'concat', 'copy', 'delayed-livereload'],
+                files: ['src/scripts/**/*.js'],
+                tasks: ['default', 'develop', 'delayed-livereload'],
                 options: {
                     debounceDelay: 250
                 }
@@ -226,8 +240,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-jst');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
 
     grunt.registerTask('default', ['clean', 'less', 'bower', 'jst', 'neuter', 'concat', 'copy', 'develop', 'watch']);
-    grunt.registerTask('build', ['clean', 'less', 'shell', 'bower', 'jst', 'neuter', 'concat', 'copy']);
+    grunt.registerTask('build', ['clean', 'less', 'bower', 'copy:openlayers_configuration', 'shell', 'jst', 'neuter', 'concat', 'uglify', 'copy:openlayers']);
 
 };
