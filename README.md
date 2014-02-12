@@ -57,7 +57,7 @@ Then, edit the ```config.json``` file to specify port & database connection.  Th
 	"google_analytics_token":false,
 
 	// Start and end year ranges for the data.
-	"startYear":1853,
+	"startYear":1850,
 	"endYear":2012,
 
 	// Template string to define the name of individual map layers in
@@ -67,6 +67,10 @@ Then, edit the ```config.json``` file to specify port & database connection.  Th
 
 }
 ```
+
+#### Handling source code updates
+
+When updating from upstream code and/or various branches, you may need to ```npm install``` again if you get errors when running ```grunt```.
 
 ### Building the project
 
@@ -93,6 +97,7 @@ To update the server:
 ```bash
 cd /path/to/project
 git pull
+npm install
 grunt build
 forever restart 0
 ```
