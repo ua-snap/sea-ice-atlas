@@ -23,18 +23,11 @@ app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.favicon());
+  app.use(express.compress());
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
-
-  // May want to get rid of the below.
-  app.use(require('less-middleware')({
-	dest: __dirname + '/public/stylesheets',
-        src: __dirname + '/src/less',
-        prefix: '/stylesheets',
-        compress: true
-  }));
   app.use(express.static(path.join(__dirname, 'public')));
 });
 
