@@ -4,6 +4,7 @@
  */
 
 var express = require('express')
+  , csv = require('express-csv')
   , contentRoutes = require('./routes/index')
   , dataRoutes = require('./routes/data')
   , http = require('http')
@@ -49,6 +50,7 @@ app.get('/download', contentRoutes.download);
 app.get('/credits', contentRoutes.credits);
 app.get('/disclaimer', contentRoutes.disclaimer);
 app.get('/data/concentration', dataRoutes.data.concentration);
+app.get('/csv/concentration', dataRoutes.data.concentrationCsv);
 app.get('/data/openwater', dataRoutes.data.openwater);
 
 http.createServer(app).listen(app.get('port'), function(){
