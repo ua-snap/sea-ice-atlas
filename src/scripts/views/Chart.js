@@ -32,6 +32,8 @@ client.Views.ChartView = Backbone.View.extend({
 
 			this.populateCharts();
 
+			$('#concentrationCsv').attr('href', '/csv/concentration?' + $.param(this.model.toJSON()));
+
 		}
 	},
 

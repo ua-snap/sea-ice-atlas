@@ -32,7 +32,6 @@ d3.gantt = function(size) {
     };
 
     var x = d3.time.scale().domain([ timeDomainStart, timeDomainEnd ]).range([ 0, width ]).clamp(true);
-
     var y = d3.scale.ordinal().domain(taskTypes).rangeRoundBands([ 0, height - margin.top - margin.bottom ], .1);
     
     var xAxis = d3.svg.axis().scale(x).orient("bottom").tickFormat(d3.time.format(tickFormat)).tickSubdivide(true)
@@ -66,13 +65,13 @@ d3.gantt = function(size) {
     timeDomainEnd = moment((client.config.endYear + 1).toString() +'-12', 'YYYY-MM').endOf('month').toDate();
 
 	x = d3.time.scale().domain([ timeDomainStart, timeDomainEnd ]).range([ 0, width ]).clamp(true);
-	y = d3.scale.ordinal().domain(taskTypes).rangeRoundBands([ 0, height - margin.top - margin.bottom ], .1);
+	y = d3.scale.ordinal().domain(taskTypes).rangeRoundBands([ 0, height ], 0, 0);
 	xAxis = d3.svg.axis().scale(x).orient("bottom").tickFormat(d3.time.format(tickFormat)).tickSubdivide(true)
 		.tickSize(8).tickPadding(8);
 
 	yAxis = d3.svg.axis().scale(y).orient("left").tickSize(0).tickFormat(function(d,i){
-		if(d == 2012){
-			return 2012
+		if(d == client.config.endYear){
+			return client.config.endYear
 		}
 		return i%5 ? '' : d
 	});
