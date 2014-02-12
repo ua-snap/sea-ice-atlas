@@ -1,4 +1,4 @@
-#!/bin/env perl
+#!/usr/bin/env perl
 
 use strict;
 use warnings;
@@ -43,10 +43,10 @@ my $tt = Template->new({
 my $layers;
 my $cachelayers;
 
-foreach my $year (1953..2012) {
+foreach my $year (1850..2013) {
 	foreach my $month ("01".."12") {
 
-		my $layerName = "seaice_conc_sic_mean_pct_weekly_ak_${year}_${month}_average";
+		my $layerName = "seaice_conc_sic_mean_pct_monthly_ak_${year}_${month}";
 		my $layerInformation = {
 			layerName => $layerName
 		};
@@ -78,7 +78,7 @@ $tt->process('mapfile', $mapfileInformation, $fh ) || die $tt->error(), "\n";
 close ($fh);
 
 # Open the new tilecache config file
-open (my $cf, ">", "tilecache.cfg") or die $!;
+open (my $cf, ">", "hsia-tilecache.cfg") or die $!;
 
 my $cachefileInformation = {
 	cachelayers => $cachelayers

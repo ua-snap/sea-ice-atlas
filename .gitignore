@@ -20,10 +20,15 @@ public/js
 public/css
 public/theme
 
+etc/*.sql
+etc/output
+etc/*.nc
+
 config.json
 
 sea-ice-atlas.sublime-workspace
 sea-ice-atlas.sublime-project
 
 etc/mapfile-generator/tilecache.cfg
+etc/mapfile-generator/hsia-tilecache.cfg
 etc/mapfile-generator/hsia.map

@@ -79,12 +79,16 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 
 	loadLayer: function(layerIndex) {
 		this.promises[this.model.layers[layerIndex]] = Q.defer();
-
+		var dateJson = {
+			month: this.model.layers[layerIndex].substring(5),
+			year: this.model.layers[layerIndex].substring(0,4)
+		};
+		
 		this.layers[this.model.layers[layerIndex]] = new OpenLayers.Layer.WMS(
 			this.model.layers[layerIndex],
 			'http://tiles.snap.uaf.edu/tilecache/tilecache.py/2.11.0/',
 			{
-				layers: 'seaice_conc_sic_mean_pct_weekly_ak_' + this.model.layers[layerIndex] + '_average',
+				layers: _.template(client.config.mapLayerNameTemplate, dateJson),
 				transparent: true,
 				format: 'image/png'
 			},

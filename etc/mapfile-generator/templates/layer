@@ -5,11 +5,11 @@
                 TYPE raster
                 STATUS ON
 
-                DATA "/var/www/html/seaice-reprojected-weekly/[% layerName %].tif"
+                DATA "/var/www/html/seaice-monthly/[% layerName %].tif"
                 OFFSITE 0 0 0
 
                 PROJECTION
-                        "init=epsg:3338"
+                        "init=epsg:4326"
                 END
 
                 CLASS
