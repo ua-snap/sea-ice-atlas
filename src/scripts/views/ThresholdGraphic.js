@@ -103,9 +103,16 @@ drawGraphic: function() {
 
 	var format = "%b";
 
-	var size = {
-		width: $('#thresholdTarget').width() - 40,
-		height: ($('#thresholdTarget').width() * 0.625) + 50
+	if($('#thresholdTarget').width() >= 768) {
+		var size = {
+			width: $('#thresholdTarget').width() - 40,
+			height: Math.round($('#thresholdTarget').width() * 0.69)
+		}
+	} else {
+		var size = {
+			width: $('#thresholdTarget').width() - 40,
+			height: Math.round($('#thresholdTarget').width() * 0.55)
+		}
 	}
 
 	// To prevent a page scroll jump upon resizing and/or updating the chart
