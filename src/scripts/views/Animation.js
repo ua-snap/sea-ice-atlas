@@ -21,7 +21,7 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 	promises: {},
 
 	events: {
-		'click' : 'focus',
+		'click button' : 'focus',
 		'click #sequentialAnimationPlay' : 'playSequentialMode',
 		'click #sequentialAnimationPause' : 'pause',
 		'click #monthlyAnimationPlay' : 'playMonthlyMode',
