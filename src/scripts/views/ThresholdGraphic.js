@@ -95,17 +95,27 @@ drawGraphic: function() {
 	tasks.sort(function(a, b) {
 	    return a.endDate - b.endDate;
 	});
+	
 	var maxDate = tasks[tasks.length - 1].endDate;
 	tasks.sort(function(a, b) {
 	    return a.startDate - b.startDate;
 	});
+	
 	var minDate = tasks[0].startDate;
-
 	var format = "%b";
+	var scaleFactor;
+	
+	if($('#thresholdTarget').width() < 580) {
+		scaleFactor = 0.38;
+	} else if ($('#thresholdTarget').width() < 768) {
+		scaleFactor = 0.59;
+	} else {
+		scaleFactor = 0.69;
+	}
 
 	var size = {
 		width: $('#thresholdTarget').width() - 40,
-		height: ($('#thresholdTarget').width() * 0.625) + 50
+		height: Math.round($('#thresholdTarget').width() * scaleFactor)
 	}
 
 	// To prevent a page scroll jump upon resizing and/or updating the chart
