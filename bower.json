@@ -1,19 +1,7 @@
 {
-  "name": "sea-ice-atlas",
-  "version": "0.0.0",
+  "name": "historical-sea-ice-atlas",
+  "version": "1.0.0",
   "homepage": "https://github.com/ua-snap/sea-ice-atlas",
-  "authors": [
-    "Bruce Crevensten <bruce.crevensten@gmail.com>"
-  ],
-  "main": "app.js",
-  "license": "MIT",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
   "dependencies": {
     "bootstrap": "3.0.0",
     "backbone": "~1.0.0",
