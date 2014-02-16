@@ -75,18 +75,18 @@ function parseToDate(idx) {
 			this.layerBuffer = [];
 			var bufferIndex = this.layerIndex;
 
-			// Trigger layer loading for the first 10 layers, obtain promises + act when they're all resolved;
-			// Throttle this to fire one request every 100 milliseconds to avoid flooding the server.
+			// Trigger layer loading for the first 12 layers, obtain promises + act when they're all resolved;
+			// Throttle this to fire one request every 150 milliseconds to avoid flooding the server.
 			var bufferInterval = setInterval(_.bind(function() {
 
 				// Load another layer
 				this.layerBuffer.push(this.view.loadLayer(bufferIndex));
 				// Once we've got 10 layers prebuffered, stop preloading.
-				if (bufferIndex >= 10 || (bufferIndex + 1) >= this.layers.length) {
+				if (bufferIndex >= 12 || (bufferIndex + 1) >= this.layers.length) {
 					clearInterval(bufferInterval);
 				}
 				bufferIndex++;
-			}, this), 100);
+			}, this), 150);
 
 		},
 
@@ -98,14 +98,14 @@ function parseToDate(idx) {
 
 			// Todo: this was firing too quickly, fix this by removing the setTimeout around this
 			// and also causing the buffering to _immediately_ assign the promises instead of
-			// delaying the first by 100ms (that delay means this code needs to be delayed as well)
+			// delaying the first by 150ms (that delay means this code needs to be delayed as well)
 			setTimeout(_.bind(function() {
 				// Wait until the buffer is full, then start cycling.
 				Q.allSettled(this.layerBuffer).then(_.bind(function startUpdater(results) {
 					this.view.hideBuffering();
 					this.startPlaying();
 				}, this));
-			}, this), 1000);
+			}, this), 1800);
 
 		},
 
@@ -143,7 +143,7 @@ function parseToDate(idx) {
 					this.view.loadLayer(this.layerIndex + 10);
 				}
 
-			}, this), 1500);
+			}, this), 2000);
 		},
 
 		stop: function() {
