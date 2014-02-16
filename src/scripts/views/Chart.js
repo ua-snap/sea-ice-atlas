@@ -33,13 +33,13 @@ client.Views.ChartView = Backbone.View.extend({
 
 
                         // Show & Update text in sidebar
-                        $('#concentrationGraphControls').show('slow');
                         $('#concentrationGraphControls p').text(
                           _.template(
                             'Go to ice concentration for <%= month %>',
                             { month: moment(this.model.get('month'), 'MM').format('MMMM') }
                           )
                         );
+                        $('#concentrationGraphControls').show('slow');
 
 			$('#concentrationCsv').attr('href', '/csv/concentration?' + $.param(this.model.toJSON()));
 

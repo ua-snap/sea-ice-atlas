@@ -194,6 +194,9 @@ ul.nav.navbar-nav li a:hover, ul.nav.navbar-nav li a:focus  {
 }
 
 //used in explore.jade and associated .ejs files
+.list-group-item {
+	width: 100%;
+}
 .list-group-item-text p, label {
 	margin-bottom: 0;
 	color: #3E454C;
@@ -447,8 +450,7 @@ p {
 	}
 
 	// When on a narrow screen, the sidebar needs to be in normal flow always
-	/* Medium devices (desktops, 992px and up) */
-@media (max-width: @screen-sm-max) {
+	@media (max-width: @screen-sm-max) {
 		.affix {
 			position: static;
 			margin-top: 1em;

@@ -1,11 +1,6 @@
 /*global client, Backbone, _ */
 'use strict';
 
-function showLocationBasedGraphics() {
-        $('#thresholdGraphicControls').show('slow');
-	$('#concentrationGraphControls').show('slow');
-}
-
 client.Routers.ApplicationRouter = Backbone.Router.extend({
 	routes: {
 		'' : 'index',
