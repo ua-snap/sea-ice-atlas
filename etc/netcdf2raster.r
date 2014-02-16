@@ -25,7 +25,7 @@ library(stringr)
 options(warn=0)
 
 # Path to source NetCDF file
-ncFilePath = './observed.monthly.alaska.seaice.nc'
+ncFilePath = './ice.concentrations.monthly.alaska.1850-2013.nc'
 
 # Directory where geotiffs will be written
 outDirPath = './output'
@@ -36,7 +36,7 @@ endYear = 2013
 
 # table name for generated SQL, suggest something of the form:
 # sql_raster_seaice_rev_x
-tableName = 'sql_raster_seaice_rev_2014_1_27'
+tableName = 'sql_raster_seaice_rev_2014_2_14'
 
 setwd('.')
 

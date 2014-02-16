@@ -1,11 +1,18 @@
 #!/bin/bash
 
+# This is a garbage pail for collecting various reprojection scripts that have been used in this project at different times.
+
+
 for f in ./*.tif
 do
         echo "Processing $f..."
-        gdal_translate -of GTiff -co tfw=yes -a_ullr -180 80.375 -120 40.125 -a_srs EPSG:4326 $f /tmp/geotmp.tif
-        gdalwarp -t_srs '+proj=aea +lat_1=55 +lat_2=65 +lat_0=50 +lon_0=-154 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs' /tmp/geotmp.tif ./reproj/$f
+        gdal_translate -a_ullr -180 80.25 -119.75 40 $f 
 done
+
+# (Not used lately)
+#        gdal_translate -of GTiff -co tfw=yes -a_ullr -180 80.375 -120 40.125 -a_srs EPSG:4326 $f /tmp/geotmp.tif
+#       gdalwarp -t_srs '+proj=aea +lat_1=55 +lat_2=65 +lat_0=50 +lon_0=-154 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs' /tmp/geotmp.tif ./reproj/$f
+
 
 # (Deprecated) As a hack to "pick the middle of the month as a weekly value," the line below can be used to rename any of the files
 # whose date happens to be betewen the 11-19th of the month to serve as a "monthly average."  This won't be needed
