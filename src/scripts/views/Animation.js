@@ -2,10 +2,14 @@
 'use strict';
 
 client.Views.MapAnimatorView = Backbone.View.extend({
+
+	isPlaying: false,
+
 	initialize: function() {
 
 		_.bindAll(this, 'play', 'pause', 'setMode', 'playSequentialMode', 'playMonthlyMode',
-			'render', 'showLayer', 'loadLayer', 'hideLayer', 'showBuffering', 'hideBuffering');
+			'render', 'showLayer', 'loadLayer', 'hideLayer', 'showBuffering', 'hideBuffering',
+			'disableControls', 'enableControls', 'resetControlsState');
 		// Set up some shortcuts
 		this.map = this.options.mapView.map;
 		this.model = this.options.model;
@@ -21,7 +25,7 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 	promises: {},
 
 	events: {
-		'click' : 'focus',
+		'click button.play' : 'focus',
 		'click #sequentialAnimationPlay' : 'playSequentialMode',
 		'click #sequentialAnimationPause' : 'pause',
 		'click #monthlyAnimationPlay' : 'playMonthlyMode',
@@ -35,11 +39,27 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 		window.appRouter.setMapMode('animation');
 	},
 
+	// Remove map layer and clear any pending promises.
 	resetLayers: function() {
 		var k = this.map.getLayersBy('isBaseLayer', false);
 		_.each(k, _.bind(function(e, i, l) {
 			this.map.removeLayer(e);
 		}, this));
+		this.promises = {};
+	},
+
+	// To prevent the user from bouncing on the start/stop buttons, which can mess with the state.
+	disableControls: function() {
+		this.$el.find('button').attr('disabled', 'true');
+	},
+	enableControls: function() {
+		this.$el.find('button').attr('disabled', false);
+	},
+	resetControlsState: function() {
+		$('#monthlyAnimationPlay').removeClass('btn-success').addClass('btn-primary');
+		$('#monthlyAnimationPause').removeClass('btn-warning').addClass('btn-default');
+		$('#sequentialAnimationPlay').removeClass('btn-success').addClass('btn-primary');
+		$('#sequentialAnimationPause').removeClass('btn-warning').addClass('btn-default');
 	},
 
 	setMode: _.debounce(function(mode) {
@@ -47,21 +67,37 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 	}, 1000, true),
 
 	play: _.debounce(function() {
+		if( true === this.isPlaying ) {
+			this.model.stop();
+		}
 		this.resetLayers();
 		this.model.start();
+		this.disableControls();
+		this.isPlaying = true;
 	}, 1000, true),
 
 	pause: function() {
-		this.model.stop();
+		if( true === this.isPlaying ) {
+			this.isPlaying = false;
+			this.resetControlsState();
+			this.model.stop();
+			this.enableControls();
+		}
 	},
 
 	playSequentialMode: function() {
 		this.setMode('sequential');
+		this.resetControlsState();
+		$('#sequentialAnimationPlay').removeClass('btn-primary').addClass('btn-success');
+		$('#sequentialAnimationPause').removeClass('btn-default').addClass('btn-warning');
 		this.play();
 	},
 
 	playMonthlyMode: function() {
 		this.setMode('monthly');
+		this.resetControlsState();
+		$('#monthlyAnimationPlay').removeClass('btn-primary').addClass('btn-success');
+		$('#monthlyAnimationPause').removeClass('btn-default').addClass('btn-warning');
 		this.play();
 	},
 
@@ -103,7 +139,12 @@ client.Views.MapAnimatorView = Backbone.View.extend({
 
 		// When the "loadend" event is triggered on the layer, resolve its initial loading promise.
 		this.layers[this.model.layers[layerIndex]].events.register('loadend', this, function(layer) {
-			this.promises[this.model.layers[layer.object.layerIndex]].resolve(layer);
+			
+			// These layers can be undefined if the animations are swapped out while in progress.
+			if( false === _.isUndefined( this.promises[this.model.layers[layer.object.layerIndex]] ) ) {
+				this.promises[this.model.layers[layer.object.layerIndex]].resolve(layer);	
+			}
+			
 		});
 		
 		// Map loading only starts happening when the addLayer method is invoked.
