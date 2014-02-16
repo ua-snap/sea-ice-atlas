@@ -104,6 +104,7 @@ function parseToDate(idx) {
 				Q.allSettled(this.layerBuffer).then(_.bind(function startUpdater(results) {
 					this.view.hideBuffering();
 					this.startPlaying();
+					this.view.enableControls();
 				}, this));
 			}, this), 1800);
 
