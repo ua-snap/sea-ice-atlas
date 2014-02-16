@@ -109,7 +109,7 @@ module.exports = function(grunt) {
                 files: {
                     // We're enumerating these manually to ensure dependencies go OK.  Bad + good.
                     'build/bower.js': [
-                        'build/lib/jquery/**/*.js',
+                        'build/lib/jquery/dist/jquery.js',
                         'build/lib/bootstrap/**/*.js',
                         'build/lib/underscore/underscore-min.js', // Neither Backbone nor Underscore really place nice with Bower.
                         'build/lib/backbone/backbone-min.js', // depends on Underscore.
