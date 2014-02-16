@@ -19,7 +19,6 @@ client.Views.ChartView = Backbone.View.extend({
 		) {
 		
 			$('#chartWrapper').show('fast');
-			$('#concentrationGraphControls').show('slow');
 
 			if( false === this.hasRendered ) {
 				$('#concentrationGraphControls').on('click', function() {
@@ -31,6 +30,16 @@ client.Views.ChartView = Backbone.View.extend({
 			}
 
 			this.populateCharts();
+
+
+                        // Show & Update text in sidebar
+                        $('#concentrationGraphControls').show('slow');
+                        $('#concentrationGraphControls p').text(
+                          _.template(
+                            'Go to ice concentration for <%= month %>',
+                            { month: moment(this.model.get('month'), 'MM').format('MMMM') }
+                          )
+                        );
 
 			$('#concentrationCsv').attr('href', '/csv/concentration?' + $.param(this.model.toJSON()));
 
@@ -86,15 +95,6 @@ client.Views.ChartView = Backbone.View.extend({
                                 enabled: false
                         }
                 });
-
-		// Update text in sidebar
-		$('#concentrationGraphControls p').text(
-			_.template(
-				'Go to ice concentration for <%= month %>',
-				{ month: moment(this.model.get('month'), 'MM').format('MMMM') }
-			)
-		);
-
         },
 
 	populateCharts: function() {

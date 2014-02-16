@@ -19,7 +19,7 @@ client.Views.ThresholdGraphicView = Backbone.View.extend({
 			) {
 
 		$('#graphicWrapper').show();
-		$('#thresholdGraphicControls').show();
+		$('#thresholdGraphicControls').show('slow');
 		if( false === this.hasRendered ) {
 		
 			// For restoring from URL, update the default properties
