@@ -23,6 +23,7 @@
     "momentjs": "~2.2.1",
     "highcharts": "~3.0.5",
     "proj4": "~1.4.1",
+    "jquery":"~2.1",
     "jquery.scrollTo": "~1.4.6",
     "d3": "~3.3.8"
   }
