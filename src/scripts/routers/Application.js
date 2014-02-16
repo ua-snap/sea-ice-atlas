@@ -95,10 +95,10 @@ client.Routers.ApplicationRouter = Backbone.Router.extend({
 				// Swap around screen display for this mode
 				$('#mapControls').removeClass('active');
 				$('#mapAnimationControls').addClass('active');
-				$('#concentrationGraphControls').hide('fast');
-				$('#thresholdGraphicControls').hide('fast');
-				$('#chartWrapper').hide('fast');
-				$('#graphicWrapper').hide('fast');
+				$('#concentrationGraphControls').hide();
+				$('#thresholdGraphicControls').hide();
+				$('#chartWrapper').hide();
+				$('#graphicWrapper').hide();
 				$('#lat').val('');
 				$('#lon').val('');
 
