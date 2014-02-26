@@ -11,13 +11,16 @@ First install:
 * Xcode (you may also need to install the "Command Line Tools" package from the Xcode -> Preferences -> Downloads window)
 * Homebrew
 
-Then install Ruby, Compass, and Node with the following commands:
+Then install Ruby, Compass, Node, and the Grunt CLI tools with the following commands:
 
 ```bash
 brew install ruby
 gem install compass
 brew install node
+sudo npm install -g grunt-cli
 ```
+
+The Grunt CLI tools are needed to support the application build cycle.
 
 ## Installation & configuration
 
