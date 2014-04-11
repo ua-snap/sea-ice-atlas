@@ -239,6 +239,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
 
     grunt.registerTask('default', ['clean', 'less', 'bower', 'jst', 'neuter', 'concat', 'copy', 'uglify', 'develop', 'watch']);
-    grunt.registerTask('build', ['clean', 'less', 'bower', 'copy:openlayers_configuration', 'shell', 'jst', 'neuter', 'concat', 'uglify', 'copy:openlayers']);
+    grunt.registerTask('build', ['clean', 'less', 'bower', 'copy:openlayers_configuration', 'shell', 'copy:openlayers', 'jst', 'neuter', 'concat', 'uglify']);
 
 };
