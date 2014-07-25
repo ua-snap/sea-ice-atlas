@@ -5,10 +5,36 @@
 # Author: Michael Lindgren ( malindgren@alaska.edu ) - Spatial Analyst
 #     Scenarios Network for Alaska & Arctic Planning.  Fairbanks, AK 
 #
-#  v1.0 - 7/24/2013 - ML
+#  7/25/2013
+#  Notes:
+# 	SOURCE IDs:
+#		1.  Danish Meteorlogical Institute
+#		2.  Japan Meteorological Agency
+#		3.  Naval Oceanographic Office (NAVOCEANO)
+#		4.  Kelly ice extent grids (based upon Danish Ice Charts)
+#		5.  Walsh and Johnson/Navy-NOAA Joint Ice Center
+#		6.  Navy-NOAA Joint Ice Center Climatology
+#		7.  Temporal extension of Kelly data (see note below)
+#		8.  Nimbus-7 SMMR Arctic Sea Ice Concentrations or DMSP SSM/I 
+#				Sea Ice Concentrations using the NASA Team Algorithm
+#		9.  AARI - Arctic and Antarctic Research Institute 
+#		10. ACSYS
+#		11.  Brian Hill - Newfoundland, Nova Scotia Data
+#		12.  Bill Dehn Collection - mostly Alaska
+#		13.  Danish Meteorological Institute (DMI)
+#		14.  Whaling ship log books
+#		15.  All conc. data climatology 1870-1977 (pre-satellite era)
+#		16.  Whaling log books open water
+#		17.  Whaling log books partial sea ice
+#		18.  Whaling log books sea ice covered
+#
+#		20.  Analog filling of spatial gaps
+#		21.  Analog filling of temporal gaps
+#
+#
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 
-# hardwired stuff
+# source NetCDF file, found here (http://igloo.atmos.uiuc.edu/SNAP/alaska.observed.seaice.weekly.nc)
 nc_path = '/workspace/Shared/Tech_Projects/Sea_Ice_Atlas/project_data/Outputs_From_Bill/SIC_Weekly/netcdf/version2_from_bill/alaska.observed.seaice.weekly.nc'
 
 # modules
@@ -27,7 +53,7 @@ source = nc.variables[ 'seaice_source' ]
 # --> for the time-being I am just reading in an old version of the GTiff to use as a template
 template = rasterio.open( '/workspace/Shared/Tech_Projects/Sea_Ice_Atlas/project_data/Outputs_From_Bill/SIC_Weekly/tif/sic_mean_pct_weekly_ak_01_01_1953.tif' ) 
 meta = template.meta
-meta.update( compress='lzw', nodata=255 )
+meta.update( compress='lzw', nodata=-1, dtype=rasterio.float32 ) # -1 nodata is land in this map
 
 # some functions to be used in the script
 def arr2d_to_gtiff( arr_2d, output_filename, template_meta ):
@@ -66,10 +92,9 @@ def arr2d_to_gtiff( arr_2d, output_filename, template_meta ):
 	return gtiff.name
 
 
-
-# to get a filename generator we need the darn filenames or dates from Bills non-compliant NetCDF
-#  this is how I have done it for the current iteration <-- this will most-likely need to change if inputs change
-# ->>> currently records 0-5 are meta, and the last record (2935) is the overall filename
+# Goal here is to generate filenames.
+# For the version of the data with MD5 sum 845d2ee0953fcd5f8e977d0cfb023f3d,
+# the structure of this data has metadata in records 0-5 and the last record (2935) is the overall filename.
 names = nc.history.split() 
 names = names[ 6:2934 ]
 dates = [ i.split('.')[2] for i in names ]
@@ -79,7 +104,7 @@ output_path = '/workspace/Shared/Tech_Projects/Sea_Ice_Atlas/project_data/Output
 output_prefix = 'sic_mean_pct_weekly_ak_' 
 
 # generator for the list comprehension to do the conversion
-input_generator = ( ( os.path.join( output_path, 'weekly', output_prefix + '_'.join([ d[4:6], d[6:8], d[:4] ]) + '.tif' ), c.astype(np.uint8), s.astype(np.uint8) ) \
+input_generator = ( ( os.path.join( output_path, 'weekly', output_prefix + '_'.join([ d[4:6], d[6:8], d[:4] ]) + '.tif' ), c.astype(meta['dtype']), s.astype(meta['dtype']) ) \
 						for d, c, s in zip( dates, conc, source ) )
 
 # run it with a list comprehension
@@ -104,10 +129,3 @@ cnc_final_test = len( cnc_range_list ) - sum( cnc_test_list )
 monthly_folder = os.path.join( output_path, 'monthly' )
 [ os.system( 'cp ' + fn + ' ' + os.path.join( monthly_folder, os.path.basename(fn)).replace('weekly', 'monthly') ) \
 					for fn, cnc, src in input_generator if int(fn[ -6:-4 ]) == 15 ]
-
-
-
-
-
-
-
