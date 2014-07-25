@@ -31,7 +31,7 @@
 #		20.  Analog filling of spatial gaps
 #		21.  Analog filling of temporal gaps
 #
-# 1,2,3,4,5,6,7,8,9,10,11,12,13,14
+# 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 
 # source NetCDF file, found here (http://igloo.atmos.uiuc.edu/SNAP/alaska.observed.seaice.weekly.nc)
@@ -112,15 +112,23 @@ gtiff_out = [ arr2d_to_gtiff( (cnc, src), fn, meta ) for fn, cnc, src in input_g
 
 # # SOURCE TEST
 # what are the unique acceptable values allowed in the seaice_source layer?
-value_list = list() # <-- NEED TO GET THIS INFORMATION
+value_list = list(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,20,21) # <-- NEED TO GET THIS INFORMATION
+
+# re-instantiate the generator
+input_generator = ( ( os.path.join( output_path, 'weekly', output_prefix + '_'.join([ d[4:6], d[6:8], d[:4] ]) + '.tif' ), c.astype(meta['dtype']), s.astype(meta['dtype']) ) \
+						for d, c, s in zip( dates, conc, source ) )
+
 # and now test against that list.  if there are errors it will return False, if not True
 False not in [ False not in [ e in np.unique( src ) for e in value_list ] for fn, cnc, src in input_generator ] # this may require a flip-flop
 
 # # CONC TEST
+# re-instantiate the generator
+input_generator = ( ( os.path.join( output_path, 'weekly', output_prefix + '_'.join([ d[4:6], d[6:8], d[:4] ]) + '.tif' ), c.astype(meta['dtype']), s.astype(meta['dtype']) ) \
+						for d, c, s in zip( dates, conc, source ) )
 # are the values of the dataset seaice_conc only within the range of 0-100?
 cnc_range_list = [ (np.min(cnc), np.max(cnc)) for fn, cnc, src in input_generator ]
 # now write a test to be sure the range is right
-cnc_test_list = [ 1 for min, max in cnc_range_list if min >= 0 and max <= 100 ]
+cnc_test_list = [ 1 for min, max in cnc_range_list if min >= 0 and max <= 1 ]
 # diffenence between the length input list and the sum of the cnc_test_list
 cnc_final_test = len( cnc_range_list ) - sum( cnc_test_list )
 
