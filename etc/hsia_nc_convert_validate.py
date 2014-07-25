@@ -31,7 +31,7 @@
 #		20.  Analog filling of spatial gaps
 #		21.  Analog filling of temporal gaps
 #
-#
+# 1,2,3,4,5,6,7,8,9,10,11,12,13,14
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 
 # source NetCDF file, found here (http://igloo.atmos.uiuc.edu/SNAP/alaska.observed.seaice.weekly.nc)
@@ -95,7 +95,7 @@ def arr2d_to_gtiff( arr_2d, output_filename, template_meta ):
 # Goal here is to generate filenames.
 # For the version of the data with MD5 sum 845d2ee0953fcd5f8e977d0cfb023f3d,
 # the structure of this data has metadata in records 0-5 and the last record (2935) is the overall filename.
-names = nc.history.split() 
+names = nc.history.split()
 names = names[ 6:2934 ]
 dates = [ i.split('.')[2] for i in names ]
 
@@ -112,7 +112,7 @@ gtiff_out = [ arr2d_to_gtiff( (cnc, src), fn, meta ) for fn, cnc, src in input_g
 
 # # SOURCE TEST
 # what are the unique acceptable values allowed in the seaice_source layer?
-value_list = list('acceptable unique values list') # <-- NEED TO GET THIS INFORMATION
+value_list = list() # <-- NEED TO GET THIS INFORMATION
 # and now test against that list.  if there are errors it will return False, if not True
 False not in [ False not in [ e in np.unique( src ) for e in value_list ] for fn, cnc, src in input_generator ] # this may require a flip-flop
 
@@ -126,6 +126,4 @@ cnc_final_test = len( cnc_range_list ) - sum( cnc_test_list )
 
 # # GRAB AND COPY "MONTHLY" TIMESERIES 
 # grab the week of the 15th of the month for the "Monthly" dataset
-monthly_folder = os.path.join( output_path, 'monthly' )
-[ os.system( 'cp ' + fn + ' ' + os.path.join( monthly_folder, os.path.basename(fn)).replace('weekly', 'monthly') ) \
-					for fn, cnc, src in input_generator if int(fn[ -6:-4 ]) == 15 ]
+[ os.system( 'cp ' + fn + ' ' + fn.replace('weekly', 'monthly') ) for fn in gtiff_out if '_15_' is in fn ]
