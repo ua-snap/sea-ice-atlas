@@ -112,14 +112,19 @@ gtiff_out = [ arr2d_to_gtiff( (cnc, src), fn, meta ) for fn, cnc, src in input_g
 
 # # SOURCE TEST
 # what are the unique acceptable values allowed in the seaice_source layer?
-value_list = list(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,20,21) # <-- NEED TO GET THIS INFORMATION
+value_list = [ -1,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,20,21 ]
 
 # re-instantiate the generator
 input_generator = ( ( os.path.join( output_path, 'weekly', output_prefix + '_'.join([ d[4:6], d[6:8], d[:4] ]) + '.tif' ), c.astype(meta['dtype']), s.astype(meta['dtype']) ) \
 						for d, c, s in zip( dates, conc, source ) )
 
-# and now test against that list.  if there are errors it will return False, if not True
-False not in [ False not in [ e in np.unique( src ) for e in value_list ] for fn, cnc, src in input_generator ] # this may require a flip-flop
+# get all of the unique values for each source layer as a dict
+out = {num:np.unique(src).tolist() for num, src in enumerate(source) }
+all_vals = [j for i in out.values() for j in i ]
+all_unique_vals = np.unique(np.array(all_unique_vals))
+
+# if the output of the next line is True then there is no discrepancy between the unique source ids and what we should expect.
+False not in[ True for i in all_unique_vals if i in value_list ] 
 
 # # CONC TEST
 # re-instantiate the generator
