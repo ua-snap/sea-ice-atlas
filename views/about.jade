@@ -95,13 +95,16 @@ block content
 			dataTable.addColumn({ type: 'date', id: 'Start' });
 			dataTable.addColumn({ type: 'date', id: 'End' });
 			dataTable.addRows([
+			[ 'Whalers', 'Whaling ship logbooks describing open water and ice cover',new Date(1850, 1, 0),new Date(1914, 12, 0) ],
 			[ 'ACSYS', 'Arctic Climate System Study', new Date(1850, 1, 0), new Date(1986, 12, 0) ],
 			[ 'Hill', 'Brian Hill Collection',new Date(1870, 1, 0),new Date(1963, 12, 0) ],
 			[ 'DMI', 'Danish Meteorological Institute',new Date(1901, 1, 0),new Date(1956, 12, 0) ],
+			[ 'Kelly', 'Kelly Sea Ice Extent Grids',new Date(1901, 1, 0),new Date(1956, 12, 0) ],
 			[ 'AARI', 'Arctic and Antarctic Research Institute',new Date(1933, 1, 0),new Date(2004, 12, 0) ],
 			[ 'Dehn', 'NSIDC Bill Dehn Data Collection',new Date(1953, 1, 0),new Date(1986, 12, 0) ],
 			[ 'Walsh/Johnson', 'Walsh and Johnson/Navy-NOAA Joint Ice Center',new Date(1953, 1, 0),new Date(1977, 12, 0) ],
 			[ 'NAVOCEANO', 'Naval Oceanographic Office',new Date(1953, 1, 0),new Date(1971, 12, 0) ],
+			[ 'Kelly extended', 'Temporal extension of Kelly data',new Date(1957, 1, 0),new Date(1971, 12, 0) ],
 			[ 'JMA', 'Japan Meteorological Agency',new Date(1970, 1, 0),new Date(2007, 12, 0) ],
 			[ 'JIC', 'Navy-NOAA Joint Ice Center Climatology',new Date(1972, 1, 0),new Date(1994, 12, 0) ],
 			[ 'NSIDC', 'NSIDC Nimbus-7 SMMR Arctic Sea Ice Concentrations',new Date(1978, 1, 0),new Date(2013, 12, 0) ]]);
@@ -115,7 +118,7 @@ block content
 
 			chart.draw(dataTable, options);
 			}
-		#datasources(style='width: 100%; height: 450px;')
+		#datasources(style='width: 100%; height: 550px;')
 
 		h4 Data source descriptions
 		p
