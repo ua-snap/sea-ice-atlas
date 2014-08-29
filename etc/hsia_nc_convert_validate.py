@@ -34,16 +34,27 @@
 # 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 
-# source NetCDF file, found here (http://igloo.atmos.uiuc.edu/SNAP/alaska.observed.seaice.weekly.nc)
-nc_path = '/workspace/Shared/Tech_Projects/Sea_Ice_Atlas/project_data/Outputs_From_Bill/SIC_Weekly/netcdf/version2_from_bill/alaska.observed.seaice.weekly.nc'
-
 # modules
 from scipy.io import netcdf
 import numpy as np
 import rasterio, os
 
+os.chdir( '/workspace/Shared/Tech_Projects/Sea_Ice_Atlas/project_data' )
+
+# source NetCDF file, found here (http://igloo.atmos.uiuc.edu/SNAP/alaska.observed.seaice.weekly.nc)
+# DAILIES (JULY 2014)
+# nc_path = './Outputs_From_Bill/SIC_Weekly/netcdf/version2_from_bill/alaska.observed.seaice.weekly.nc'
+# monthlies (AUGUST 2014)
+nc_path = './Outputs_From_Bill/Bill_monthly_outputs_Aug2014/alaska.monthly.ice.concentration.sources.1850-2013.nc'
 # read in the data using scipy
-nc = netcdf.netcdf_file('/workspace/Shared/Tech_Projects/Sea_Ice_Atlas/project_data/Outputs_From_Bill/SIC_Weekly/netcdf/version2_from_bill/alaska.observed.seaice.weekly.nc')
+nc = netcdf.netcdf_file( nc_path )
+
+# set the  timestep for the output filename as a string
+timestep = 'monthly' # 'weekly'
+
+# set some output filename constants to pass to the generator
+output_path = './Outputs_From_Bill/Bill_monthly_outputs_Aug2014'
+output_prefix = 'sic_mean_pct_' + timestep + '_ak_' 
 
 # we know the variable names are 'seaice_conc' and 'seaice_source'
 conc = nc.variables[ 'seaice_conc' ]
@@ -51,7 +62,7 @@ source = nc.variables[ 'seaice_source' ]
 
 # we need to do something with the metadata of the output new GTiffs here
 # --> for the time-being I am just reading in an old version of the GTiff to use as a template
-template = rasterio.open( '/workspace/Shared/Tech_Projects/Sea_Ice_Atlas/project_data/Outputs_From_Bill/SIC_Weekly/tif/sic_mean_pct_weekly_ak_01_01_1953.tif' ) 
+template = rasterio.open( './CODE/sea-ice-atlas/etc/raster_template_Bill.tif' ) 
 meta = template.meta
 meta.update( compress='lzw', nodata=-1, dtype=rasterio.float32 ) # -1 nodata is land in this map
 
@@ -96,15 +107,11 @@ def arr2d_to_gtiff( arr_2d, output_filename, template_meta ):
 # For the version of the data with MD5 sum 845d2ee0953fcd5f8e977d0cfb023f3d,
 # the structure of this data has metadata in records 0-5 and the last record (2935) is the overall filename.
 names = nc.history.split()
-names = names[ 6:2934 ]
-dates = [ i.split('.')[2] for i in names ]
-
-# set some output filename contants to pass tp the generator
-output_path = '/workspace/Shared/Tech_Projects/Sea_Ice_Atlas/project_data/Outputs_From_Bill/HSIA_Prep_July2014'
-output_prefix = 'sic_mean_pct_weekly_ak_' 
+names = names[ 6:len(names)-1 ]
+dates = [ i.split('.')[len(i.split('.'))-2] for i in names ]
 
 # generator for the list comprehension to do the conversion
-input_generator = ( ( os.path.join( output_path, 'weekly', output_prefix + '_'.join([ d[4:6], d[6:8], d[:4] ]) + '.tif' ), c.astype(meta['dtype']), s.astype(meta['dtype']) ) \
+input_generator = ( ( os.path.join( output_path, timestep, output_prefix + '_'.join([ d[4:6], d[6:8], d[:4] ]) + '.tif' ), c.astype(meta['dtype']), s.astype(meta['dtype']) ) \
 						for d, c, s in zip( dates, conc, source ) )
 
 # run it with a list comprehension
@@ -124,7 +131,7 @@ all_vals = [j for i in out.values() for j in i ]
 all_unique_vals = np.unique(np.array(all_unique_vals))
 
 # if the output of the next line is True then there is no discrepancy between the unique source ids and what we should expect.
-False not in[ True for i in all_unique_vals if i in value_list ] 
+False not in [ True for i in all_unique_vals if i in value_list ] 
 
 # # CONC TEST
 # re-instantiate the generator
@@ -137,6 +144,7 @@ cnc_test_list = [ 1 for min, max in cnc_range_list if min >= 0 and max <= 1 ]
 # diffenence between the length input list and the sum of the cnc_test_list
 cnc_final_test = len( cnc_range_list ) - sum( cnc_test_list )
 
-# # GRAB AND COPY "MONTHLY" TIMESERIES 
-# grab the week of the 15th of the month for the "Monthly" dataset
-[ os.system( 'cp ' + fn + ' ' + fn.replace('weekly', 'monthly') ) for fn in gtiff_out if '_15_' is in fn ]
+# old code for creating monthlies from weeklies before Bill sent the Monthly outputs in August 2014
+# # # GRAB AND COPY "MONTHLY" TIMESERIES 
+# # grab the week of the 15th of the month for the "Monthly" dataset
+# [ os.system( 'cp ' + fn + ' ' + fn.replace('weekly', 'monthly') ) for fn in gtiff_out if '_15_' is in fn ]
