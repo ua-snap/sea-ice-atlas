@@ -1,0 +1,45 @@
+//styles for footer and navigation bar
+#footer-logos {
+  float:right;
+  li {
+	display:inline;
+	list-style-type:none;
+  }
+  a img {
+	opacity:0.45;
+	-webkit-transition:opacity 0.2s ease-in-out;
+	-moz-transition:opacity 0.2s ease-in-out;
+	-o-transition:opacity 0.2s ease-in-out;
+	transition:opacity 0.2s ease-in-out;
+	padding: 0 10px 10px 10px;
+	margin: 0 0 -15px 0;
+  }
+}
+#footer-logos a:hover img, a:focus img {
+  opacity:1;
+}
+
+ul.nav.navbar-nav li a {
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+	-webkit-border-radius: 12px;
+	-moz-border-radius: 12px;
+	border-radius: 12px;
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+ul.nav.navbar-nav li a:hover, ul.nav.navbar-nav li a:focus  {
+	background: rgba(255, 255, 255, 0.15);
+	color: @brand-warning;
+	-webkit-transform-origin: center;
+	-moz-transform-origin: center;
+	-o-transform-origin: center;
+	-webkit-transition-origin: center;
+	transition-origin: center;
+	-webkit-transform: scale(1.07);
+	-moz-transform: scale(1.07);
+	-o-transform: scale(1.07);
+	transform: scale(1.07);
+}
