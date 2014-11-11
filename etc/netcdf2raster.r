@@ -22,13 +22,15 @@ library(stringr)
 # The system call that captures the output of the raster2sql system command
 # throws warnings because those lines are being split, and from the R source code
 # it looks like the fear is that line splitting may not be 
-options(warn=0)
+options(warn=1)
+
+doNetCDF = FALSE
 
 # Path to source NetCDF file
-ncFilePath = './ice.concentrations.monthly.alaska.1850-2013.nc'
+ncFilePath = '/Users/cstephen/Downloads/sic_hsia.zip'
 
-# Directory where geotiffs will be written
-outDirPath = './output'
+# Directory to write/read GeoTIFFs
+outDirPath = '/Users/cstephen/Downloads/gtiff'
 
 # start and end years
 startYear = 1850
@@ -40,30 +42,32 @@ tableName = 'sql_raster_seaice_rev_2014_2_14'
 
 setwd('.')
 
-# Read in the NetCDF file as a RasterBrick()
-b <- brick(ncFilePath, varname='seaice_conc')
+if(doNetCDF) {
+	# Read in the NetCDF file as a RasterBrick()
+	b <- brick(ncFilePath, varname='seaice_conc')
 
-# make the sequence of dates to identify the layers in the new RasterBrick() and pass those new identifiers to the names()
-years <- seq(startYear, endYear)
-months <- seq(1, 12)
-dates = c()
+	# make the sequence of dates to identify the layers in the new RasterBrick() and pass those new identifiers to the names()
+	years <- seq(startYear, endYear)
+	months <- seq(1, 12)
+	dates = c()
 
-for(year in years) {
-	for(month in months) {
-			dates <- c(dates, sprintf("%04d-%02d-15", year, month))
+	for(year in years) {
+		for(month in months) {
+				dates <- c(dates, sprintf("%04d-%02d-15", year, month))
+		}
 	}
+
+	names(b) <- gsub('-','_',as.character(dates))
+
+	# Write out the rasters
+	writeRaster(b, format='GTiff', filename=paste(outDirPath,'seaice_conc_sic_mean_pct_monthly_ak',sep="/"), datatype='INT1S',options='COMPRESS=LZW', bylayer=T, suffix=substring(names(b),2,nchar(names(b))))
 }
-
-names(b) <- gsub('-','_',as.character(dates))
-
-# Write out the rasters
-writeRaster(b, format='GTiff', filename=paste(outDirPath,'seaice_conc_sic_mean_pct_monthly_ak',sep="/"), datatype='INT1S',options='COMPRESS=LZW', bylayer=T, suffix=substring(names(b),2,nchar(names(b))))
 
 # Start generating the raster SQL.
 sqlRasterStatement = paste('CREATE TABLE "', tableName, '" ("date" date PRIMARY KEY, "rid" serial, "rast" raster);', sep='')
 
 # get a list of all the concentration GeoTIFFs that were created by the writeRaster() function
-outputTiffs <-list.files(path=outDirPath, pattern='^seaice_conc.*\\.tif$') 
+outputTiffs <-list.files(path=outDirPath, pattern='^.*\\.tif$') 
 
 for(outputTiff in outputTiffs) {
 
