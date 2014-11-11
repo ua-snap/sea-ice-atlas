@@ -27,10 +27,10 @@ options(warn=1)
 doNetCDF = FALSE
 
 # Path to source NetCDF file
-ncFilePath = '/Users/cstephen/Downloads/sic_hsia.zip'
+ncFilePath = ''
 
 # Directory to write/read GeoTIFFs
-outDirPath = '/Users/cstephen/Downloads/gtiff'
+outDirPath = '/home/craig/gtiff'
 
 # start and end years
 startYear = 1850
@@ -78,7 +78,7 @@ for(outputTiff in outputTiffs) {
 	filePath = paste(outDirPath, dateParts[1], sep='/')
 
 	# convert this GeoTIFF into a PostGIS SQL script
-	syscall = paste('raster2pgsql -r', filePath, '-s 4326 -I', sep=' ')
+	syscall = paste('/usr/pgsql-9.2/bin/raster2pgsql -r', filePath, '-s 4326 -I', sep=' ')
 	sqlQuery <- paste0(system(syscall, intern = TRUE), collapse = '')
 
 	# pull raster data out of the SQL script and throw away the rest
