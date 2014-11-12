@@ -38,7 +38,7 @@ endYear = 2013
 
 # table name for generated SQL, suggest something of the form:
 # sql_raster_seaice_rev_x
-tableName = 'sql_raster_seaice_rev_2014_2_14'
+tableName = 'sql_raster_seaice_rev_2014_11_05'
 
 setwd('.')
 
