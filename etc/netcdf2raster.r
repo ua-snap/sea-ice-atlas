@@ -22,7 +22,7 @@ library(stringr)
 # The system call that captures the output of the raster2sql system command
 # throws warnings because those lines are being split, and from the R source code
 # it looks like the fear is that line splitting may not be 
-options(warn=1)
+options(warn=0)
 
 doNetCDF = FALSE
 
@@ -67,12 +67,21 @@ if(doNetCDF) {
 sqlRasterStatement = paste('CREATE TABLE "', tableName, '" ("date" date PRIMARY KEY, "rid" serial, "rast" raster);', sep='')
 
 # get a list of all the concentration GeoTIFFs that were created by the writeRaster() function
-outputTiffs <-list.files(path=outDirPath, pattern='^.*\\.tif$') 
+outputTiffs <-list.files(path=outDirPath, pattern='^seaice_conc_sic_mean_pct_monthly_ak_[0-9]{4}_[0-9]{2}.tif$') 
+
+tiffCount = length(outputTiffs)
+
+# inform user if the GeoTIFF file count is unexpected
+if(tiffCount == 0) {
+	stop('No GeoTIFFs were found. Please verify the GeoTIFF directory is set properly. If the GeoTIFF file names do not match the regular expression in this script, use the rename_geotiffs.pl script to rename them, or else the rest of the HSIA update process will be difficult.')
+} else if(tiffCount != 1968) {
+	warning('This script did not find exactly 1,968 GeoTIFFs for the years 1850-2013.')
+}
 
 for(outputTiff in outputTiffs) {
 
 	# get the date from the GeoTIFF filename
-	pattern = '.*(\\d{4})_(\\d{2})_15.*'
+	pattern = '^seaice_conc_sic_mean_pct_monthly_ak_(\\d{4})_(\\d{2}).tif$'
 	dateParts <- str_match(outputTiff, pattern)
 	formattedDate = paste(dateParts[2], dateParts[3], '15', sep='-')
 	filePath = paste(outDirPath, dateParts[1], sep='/')
