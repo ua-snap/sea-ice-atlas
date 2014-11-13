@@ -107,14 +107,32 @@ forever restart 0
 
 ...where 0 is the number corresponding to the associated process to restart.  ```forever list``` first if there are multiple processes running on this server to ensure you've got the right number.
 
-#### Database and map layer deployment
+#### Database and map layer deployment / data updates
 
-Source data is provided in NetCDF format and needs to be turned into GeoTIFF and SQL rasters for MapServer and PostGIS, respectively.  This is done with the ```etc/netcdf2raster.r``` script.
+Source data will probably be provided in GeoTIFF format. If the source data is provided in NetCDF format, this procedure will first convert the NetCDF file into GeoTIFFs. The GeoTIFF files will be used by MapServer, but they are also used to generate an SQL raster file to import into PostGIS. In other words, on the HSIA Explore page, the map layers are served from the GeoTIFFs through MapServer, whereas the Sea Ice Concentration and Ice Open and Close Dates charts are generated from the SQL raster data through PostGIS. The data is duplicated and served up through these two different channels independently.
 
 To deploy data for this application, the steps are:
 
- 1. Obtain the updated data file, and be aware that if the file has structural changes some coding may be needed to support it.
- 1. Update the ```etc/netcdf2raster.r``` script as required to change paths/configuration, then run the file and it will eventually emit ~1,968 GeoTIFFs as well as an SQL file.  (*Note*, there will likely be a huge number of warnings when this script runs, but it should be OK.)
+ 1. Obtain the updated data file, and be aware that if the file has structural changes some coding may be needed to support it. Double check that the bounding box is consistent with our existing infrastructure with the ```gdalinfo``` command. The bounding box should look like this:
+
+     ```
+     $ gdalinfo <filename>
+     ...
+     Corner Coordinates:
+     Upper Left  (-180.0000000,  80.2500000) (180d 0' 0.00"W, 80d15' 0.00"N)
+     Lower Left  (-180.0000000,  40.0000000) (180d 0' 0.00"W, 40d 0' 0.00"N)
+     Upper Right (-119.7500000,  80.2500000) (119d45' 0.00"W, 80d15' 0.00"N)
+     Lower Right (-119.7500000,  40.0000000) (119d45' 0.00"W, 40d 0' 0.00"N)
+     Center      (-149.8750000,  60.1250000) (149d52'30.00"W, 60d 7'30.00"N)
+     ...
+     ```
+
+     If the bounding box does not look like this, talk to whomever generated data. Or, you may be able to correct the data bounding box with the ```etc/reproject.sh``` script as a last resort.
+
+ 1. If you starting with GeoTIFF files, not a NetCDF file, the GeoTIFF file names need to be in the format ```seaice_conc_sic_mean_pct_monthly_ak_YYYY_MM.tif``` before you can continue. If the GeoTIFF files are not named like this, you can modify the ```etc/rename_geotiffs.pl``` script to rename them.
+ 1. Update the ```etc/netcdf2raster.r``` script as required to change paths/configuration. If you are starting with a NetCDF file, set ```doNetCDF = TRUE``` and make sure to set the ```ncFilePath``` variable. If you are starting with GeoTIFFs, set ```doNetCDF = FALSE``` and set ```outDirPath``` to your GeoTIFF directory (```ncFilePath``` will be ignored).
+
+   Then run the file and it will eventually emit ~1,968 GeoTIFFs as well as an SQL file.  (*Note*, there will likely be a huge number of warnings when this script runs, but it should be OK.)
  1. Generate the mapfile.
  	* Update the ```etc/mapfile-generator/generateMapfile.pl``` tile with the correct date span (near line 46), then execute to yield the "hsia.map" and "hsia-tilecache.cfg".
  	* Check the config files and note the directories where the GeoTIFFs should go, as well as making sure the layer names / filenames line up correctly.
