@@ -128,7 +128,6 @@ To deploy data for this application, the steps are:
      ```
 
      If the bounding box does not look like this, talk to whoever generated the data. Or, you may be able to correct the data bounding box with the ```etc/reproject.sh``` script as a last resort.
-
  1. If you are starting with GeoTIFF files, not a NetCDF file, the GeoTIFF file names need to be in the format ```seaice_conc_sic_mean_pct_monthly_ak_YYYY_MM.tif``` before you can continue. If the GeoTIFF files are not named like this, you can modify and run the ```etc/rename_geotiffs.pl``` script to rename them.
  1. Update the ```etc/netcdf2raster.r``` script as required to change paths/configuration. If you are starting with a NetCDF file, set ```doNetCDF = TRUE``` and make sure to set the ```ncFilePath``` variable. If you are starting with GeoTIFFs, set ```doNetCDF = FALSE``` and set ```outDirPath``` to your GeoTIFF directory (```ncFilePath``` will be ignored). Then run the file and it will eventually emit ~1,968 GeoTIFFs as well as an SQL file.  (*Note*, there will likely be a huge number of warnings when this script runs, but it should be OK.)
  1. Generate the mapfile.
