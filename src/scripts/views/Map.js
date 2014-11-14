@@ -180,7 +180,7 @@ client.Views.MapView = Backbone.View.extend({
 		this.map.addLayer(this.markers);
 		var size = new OpenLayers.Size(21,25);
 		var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
-		var icon = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker.png', new OpenLayers.Size(21, 25), offset);
+		var icon = new OpenLayers.Icon('img/map-marker.png', new OpenLayers.Size(21, 25), offset);
 		this.markers.addMarker(new OpenLayers.Marker(lonlat, icon));
 		this.markers.setZIndex(500);
 	},
