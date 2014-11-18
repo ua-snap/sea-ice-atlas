@@ -39,6 +39,7 @@ from scipy.io import netcdf
 import numpy as np
 import rasterio, os
 from itertools import izip
+import pathos.multiprocessing as mp
 
 os.chdir( '/workspace/Shared/Tech_Projects/Sea_Ice_Atlas/project_data' )
 
@@ -111,7 +112,7 @@ nc_paths = [os.path.join( input_path, version_num, 'weekly', 'netcdf', 'alaska.o
 			os.path.join( input_path, version_num, 'monthly', 'netcdf', 'alaska.monthly.ice.concentration.sources.1850-2013.nc')]
 
 # timesteps
-timesteps = ['monthly', 'weekly']
+timesteps = ['weekly', 'monthly']
 
 for timestep, nc_path in izip( timesteps, nc_paths ):
 	print nc_path
@@ -120,17 +121,30 @@ for timestep, nc_path in izip( timesteps, nc_paths ):
 	# set some output filename constants to pass to the generator
 	# output_path = './Outputs_From_Bill/Bill_monthly_outputs_Aug2014'
 	output_path = os.path.join( input_path, version_num, timestep, 'gtiff' )
-	output_prefix = 'sic_mean_pct_' + timestep + '_ak_' 
+	output_prefix = 'seaice_conc_sic_mean_pct_' + timestep + '_ak_'
 
 	# we know the variable names are 'seaice_conc' and 'seaice_source'
 	conc = nc.variables[ 'seaice_conc' ]
 	source = nc.variables[ 'seaice_source' ]
 
 	# we need to do something with the metadata of the output new GTiffs here
-	# --> for the time-being I am just reading in an old version of the GTiff to use as a template
-	template = rasterio.open( os.path.join( input_path, 'CODE', 'sea-ice-atlas', 'etc', 'raster_template_Bill.tif' ) 
+	# --> for the time-being I am just reading in an old version of the GTiff to use as a template [ MD5 sum e3b146a17fdc29fa28b08753cc09031b ]
+	template = rasterio.open( os.path.join( input_path, version_num, 'raster_template', 'seaice_conc_sic_mean_pct_monthly_ak_2013_01.tif' ) )
 	meta = template.meta
-	meta.update( compress='lzw', nodata=-1, dtype=rasterio.float32 ) # -1 nodata is land in this map
+	meta.update( compress='lzw', nodata=128, dtype=rasterio.uint8, count=2 ) # -1 nodata is land in this map
+
+	# Update the nodata value in Bill's most recent set of rasters
+	conc = np.trunc( conc.data * 100.0 )
+	conc[ conc == -100.0 ] = 128.0
+	conc = conc.astype( np.uint8 ) # change dtype
+
+	source = np.trunc( source.data )
+	source[ source == -1 ] = 128
+	source = source.astype( np.uint8 ) # change dtype
+
+	# make them into list objects using dimension 1 as time
+	conc = [ conc[ i, ... ] for i in range( conc.shape[0] ) ]
+	source = [ source[ i, ... ] for i in range( source.shape[0] ) ]
 
 	# Goal here is to generate filenames.
 	# For the version of the data with MD5 sum 845d2ee0953fcd5f8e977d0cfb023f3d,
@@ -139,16 +153,26 @@ for timestep, nc_path in izip( timesteps, nc_paths ):
 	names = names[ 6:len(names)-1 ]
 	dates = [ i.split('.')[len(i.split('.'))-2] for i in names ]
 
+	if timestep == 'monthly':
+		dates = [ i[:4] + '_' + i[4:-2] for i in dates ]
+	elif timestep == 'weekly':
+		dates = [ i[:4] + '_' + i[4:-2] + '_' + i[len(i)-2:] for i in dates ]
+	else:
+		BaseException( 'check your dates and timestep inputs' )
+
 	# generator for the list comprehension to do the conversion
-	input_generator = ( ( os.path.join( output_path, output_prefix + '_'.join([ d[4:6], d[6:8], d[:4] ]) + '.tif' ), c.astype(meta['dtype']), s.astype(meta['dtype']) ) \
-							for d, c, s in izip( dates, conc, source ) )
+	input_generator = ( ( os.path.join( output_path, output_prefix + d + '.tif' ), c.astype(meta['dtype']), s.astype(meta['dtype']) ) for d, c, s in izip( dates, conc, source ) )
 
 	# run it with a list comprehension
+	p = mp.Pool( 3 )
+	out = p.map( lambda x: arr2d_to_gtiff( (x[1], x[2]), x[0], meta ), input_generator ) 
+	p.close()
+
 	gtiff_out = [ arr2d_to_gtiff( (cnc, src), fn, meta ) for fn, cnc, src in input_generator ]
 
 	# run the zipping procedure
 	in_dir = os.path.join( input_path, version_num, timestep )
-	output_filename = os.path.join( in_dir, 'sic_hsia_' + timestep + '_'+dates[0]+'_'+dates[len(dates)-1]+'.zip' )
+	output_filename = os.path.join( in_dir, 'seaice_conc_sic_mean_pct_' + timestep + '_ak_' + dates[0]+'_'+dates[len(dates)-1]+'.zip' )
 
 	if os.path.exists( output_filename ):
 		os.remove( output_filename )
@@ -156,11 +180,13 @@ for timestep, nc_path in izip( timesteps, nc_paths ):
 	out = zip_sea_ice( in_dir, output_filename )
 	out.close()
 
+
+
 	# # # # # # # # # # # # # # # # # # # # # #
 	# BELOW ARE SOME TESTS THAT CAN BE RUN ON THE DATA 
 	# # SOURCE TEST
 	# what are the unique acceptable values allowed in the seaice_source layer?
-	value_list = [ -1,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,20,21 ]
+	value_list = [ 128,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,20,21 ]
 
 	# re-instantiate the generator
 	input_generator = ( ( os.path.join( output_path, 'weekly', output_prefix + '_'.join([ d[4:6], d[6:8], d[:4] ]) + '.tif' ), c.astype(meta['dtype']), s.astype(meta['dtype']) ) \
