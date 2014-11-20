@@ -109,12 +109,12 @@ forever restart 0
 
 #### Database and map layer deployment
 
-Source data is provided in NetCDF format and needs to be turned into GeoTIFF and SQL rasters for MapServer and PostGIS, respectively.  This is done with the ```etc/netcdf2raster.r``` script.
+Source data is provided in NetCDF format and needs to be turned into GeoTIFF and SQL rasters for MapServer and PostGIS, respectively.  This is done with the ```etc/hsia_nc_convert_validate.py``` script.
 
 To deploy data for this application, the steps are:
 
  1. Obtain the updated data file, and be aware that if the file has structural changes some coding may be needed to support it.
- 1. Update the ```etc/netcdf2raster.r``` script as required to change paths/configuration, then run the file and it will eventually emit ~1,968 GeoTIFFs as well as an SQL file.  (*Note*, there will likely be a huge number of warnings when this script runs, but it should be OK.)
+ 1. Update the ```etc/hsia_nc_convert_validate.py``` script as required to change paths/configuration, then run the file and it will eventually emit 1,968 GeoTIFFs. 
  1. Generate the mapfile.
  	* Update the ```etc/mapfile-generator/generateMapfile.pl``` tile with the correct date span (near line 46), then execute to yield the "hsia.map" and "hsia-tilecache.cfg".
  	* Check the config files and note the directories where the GeoTIFFs should go, as well as making sure the layer names / filenames line up correctly.
