@@ -133,15 +133,10 @@ for timestep, nc_path in izip( timesteps, nc_paths ):
 	meta = template.meta
 	meta.update( compress='lzw', nodata=128, dtype=rasterio.uint8, count=2 ) # -1 nodata is land in this map
 
-	# if it is the weekly data rescale it
-	if timestep == 'weekly':
-		conc = np.rint(conc.data*100.0).astype( np.int )
-		conc[ conc == -100.0 ] = 128.0 # landmask
-		conc = conc.astype( np.uint8 )
-	if timestep == 'monthly':
-		conc = np.rint( conc.data ).astype( np.int )
-		conc[ conc == -1 ] = 128 # landmask
-		conc = conc.astype( np.uint8 ) # change dtype
+	# Update the nodata value in Bill's most recent set of rasters
+	conc = np.trunc( conc.data * 100.0 )
+	conc[ conc == -100.0 ] = 128.0
+	conc = conc.astype( np.uint8 ) # change dtype
 
 	source = np.trunc( source.data )
 	source[ source == -1 ] = 128
@@ -184,6 +179,7 @@ for timestep, nc_path in izip( timesteps, nc_paths ):
 
 	out = zip_sea_ice( in_dir, output_filename )
 	out.close()
+
 
 
 	# # # # # # # # # # # # # # # # # # # # # #

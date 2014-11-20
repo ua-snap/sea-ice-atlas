@@ -114,7 +114,7 @@ Source data is provided in NetCDF format and needs to be turned into GeoTIFF and
 To deploy data for this application, the steps are:
 
  1. Obtain the updated data file, and be aware that if the file has structural changes some coding may be needed to support it.
- 1. Update the ```etc/hsia_nc_convert_validate.py``` script as required to change paths/configuration, then run the file and it will eventually emit 1,968 GeoTIFFs.
+ 1. Update the ```etc/hsia_nc_convert_validate.py``` script as required to change paths/configuration, then run the file and it will eventually emit 1,968 GeoTIFFs. 
  1. Generate the mapfile.
  	* Update the ```etc/mapfile-generator/generateMapfile.pl``` tile with the correct date span (near line 46), then execute to yield the "hsia.map" and "hsia-tilecache.cfg".
  	* Check the config files and note the directories where the GeoTIFFs should go, as well as making sure the layer names / filenames line up correctly.
