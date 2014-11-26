@@ -113,7 +113,7 @@ Source data will probably be provided in GeoTIFF format. If the source data is p
 
 To deploy data for this application, the steps are:
 
- 1. Obtain the updated data file, and be aware that if the file has structural changes some coding may be needed to support it. Double check that the bounding box is consistent with our existing infrastructure with the ```gdalinfo``` command. The bounding box should look like this:
+ 1. Obtain the updated data file, and be aware that if the file has structural changes some coding may be needed to support it. Double check that the bounding box and nodata value(s) are consistent with our existing infrastructure with the ```gdalinfo``` command. The bounding box and nodata value(s) should look like this:
 
      ```
      $ gdalinfo <filename>
@@ -124,6 +124,8 @@ To deploy data for this application, the steps are:
      Upper Right (-119.7500000,  80.2500000) (119d45' 0.00"W, 80d15' 0.00"N)
      Lower Right (-119.7500000,  40.0000000) (119d45' 0.00"W, 40d 0' 0.00"N)
      Center      (-149.8750000,  60.1250000) (149d52'30.00"W, 60d 7'30.00"N)
+     ...
+     NoData Value=-128
      ...
      ```
 
@@ -136,7 +138,7 @@ To deploy data for this application, the steps are:
  	* Check the templates for the mapfile and layer if you need to edit URLs or file locations.
  1. Move the mapfile and the GeoTIFFs up to the production mapserver, copy to production directory.
  1. Move the tilecache configuration file up to the production mapserver, then merge it into the giant tilecache configuration file (Tilecache doesn't support multiple configs). 
- 1. Regenerate the tilecache.  Delete all previous cache items with ```rm -rf /tmp/tilecache/seaice*```, then run the ```etc/seedTilecache.sh``` script.  After generating the cache, ensure that permissions are correctly set on the individual directories such that Apache can read them.
+ 1. Regenerate the tilecache.  Delete all previous cache items with ```rm -rf /tmp/tilecache/seaice*``` then run the ```etc/seedTilecache.sh``` script.  After generating the cache, ensure that permissions are correctly set on the individual directories such that Apache can read them.
  1. Load the generated raster SQL file into PostGIS.  It may be wise to do this with a new table, not reusing the previous one.
  1. Update configurations on the application as appropriate, and restart the app as outlined above.
 
