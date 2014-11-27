@@ -73,9 +73,12 @@ def arr2d_to_gtiff( arr_2d, output_filename, template_meta ):
 	template_meta.update( count = band_count )
 	if band_count == 1:
 		arr_2d = list( arr_2d )
-	gtiff = rasterio.open( output_filename, mode='w', **template_meta )
+	output_filename_tmp = output_filename.replace( '.tif', '_tmp.tif' )
+	gtiff = rasterio.open( output_filename_tmp, mode='w', **template_meta )
 	[ gtiff.write_band( ( count + 1 ), lyr )  for count, lyr in enumerate( arr_2d ) ]
 	gtiff.close()
+	os.system( 'gdal_translate -q -of GTiff -ot Byte ' + output_filename_tmp + ' '  + output_filename )
+	os.remove( output_filename_tmp )
 	return gtiff.name
 
 def zip_sea_ice( in_dir, output_filename ):
@@ -131,21 +134,21 @@ for timestep, nc_path in izip( timesteps, nc_paths ):
 	# --> for the time-being I am just reading in an old version of the GTiff to use as a template [ MD5 sum e3b146a17fdc29fa28b08753cc09031b ]
 	template = rasterio.open( os.path.join( input_path, version_num, 'raster_template', 'seaice_conc_sic_mean_pct_monthly_ak_2013_01.tif' ) )
 	meta = template.meta
-	meta.update( compress='lzw', nodata=128, dtype=rasterio.uint8, count=2 ) # -1 nodata is land in this map
+	meta.update( compress='lzw', nodata=-128, dtype=np.int16, count=2 ) # -1 nodata is land in this map dtype=np.int8,
 
 	# if it is the weekly data rescale it
 	if timestep == 'weekly':
 		conc = np.rint(conc.data*100.0).astype( np.int )
-		conc[ conc == -100.0 ] = 128.0 # landmask
-		conc = conc.astype( np.uint8 )
+		conc[ conc == -100.0 ] = -128.0 # landmask
+		conc = conc.astype( np.int8 )
 	if timestep == 'monthly':
 		conc = np.rint( conc.data ).astype( np.int )
-		conc[ conc == -1 ] = 128 # landmask
-		conc = conc.astype( np.uint8 ) # change dtype
+		conc[ conc == -1 ] = -128 # landmask
+		conc = conc.astype( np.int8 ) # change dtype
 
 	source = np.trunc( source.data )
-	source[ source == -1 ] = 128
-	source = source.astype( np.uint8 ) # change dtype
+	source[ source == -1 ] = -128
+	source = source.astype( np.int8 ) # change dtype
 
 	# make them into list objects using dimension 1 as time
 	conc = [ conc[ i, ... ] for i in range( conc.shape[0] ) ]
@@ -169,11 +172,12 @@ for timestep, nc_path in izip( timesteps, nc_paths ):
 	input_generator = ( ( os.path.join( output_path, output_prefix + d + '.tif' ), c.astype(meta['dtype']), s.astype(meta['dtype']) ) for d, c, s in izip( dates, conc, source ) )
 
 	# run it with a list comprehension
-	p = mp.Pool( 3 )
+	p = mp.Pool( 16 )
 	out = p.map( lambda x: arr2d_to_gtiff( (x[1], x[2]), x[0], meta ), input_generator ) 
+							# arr2d_to_gtiff( arr_2d, output_filename, template_meta 
 	p.close()
 
-	gtiff_out = [ arr2d_to_gtiff( (cnc, src), fn, meta ) for fn, cnc, src in input_generator ]
+	# gtiff_out = [ arr2d_to_gtiff( (cnc, src), fn, meta ) for fn, cnc, src in input_generator ]
 
 	# run the zipping procedure
 	in_dir = os.path.join( input_path, version_num, timestep )
@@ -184,6 +188,7 @@ for timestep, nc_path in izip( timesteps, nc_paths ):
 
 	out = zip_sea_ice( in_dir, output_filename )
 	out.close()
+
 
 
 	# # # # # # # # # # # # # # # # # # # # # #
@@ -214,6 +219,4 @@ for timestep, nc_path in izip( timesteps, nc_paths ):
 	cnc_test_list = [ 1 for min, max in cnc_range_list if min >= 0 and max <= 1 ]
 	# diffenence between the length input list and the sum of the cnc_test_list
 	cnc_final_test = len( cnc_range_list ) - sum( cnc_test_list )
-
-
 
