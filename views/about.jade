@@ -62,7 +62,7 @@ block content
 				
 		h2 Data considerations
 		p
-			| These data represent &ldquo;snapshots&rdquo; in time, as well as historical
+			| These data show &ldquo;snapshots&rdquo; in time, as well as historical
 			| trends in arctic sea ice cover and extent. They are not projections
 			| or predictions of future conditions. 
 			| The atlas is not designed for forecasting or prediction, but can provide
@@ -82,7 +82,7 @@ block content
 			| we interpret this handwriting? How do we fill gaps in the data
 			| record? Which time scale is best to use?
 			| These choices lead to uncertainty.
-		h3 Sources of sea ice data used in this Atlas
+		h3 Sources of monthly sea ice data used in this atlas
 		script(src='https://www.google.com/jsapi?autoload={"modules":[{"name":"visualization",%20"version":"1","packages":["timeline"]}]}', type='text/javascript')
 		script(type='text/javascript').
 			google.setOnLoadCallback(drawChart);
@@ -97,8 +97,9 @@ block content
 			dataTable.addRows([
 			[ 'Whalers', 'Whaling ship logbooks describing open water and ice cover 1850–1914',new Date(1850, 1, 0),new Date(1914, 12, 0) ],
 			[ 'ACSYS', 'Arctic Climate System Study 1850–1986', new Date(1850, 1, 0), new Date(1986, 12, 0) ],
+			[ 'Analog', 'Analog filling of gaps 1850–1971', new Date(1850, 1, 0), new Date(1971, 12, 0) ],
 			[ 'Hill', 'Brian Hill Collection 1870–1963',new Date(1870, 1, 0),new Date(1963, 12, 0) ],
-			[ 'DMI', 'Danish Meteorological Institute 1901–1956',new Date(1901, 1, 0),new Date(1956, 12, 0) ],
+			[ 'DMI', 'Danish Meteorological Institute 1893–1956',new Date(1893, 1, 0),new Date(1956, 12, 0) ],
 			[ 'Kelly', 'Kelly Sea Ice Extent Grids 1901–1956',new Date(1901, 1, 0),new Date(1956, 12, 0) ],
 			[ 'AARI', 'Arctic and Antarctic Research Institute 1933–2004',new Date(1933, 1, 0),new Date(2004, 12, 0) ],
 			[ 'Dehn', 'NSIDC Bill Dehn Data Collection 1953–1986',new Date(1953, 1, 0),new Date(1986, 12, 0) ],
@@ -107,7 +108,7 @@ block content
 			[ 'Kelly extended', 'Temporal extension of Kelly data 1957–1971',new Date(1957, 1, 0),new Date(1971, 12, 0) ],
 			[ 'JMA', 'Japan Meteorological Agency 1970–2007',new Date(1970, 1, 0),new Date(2007, 12, 0) ],
 			[ 'JIC', 'Navy-NOAA Joint Ice Center Climatology 1972–1994',new Date(1972, 1, 0),new Date(1994, 12, 0) ],
-			[ 'NSIDC', 'NSIDC Nimbus-7 SMMR Arctic Sea Ice Concentrations 1978–2014',new Date(1978, 1, 0),new Date(2014, 12, 0) ]]);
+			[ 'NSIDC', 'NSIDC microwave sensor data 1978–2014',new Date(1978, 1, 0),new Date(2014, 12, 0) ]]);
 
 			var options = {
 			timeline: { showRowLabels: true, singleColor: '#7ecefd', colorByRowLabel: true,
@@ -120,8 +121,16 @@ block content
 			}
 		#datasources(style='width: 100%; height: 550px;')
 
-		h4 Data source descriptions
-		p
+		h4 Alphabetical listing of data sources
+		p.datadesc
+			strong Analog filling of spatial and temporal gaps:&nbsp;&nbsp;
+			| Spatial and temporal gaps in a given grid filled with best analog representations of the given month.
+		p.datadesc
+			a(href='http://nsidc.org/data/docs/noaa/g02176_aari_charts/') Arctic and Antarctic Research Institute (AARI)&nbsp;&nbsp;
+			| Located in St. Petersburg, Russia, AARI produces sea ice charts for safety of navigation in the Eurasian Arctic 
+			| and other operational and scientific purposes. Chart coverage focuses on the Northern Sea Route, although later 
+			| charts extend into the central Arctic. Charts contain several categories of ice concentration.		
+		p.datadesc
 			a(href='http://nsidc.org/data/docs/noaa/g02169_nordic_sea_ice/') Arctic Climate System Study (ACSYS)&nbsp;&nbsp;
 			| An activity of the&nbsp;
 			a(href='http://www.wcrp-climate.org/') World Climate Research Program.&nbsp;
@@ -130,33 +139,25 @@ block content
 			| The ACSYS study has expanded into the Climate and Cryosphere Project. Visit the&nbsp;
 			a(href='http://www.climate-cryosphere.org/resources/historical-ice-chart-archive') ACSYS/CliC Historical Ice Chart Archive 
 			| to access all data from this work.
-		p
+		p.datadesc
 			a(href='http://www.icedata.ca/') Brian Hill Collection&nbsp;&nbsp;
 			| Includes ice edge coordinates and accompanying maps of ice edge around Newfoundland, Grand Banks, and the 
-			| Gulf of St. Lawrence, Canada. Information is monthly for winter months of most years.
-		p
+			| Gulf of St. Lawrence, Canada. Data are monthly for winter months of most years.
+		p.datadesc
 			a(href='http://nsidc.org/data/docs/noaa/g02203-dmi/') Danish Meteorological Institute (DMI)&nbsp;&nbsp;
 			| These charts provide observed and inferred sea ice extent for each summer month from 1893–1956. Additionally, 
 			| Kelly et al. have digitized summer (May-Sept) ice edge information from DMI's monthly maps.
-		p
-			a(href='http://nsidc.org/data/docs/noaa/g02176_aari_charts/') Arctic and Antarctic Research Institute (AARI)&nbsp;&nbsp;
-			| Located in St. Petersburg, Russia, AARI produces sea ice charts for safety of navigation in the Eurasian Arctic 
-			| and other operational and scientific purposes. Chart coverage focuses on the Northern Sea Route, although later 
-			| charts extend into the central Arctic. Charts contain several categories of ice concentration.
-			p
-			a(href='http://nsidc.org/data/g01111.html') NSIDC Bill Dehn Data Collection&nbsp;&nbsp;
-			| Scanned versions of almost 7,000 ice charts donated to the
-			a(href='http://nsidc.org/') &nbsp;National Snow and Ice Data Center&nbsp;
-			| (NSIDC) by the estate of Bill Dehn are available through a searchable interface. A subset of the charts 
-			| have been digitized by the
-			a(href='http://accap.uaf.edu/') &nbsp;Alaska Center for Climate Assessment and Policy&nbsp;
-			| (ACCAP).
-		p
-			a(href='http://nsidc.org/data/docs/noaa/g00799_arctic_southern_sea_ice/') Walsh and Johnson/Navy-NOAA Joint Ice Center&nbsp;&nbsp;
-			| Early version of pan-Arctic digital database of Arctic sea ice concentrations. Grids cover the pre-satellite 
-			| (passive microwave) period and are synthesized from various sources. Resolution is 60 nautical miles in space and monthly in time.
-			em &nbsp;Described in: Walsh and Johnson, 1979, J. Phys. Oceanography, 9, 58–591.
-		p
+		p.datadesc
+			a(href='http://zubril.ru/docs/21/index-826372.html?page=11#171722') Japan Meteorological Agency&nbsp;&nbsp;
+			| Monitors sea ice in the Sea of Okhotsk from November to July. Results of monitoring are published for public use.
+		p.datadesc
+			strong Kelly ice extent grids&nbsp;&nbsp;
+			| Digitized ice edge information from monthly maps of Danish Meteorological Institute, May-Sept only. 
+			| Kelly digitized only the inferred ice edge and only to a spatial resolution of about 100 km, depending 
+			| on the distance of the ice boundary to the pole. He chose not to improve the resolution because of the 
+			| low accuracy of the inferred ice edge itself. The eventual plan was for this digitized data to be 
+			| incorporated on a one-degree grid into larger sea ice data products as an ice/no ice indicator.
+		p.datadesc
 			a(href='http://www.public.navy.mil/fltfor/cnmoc/Pages/navo_home1.aspx') Naval Oceanographic Office (NAVOCEANO)&nbsp;&nbsp;
 			| Oversees the Naval Ice Center (NAVICE), which provides worldwide operational ice analyses for the US military 
 			| and government agencies as well as allied nations. Sea ice maps for the Alaskan and Greenland sectors were compiled 
@@ -164,10 +165,7 @@ block content
 			a(href='http://nsidc.org/') National Snow and Ice Data Center&nbsp;
 			| (NSIDC). In 1972, ice charting was transitioned to the predecessor of the
 			a(href='http://www.natice.noaa.gov/') &nbsp;National Ice Center.
-		p
-			a(href='http://zubril.ru/docs/21/index-826372.html?page=11#171722') Japan Meteorological Agency&nbsp;&nbsp;
-			| Monitors sea ice in the Sea of Okhotsk from November to July. Results of monitoring are published for public use.
-			p
+		p.datadesc
 			a(href='http://www.natice.noaa.gov/index.html') Navy-NOAA Joint Ice Center Climatology&nbsp;&nbsp;
 			| The National Ice Center began in 1976 as the Joint Ice Center in 1976, comprised of personnel from NOAA 
 			| and the US Navy. In 1995, the Joint Ice Center became the National Ice Center as it expanded to include 
@@ -176,11 +174,41 @@ block content
 			| Ice charts dating back to 1972 are from predecessor organization. Hard-copy (paper) charts produced by analysts 
 			| are subsequently scanned and digitized. Ice charts are based mainly on satellite imagery, supplemented by aircraft, 
 			| ship and shore reports.
-		p
-			a(href='http://nsidc.org/data/docs/daac/nsidc0079_bootstrap_seaice.gd.html') NSIDC Nimbus-7 SMMR Arctic Sea Ice 
-			| Concentrations&nbsp;&nbsp;
-			a(href='http://nsidc.org/')&nbsp;The National Snow and Ice Data Center&nbsp;&nbsp;
-			| (NSIDC) supports research into our world's frozen realms: the snow, ice, glaciers, frozen ground, 
-			| and climate interactions that make up Earth's cryosphere. NSIDC manages and distributes scientific data, 
-			| creates tools for data access, supports data users, performs scientific research, and educates the public 
-			| about the cryosphere.
+		p.datadesc
+			a(href='http://nsidc.org/data/g01111.html') NSIDC Bill Dehn Data Collection&nbsp;&nbsp;
+			| Scanned versions of almost 7,000 ice charts donated to the
+			a(href='http://nsidc.org/') &nbsp;National Snow and Ice Data Center&nbsp;
+			| (NSIDC) by the estate of Bill Dehn are available through a searchable interface. A subset of the charts 
+			| have been digitized by the
+			a(href='http://accap.uaf.edu/') &nbsp;Alaska Center for Climate Assessment and Policy&nbsp;
+			| (ACCAP).
+		p.datadesc
+			a(href='http://nsidc.org/data/docs/daac/nsidc0079_bootstrap_seaice.gd.html') NSIDC SMMR/SSMI/AMSR microwavew sensor data &nbsp;&nbsp;
+			| Three separate microwave sensors. AMSR-E is the latest sensor, improving upon past microwave radiometers 
+			| SSM/I and SMMR. The spatial resolution of AMSR-E data doubles that of Scanning Multichannel Microwave 
+			| Radiometer (SMMR) and Special Sensor Microwave/Imager (SSM/I) data. Also, AMSR-E combines into one 
+			| sensor all the channels that SMMR and SSM/I had individually.
+		p.datadesc
+			a(href='http://nsidc.org/data/docs/noaa/g00799_arctic_southern_sea_ice/') Walsh and Johnson/Navy-NOAA Joint Ice Center&nbsp;&nbsp;
+			| Early version of pan-Arctic digital database of Arctic sea ice concentrations. Grids cover the pre-satellite 
+			| (passive microwave) period and are synthesized from various sources. Resolution is 60 nautical miles in space and monthly in time.
+			em &nbsp;Described in: Walsh and Johnson, 1979, J. Phys. Oceanography, 9, 58–591.
+		p.datadesc
+			strong Whaling ship logbook data&nbsp;&nbsp;
+			| Daily observations taken from logbooks and journals of whaling vessels cruising in the Bering and Chukchi 
+			| seas to investigate seaice conditions in this region of the Arctic between 1850 and 1914. 
+			| Extracted and digitized daily data on the presence or absence of sea ice from logbook records of annual 
+			| cruises in an unbroken record from 1850 to 1914, though there were very few cruises (hence inadequate 
+			| data) from 1911 to 1914. Data include more than 52,000 daily observations in an unbroken 65 year record 
+			| from 516 cruises. These represent 19% of the total 2,712 cruises.
+			| Similar findings are discussed by Eicken et al.&nbsp; 
+			a(href='http://seaice.alaska.edu/gi/publications/eicken/11MBBE.pdf') in this paper.
+
+
+
+
+
+
+
+
+

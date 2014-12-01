@@ -1,0 +1,37 @@
+// Used in glossary.jade
+#ice-carousel {
+	margin: 4em 0 1em 2em;
+}
+
+#ice-carousel.carousel.slide.pull-right {
+	text-align: center;
+	margin-top: 20px;
+	width: 375px;
+	border: 2px solid #7ECEFD;
+	border-radius: 13px;
+}
+
+.carousel-inner {
+	border-radius: 12px;
+	
+	img {
+		margin-top: 0;
+	}
+}
+
+&.left, &.right {  // left and right gradient backgrounds
+	border-radius: 10px;
+}
+
+.carousel-caption {
+	background-color: #3E454C;
+	padding: 0 30px 20px 30px;
+	margin: 0 -60px 0 -60px;
+	opacity: 0.7;
+	filter:alpha(opacity=70); // For IE8 and earlier 
+	border-radius: 6px;
+
+	p {
+		font-size: 90%;
+	}
+}
