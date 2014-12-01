@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-my $directory = '/home/craig/gtiff';
+my $directory = '/path/to/GeoTIFFs';
 
 opendir(DIR, $directory) or die $!;
 
