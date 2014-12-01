@@ -139,7 +139,7 @@ To deploy data for this application, the steps are:
  1. Move the mapfile and the GeoTIFFs up to the production mapserver, copy to production directory.
  1. Move the tilecache configuration file up to the production mapserver, then merge it into the giant tilecache configuration file (Tilecache doesn't support multiple configs). 
  1. Regenerate the tilecache.  Delete all previous cache items with ```rm -rf /tmp/tilecache/seaice*``` then run the ```etc/seedTilecache.sh``` script.  After generating the cache, set the file permissions so Apache can read them with ```sudo chown -R apache:apache /tmp/tilecache```.
- 1. Load the generated raster SQL file into PostGIS.  It may be wise to do this with a new table, not reusing the previous one.
+ 1. Double check that you are using a different table name than the production PostGIS table. The base name of the raster SQL file name will be used for the new table. I.e., the ```sql_raster_seaice_rev_YYYY_MM_DD``` in ```sql_raster_seaice_rev_YYYY_MM_DD.sql``` will be used as the new table name. Then, load the generated raster SQL file into PostGIS with ```sudo -u postgres psql -d sea_ice_atlas < sql_raster_seaice_rev_YYYY_MM_DD.sql```.
  1. Update configurations on the application as appropriate, and restart the app as outlined above.
 
 ## Development
