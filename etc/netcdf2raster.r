@@ -27,10 +27,10 @@ options(warn=0)
 doNetCDF = FALSE
 
 # Path to source NetCDF file
-ncFilePath = ''
+ncFilePath = '/path/to/NetCDF'
 
 # Directory to write/read GeoTIFFs
-outDirPath = '/home/craig/gtiff'
+outDirPath = '/path/to/GeoTIFFs'
 
 # start and end years
 startYear = 1850
@@ -38,7 +38,7 @@ endYear = 2013
 
 # table name for generated SQL, suggest something of the form:
 # sql_raster_seaice_rev_x
-tableName = 'sql_raster_seaice_rev_2014_11_05'
+tableName = 'sql_raster_seaice_rev_YYYY_MM_DD'
 
 setwd('.')
 
