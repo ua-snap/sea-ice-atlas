@@ -1,0 +1,141 @@
+// Styles in the main app
+#applicationWrapper {
+
+	#mapWrapper {
+		position: relative;
+	}
+
+	#legend {
+		position: absolute;
+		bottom: 22px;
+		right: 8px;
+		width: 250px;
+		z-index: 1000;
+	}
+
+	// Sidebar formatting
+	.affix {
+		position: fixed;
+		margin-top: 25px;
+	}
+
+	.affix-top {
+		margin-top: 25px;
+	}
+
+	.affix-bottom {
+		position: absolute;
+	}
+
+	// When on a narrow screen, the sidebar needs to be in normal flow always
+	@media (max-width: @screen-sm-max) {
+		.affix {
+			position: static;
+			margin-top: 1em;
+		}
+
+		.affix-top {
+			margin-top: 1em;
+		}
+
+		.affix-bottom {
+			position: static;
+		}
+	}
+
+	#concentrationGraphControls, #thresholdGraphicControls {
+		&:hover {
+			cursor: pointer;
+		}
+	}
+
+	#mapControls_ymd {
+		margin-bottom: 15px;
+	}
+
+	#mapControls_latlon #latContainer, #mapControls_latlon #lonContainer {
+		width: 110px;
+		display: inline-block;
+	}
+
+	#mapControls_latlon label {
+		width: 25px;
+	}
+
+	#mapControls_latlon #lat, #mapControls_latlon #lon {
+		width: 65px;
+		text-align: right;
+		border-radius: 8px;
+		padding-right: 5px;
+		margin-left: 0;
+	}
+
+	#sequentialControls {
+		margin-top: 15px;
+	}
+
+	#monthlyControls {
+		margin-top: 20px;
+	}
+}
+
+#thresholdTarget {
+	margin-top: 1em;
+}
+
+#animationBuffering {
+	position: relative;
+	margin-top: 2ex;  padding: 1ex 2ex;
+	img {
+		position: relative;
+		top: -5px;
+	}
+}
+
+.list-group-item.active .list-group-item-text, .list-group-item.active:hover .list-group-item-text {
+	color: darken(@list-group-active-bg, 40%);
+}
+
+.chart {
+	
+	path, line {
+		fill: none;
+		stroke: rgb(171, 171, 183);
+		color: rgb(171, 171, 183);
+		shape-rendering: crispEdges;
+	}
+
+	text {
+		font-size: 11px;
+		font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
+		fill: #666;
+	}
+
+	.bar {
+		fill: rgb(171, 171, 183);
+	}
+
+}
+
+#concentrationCsv {
+	margin-right: 1em;
+}
+
+// We need to space out the threshold slider from the More Info button because the slider
+// has a tooltip popup that overlaps the button.
+#graphicWrapper > p {
+	margin-bottom: 2em;
+}
+
+.slider-track {
+	background-color: #878787;
+	background-image: -moz-linear-gradient(top, #858585, #898989);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#858585), to(#898989));
+	background-image: -webkit-linear-gradient(top, #858585, #898989);
+	background-image: -o-linear-gradient(top, #858585, #898989);
+	background-image: linear-gradient(to bottom, #858585, #898989);
+}
+
+.slider-handle {
+	opacity: 1.0;
+}
