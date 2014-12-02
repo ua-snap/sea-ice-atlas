@@ -122,7 +122,6 @@ for timestep, nc_path in izip( timesteps, nc_paths ):
 	# read in the data using scipy
 	nc = netcdf.netcdf_file( nc_path )
 	# set some output filename constants to pass to the generator
-	# output_path = './Outputs_From_Bill/Bill_monthly_outputs_Aug2014'
 	output_path = os.path.join( input_path, version_num, timestep, 'gtiff' )
 	output_prefix = 'seaice_conc_sic_mean_pct_' + timestep + '_ak_'
 
@@ -177,16 +176,14 @@ for timestep, nc_path in izip( timesteps, nc_paths ):
 							# arr2d_to_gtiff( arr_2d, output_filename, template_meta 
 	p.close()
 
-	# gtiff_out = [ arr2d_to_gtiff( (cnc, src), fn, meta ) for fn, cnc, src in input_generator ]
-
 	# run the zipping procedure
 	in_dir = os.path.join( input_path, version_num, timestep )
-	output_filename = os.path.join( in_dir, 'seaice_conc_sic_mean_pct_' + timestep + '_ak_' + dates[0]+'_'+dates[len(dates)-1]+'.zip' )
+	output_filename = os.path.join( in_dir, output_prefix + dates[0]+'_'+dates[len(dates)-1]+'.zip' )
 
 	if os.path.exists( output_filename ):
 		os.remove( output_filename )
 
-	out = zip_sea_ice( in_dir, output_filename )
+	out = zip_sea_ice( output_path, output_filename )
 	out.close()
 
 
