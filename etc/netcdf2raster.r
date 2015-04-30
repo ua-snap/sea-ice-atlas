@@ -74,7 +74,7 @@ tiffCount = length(outputTiffs)
 # inform user if the GeoTIFF file count is unexpected
 if(tiffCount == 0) {
 	stop('No GeoTIFFs were found. Please verify the GeoTIFF directory is set properly. If the GeoTIFF file names do not match the regular expression in this script, use the rename_geotiffs.pl script to rename them, or else the rest of the HSIA update process will be difficult.')
-} else if(tiffCount != 1968) {
+} else if(tiffCount != 1980) {
 	warning('This script did not find exactly 1,968 GeoTIFFs for the years 1850-2013.')
 }
 
