@@ -42,11 +42,12 @@ client.Views.MapView = Backbone.View.extend({
 			e.disableZoomWheel();
 		});
 
-		var gmap = new OpenLayers.Layer.Google("Google Terrain", {
+		var gmap = new OpenLayers.Layer.Google("Google Hybrid", {
+			type: google.maps.MapTypeId.HYBRID,
 			visibility: true,
 			isBaseLayer: true
 		});
-		
+
 		this.map.addLayers([gmap]);
 		this.map.layers[0].isBaseLayer = true;
 
