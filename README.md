@@ -113,7 +113,7 @@ Source data will probably be provided in GeoTIFF format. If the source data is p
 
 To deploy data for this application, the steps are:
 
- 1. Obtain the updated data file, and be aware that if the file has structural changes some coding may be needed to support it. Double check that the bounding box and nodata value(s) are consistent with our existing infrastructure with the ```gdalinfo``` command. The bounding box and NoData value(s) should look like this:
+ 1. Obtain the updated data file, and be aware that if the file has structural changes some coding may be needed to support it. Double check that the bounding box and nodata value(s) are consistent with our existing infrastructure with the ```gdalinfo``` command. The bounding box should look like this:
 
      ```
      $ gdalinfo <filename>
@@ -125,11 +125,9 @@ To deploy data for this application, the steps are:
      Lower Right (-119.7500000,  40.0000000) (119d45' 0.00"W, 40d 0' 0.00"N)
      Center      (-149.8750000,  60.1250000) (149d52'30.00"W, 60d 7'30.00"N)
      ...
-     NoData Value=-128
-     ...
      ```
 
-     If the bounding box or NoData values do not look like this, talk to whoever generated the data. Or, you may be able to correct the data bounding box with the ```etc/reproject.sh``` script as a last resort.
+     If the bounding box does not look like this, talk to whoever generated the data. Or, you may be able to correct the data bounding box with the ```etc/reproject.sh``` script as a last resort.
  1. If you are starting with GeoTIFF files, not a NetCDF file, the GeoTIFF file names need to be in the format ```seaice_conc_sic_mean_pct_monthly_ak_YYYY_MM.tif``` before you can continue. If the GeoTIFF files are not named like this, you can modify and run the ```etc/rename_geotiffs.pl``` script to rename them.
  1. Update the ```etc/netcdf2raster.r``` script as required to change paths/configuration. If you are starting with a NetCDF file, set ```doNetCDF = TRUE``` and make sure to set the ```ncFilePath``` variable. If you are starting with GeoTIFFs, set ```doNetCDF = FALSE``` and set ```outDirPath``` to your GeoTIFF directory (```ncFilePath``` will be ignored). Then run the file and it will eventually emit ~1,968 GeoTIFFs as well as an SQL file.  (*Note*, there will likely be a huge number of warnings when this script runs, but it should be OK.)
  1. Generate the mapfile.
