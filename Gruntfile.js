@@ -21,23 +21,6 @@ module.exports = function(grunt) {
             }
         },
 
-        // Copies static assets from Bower components to public directories
-        copy: {
-            openlayers: {
-                cwd: 'bower_components/openlayers/theme',
-                src: 'default/*',
-                dest: 'public/theme',
-                expand: true
-            },
-            // Copy our build file so we're not using full OL.
-            openlayers_configuration: {
-                flatten: true,
-                expand: true,
-                src: 'etc/openlayers-build-configuration.cfg',
-                dest: 'bower_components/openlayers/build/'
-            }
-        },
-
         // Not configured right yet!
         jshint: {
             options: {
@@ -234,11 +217,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-jst');
     grunt.loadNpmTasks('grunt-contrib-uglify');
 
-    grunt.registerTask('default', ['clean', 'less', 'bower', 'jst', 'neuter', 'concat', 'copy', 'uglify', 'develop', 'watch']);
-    grunt.registerTask('build', ['clean', 'less', 'bower', 'copy:openlayers_configuration', 'shell', 'jst', 'neuter', 'concat', 'uglify', 'copy:openlayers']);
+    grunt.registerTask('default', ['clean', 'less', 'bower', 'jst', 'neuter', 'concat', 'uglify', 'develop', 'watch']);
+    grunt.registerTask('build', ['clean', 'less', 'bower', 'shell', 'jst', 'neuter', 'concat', 'uglify']);
 
 };

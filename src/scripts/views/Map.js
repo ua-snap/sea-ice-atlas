@@ -25,7 +25,7 @@ client.Views.MapView = Backbone.View.extend({
 	},
 
 	renderBaseLayer: function() {
-		this.baseLayerLoadPromise = Q.defer();
+		var baseLayerLoadPromise = Q.defer();
 
 		this.map = new OpenLayers.Map({
 			div: 'map',
@@ -42,18 +42,13 @@ client.Views.MapView = Backbone.View.extend({
 			e.disableZoomWheel();
 		});
 
-		var gmap = new OpenLayers.Layer.Google("Google Hybrid", {
-			type: google.maps.MapTypeId.HYBRID,
-			visibility: true,
-			isBaseLayer: true
-		});
-
-		this.map.addLayers([gmap]);
+		var osm = new OpenLayers.Layer.OSM();
+		this.map.addLayer(osm);
 		this.map.layers[0].isBaseLayer = true;
 
-		google.maps.event.addListener(gmap.mapObject, 'tilesloaded', _.bind(function() {
-			this.baseLayerLoadPromise.resolve();
-		}, this));
+		osm.events.register('loadend', osm, function() {
+			baseLayerLoadPromise.resolve();
+		});
 
 		this.map.setCenter( new OpenLayers.LonLat(-153, 65).transform('EPSG:4326', 'EPSG:3857'), 4);
 		this.createClickHandler();
@@ -61,7 +56,7 @@ client.Views.MapView = Backbone.View.extend({
 
 		this.markers = new OpenLayers.Layer.Markers("Markers");
 
-		return this.baseLayerLoadPromise.promise;
+		return baseLayerLoadPromise.promise;
 	},
 
 	render: function() {
