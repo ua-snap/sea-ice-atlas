@@ -6,11 +6,11 @@
 		"database":"sea_ice_atlas",
 		"host":"localhost",
 		"port":30303,
-		"table":"sql_raster_seaice_rev_2014_1_24"
+		"table":"sql_raster_seaice_rev_2016_06_08"
 	},
 	"google_analytics_token":false,
 	"startYear":1853,
-	"endYear":2012,
+	"endYear":2015,
 	"mapLayerNameTemplate":"seaice_conc_sic_mean_pct_monthly_ak_<%= year %>_<%= month %>"
 	
 }
