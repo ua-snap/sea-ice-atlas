@@ -6,83 +6,56 @@ block content
 			
 		.panel.panel-danger.pull-right
 			.panel-heading
-				h4.panel-title Uncertainty informs decisions and drives science forward
+				h4.panel-title Spatial tools for Arctic mapping and planning are needed
 			
 			.panel-body
 				p
-					| The role of science is to assess evidence and show
-					| which of several possible answers has the most support.
-					| Remaining uncertainties indicate what to
-					| investigate next.
+					| "Important weaknesses in current decision-making processes
+					| involve two issues that spatial tools can help address: public
+					| participation and the availability of data and information."
+
 				p
-					| We all make choices that are based
-					| on incomplete information. It is helpful to know about
-					| uncertainties up front so that we can make informed
-					| decisions.
+					a(href='http://dev.aoos.org/wp-content/uploads/2011/11/Descoped-CMSP-Proposal-Nov-4-FINAL.pdf') —Data Tools to Support Future Decision-Making on Arctic Fisheries (2011)					
 		
 					img(src='img/USS_BEAR_off_Point_Barrow_22_sm.jpg')
-
-				p.caption	
-					| Navigating and collecting data in heavy ice was very
-					| uncertain for historic mariners. 		
+		
 
 		h1 We can plan for the future by studying the past.
-		p.intro
-			| Key findings from&nbsp;
-			a(href='http://dev.aoos.org/wp-content/uploads/2011/11/Descoped-CMSP-Proposal-Nov-4-FINAL.pdf') a 2011 report on the need for spatial tools for Arctic mapping and planning 
-			| indicate that:
 
-			blockquote
-				p
-					| Marine resource management decisions are often made through
-					| processes that are not based explicitly on resource data &mldr;
-					| important weaknesses in current decision-making processes
-					| involve two issues that spatial tools can help address: public
-					| participation and the availability of data and information.
-				p
-					| The most pressing management decisions revolve around
-					| climate change and the associated changes in environmental
-					| conditions coupled with increasing industrial development and
-					| consequent human uses of the ocean and near shore
-					| environments.
 		p.intro
-			| For the first time, you can simultaneously view multiple sources of historical sea
-			| ice data from the oceans surrounding northern
+			strong If you live in an Alaska coastal community, hunt or fish in a marine environment, 
+			| work in shipping or oil and gas, serve with the US Coast Guard, research Arctic ecosystems or are otherwise interested in Arctic sea ice data and
+			| climate change,&nbsp;
+			strong this atlas is for you.
+
+		p.intro
+			| Now you can simultaneously view multiple sources of historical sea
+			| ice data from the seas off northern
 			| Alaska. Choose a region and time of interest and inspect a map of data collected 
 			| between the mid-1800s and today, 
 			| to discover how ice extent and concentration have changed over time.
-		p.intro
-			strong If you are&nbsp;
-			| a resident of a coastal community,
-			| someone who hunts or fishes in a marine environment, a member of
-			| the shipping or oil + gas industries, in the US Coast guard, a
-			| scientist, or otherwise interested in Arctic sea ice data and
-			| climate change,&nbsp;
-			strong this atlas is for you.
-				
-		h2 Data considerations
-		p
-			| These data show &ldquo;snapshots&rdquo; in time, as well as historical
-			| trends in arctic sea ice cover and extent. They are not projections
-			| or predictions of future conditions. 
-			| The atlas is not designed for forecasting or prediction, but can provide
-			| useful historical context for future planning efforts.
 
-		h3	Factors that create uncertainty in these data
+		p.intro
+			| The Atlas shows &ldquo;snapshots&rdquo; in time, as well as historical
+			| trends in arctic sea ice cover and extent. It is not designed for forecasting or 
+			| prediction, but can provide useful historical context for future planning efforts.
+
+
+		h2
+			| Challenges of data collection and interpretation
+
 		p
-			strong Data collection challenges.&nbsp;
-			| Collecting sea ice data has always been difficult and dangerous work. 
-			| Historic interpretations of ice 
-			| concentration differed from modern protocols. A wide variety of instrument calibrations 
-			| and sensors (human observation, radar, satellites) has been used over time.
-			| All add up to data inconsistencies.
+			| Collecting sea ice data has always been difficult and dangerous work. Interpreting 
+			| data is not dangerous, but remains difficult due to differences in historic interpretations of
+			| ice concentration from modern protocols as well as instrument calibrations 
+			| and sensors (human observation, radar, satellites) over time. 
 		p
-			strong Data compilation choices.&nbsp;
-			| Compiling data involves choices: Which hard copy maps to digitize? How do
-			| we interpret this handwriting? How do we fill gaps in the data
+			| Challenges
+			| faced by the Atlas data team included questions such as, Which hard copy maps to digitize? 
+			| How do we interpret this handwriting? How do we fill gaps in the data
 			| record? Which time scale is best to use?
-			| These choices lead to uncertainty.
-		h3 Sources of monthly sea ice data used in this atlas
+
+		h2 Data sources in this atlas
 		script(src='https://www.google.com/jsapi?autoload={"modules":[{"name":"visualization",%20"version":"1","packages":["timeline"]}]}', type='text/javascript')
 		script(type='text/javascript').
 			google.setOnLoadCallback(drawChart);
@@ -107,7 +80,7 @@ block content
 			[ 'Kelly extended', 'Temporal extension of Kelly data 1957–1971',new Date(1957, 1, 0),new Date(1971, 12, 0) ],
 			[ 'JMA', 'Japan Meteorological Agency 1970–2007',new Date(1970, 1, 0),new Date(2007, 12, 0) ],
 			[ 'JIC', 'Navy-NOAA Joint Ice Center Climatology 1972–1994',new Date(1972, 1, 0),new Date(1994, 12, 0) ],
-			[ 'NSIDC', 'NSIDC microwave sensor data 1978–2014',new Date(1978, 1, 0),new Date(2014, 12, 0) ]]);
+			[ 'NSIDC', 'NSIDC microwave sensor data 1978–2015',new Date(1978, 1, 0),new Date(2015, 12, 0) ]]);
 
 			var options = {
 			timeline: { showRowLabels: true, singleColor: '#7ecefd', colorByRowLabel: true,
