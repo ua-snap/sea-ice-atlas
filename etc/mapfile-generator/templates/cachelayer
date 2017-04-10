@@ -1,7 +1,7 @@
 
 [[% layerName %]]
 type=WMS
-url=http://tiles.snap.uaf.edu/cgi-bin/mapserv?map=/var/www/html/hsia.map
+url=http://tiles.snap.uaf.edu/cgi-bin/mapserv?map=/var/www/html/hsia-2016.map
 layers=[% layerName %]
 spherical_mercator=true
 extent_type=loose

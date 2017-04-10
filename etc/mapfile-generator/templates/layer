@@ -5,7 +5,7 @@
                 TYPE raster
                 STATUS ON
 
-                DATA "/var/www/html/seaice-monthly/[% layerName %].tif"
+                DATA "/var/www/html/seaice-monthly-2016/[% layerName %].tif"
                 OFFSITE 0 0 0
 
                 PROJECTION

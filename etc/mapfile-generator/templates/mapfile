@@ -17,11 +17,11 @@ MAP
                 "init=epsg:4326"
         END
         WEB
-                IMAGEPATH "/var/www/html/seaice-monthly"
-                IMAGEURL "/seaice-monthly/"
+                IMAGEPATH "/var/www/html/seaice-monthly-2016"
+                IMAGEURL "/seaice-monthly-2016/"
                 METADATA
                         "wms_title" "Sea Ice Atlas"
-                        "wms_onlineresource" "http://tiles.snap.uaf.edu/cgi-bin/mapserv?map=hsia.map"
+                        "wms_onlineresource" "http://tiles.snap.uaf.edu/cgi-bin/mapserv?map=hsia-2016.map"
                         "wms_srs" "EPSG:3857"
                         "wms_enable_request" "*"
                 END
