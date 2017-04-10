@@ -44,7 +44,7 @@ function parseToDate(idx) {
 			var i;
 			switch (this.get('mode')) {
 				case 'monthly':
-					for (i = startYear; i <= 2012; i++) {
+					for (i = startYear; i <= client.config.endYear; i++) {
 						this.layers.push(i + '_' + pad(startMonth));
 					}
 					break;
@@ -55,7 +55,7 @@ function parseToDate(idx) {
 						this.layers.push(startYear + '_' + pad(i));
 					}
 
-					for (i = startYear + 1; i <= 2012; i++) {
+					for (i = startYear + 1; i <= client.config.endYear; i++) {
 						for (var j = 1; j <= 12; j++) {
 							this.layers.push(i + '_' + pad(j));
 						}
