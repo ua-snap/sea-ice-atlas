@@ -7,8 +7,8 @@ use Template;
 use JSON;
 use Data::Dumper;
 
-my $mapfile = "hsia-2016.map";
-my $cachefile = "hsia-cache-2016.cfg";
+my $mapfile = "hsia-2017.map";
+my $cachefile = "hsia-cache-2017.cfg";
 my $path = "/var/www/html";
 my $imageurl = "hsia";
 my $server = "tiles.snap.uaf.edu";
@@ -43,7 +43,7 @@ my $tt = Template->new({
 my $layers;
 my $cachelayers;
 
-foreach my $year (1850..2015) {
+foreach my $year (1850..2016) {
 	foreach my $month ("01".."12") {
 
 		my $layerName = "seaice_conc_sic_mean_pct_monthly_ak_${year}_${month}";
