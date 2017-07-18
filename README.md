@@ -115,10 +115,19 @@ Since the data is updated for the prior year, there's a mix in the instructions 
 
 Outcomes, with server names and data locations identified below:
 
- * All (existing & updated) GeoTIFF images are located on `hades` (`tiles.snap.uaf.edu`) at `/var/www/html/hsia-2017`.
- * New mapfile configuration `/var/www/html/hsia-2017.map`.
+ * All (existing & updated) GeoTIFF images are located on `hades` (`tiles.snap.uaf.edu`) at `/var/www/html/hsia`.
+ * New mapfile configuration `/var/www/html/hsia.map`.
  * Updated tilecache configuration `/var/www/tilecache/tilecache.cfg`.
  * New PostGIS table created named `hsia-2017`.
+ * Application configuration updated to point at new locations for data.
+
+### Warning & apologies!
+
+You should assume that once you've modified the main production tilecache configuration file, *the production site will be broken* until you complete the entire update process.
+
+These directions aren't peer-tested.  There are probably mistakes.  Sorry!
+
+There's a lot of paths that need to be carefully aligned between the mapfile, tilecache, and filesystem.  You can look at the generated mapfile/tilecache configurations and ensure that the paths match what you're actually deploying on `hades`.  If you need to modify paths, it's easy to do so by editing the template files in this repo in `etc/mapfile-generator/templates`.
 
 ### Obtain and verify updated GeoTIFF files
 
@@ -149,7 +158,7 @@ Outcomes, with server names and data locations identified below:
     ```
  1. Update script to generate configs for the most recent data year. `cd ~/sea-ice-atlas/etc/mapfile-generator` then edit the script as follows:
     ```
-    line 10: my $mapfile = "hsia-2017.map";
+    line 10: my $mapfile = "hsia.map";
     line 11: my $cachefile = "hsia-cache-2017.cfg";
     line 46: change end year to most current data available (here, 2016)
     ```
@@ -160,24 +169,35 @@ Outcomes, with server names and data locations identified below:
 
 ### Update data in MapServer
 
-The data update on MapServer is done on `hades`.  These steps assume that the new GeoTIFFs to be added are in an archive named `seaice2016.bz2`.  We also need a copy of all the GeoTIFFs to move to `hermes` to update PostGIS.
+The data update on MapServer is done on `hades`.  These steps assume that the new GeoTIFFs to be added are in an archive named `~/seaice2016.bz2`.
 
- 1. Move the old and files to the appropriate location on `hades`.
+ 1. Copy needed files to `hades`.
     ```
-    scp seaice2016.bz2 user@hades:~
+    scp ~/seaice2016.bz2 user@hades:~
+    scp ~/repos/sea-ice-atlas/etc/mapfile-generator/hsia-2017.map user@hades:~
+    scp ~/repos/sea-ice-atlas/etc/mapfile-generator/hsia-cache-2017.cfg user@hades:~
+    ```
+ 1. Move the old and new GeoTIFF files to the appropriate location on `hades`.
+    ```
     ssh user@hades
     tar -jxvf seaice2016.bz2
-    cp /path/to/existing/data/* /var/www/html/hsia-2017
-    cp seaice2016.bz2/*.tif /var/www/html/hsia-2017
-    sudo chown -R apache:apache /var/www/html/hsia-2017
+    cp seaice2016/*.tif /var/www/html/seaice-monthly-2016
+    sudo chown -R apache:apache /var/www/html/seaice-monthly-2016
     ```
- 1. Get an archive of all the data to move to `hermes`, copy to local machine.
+ 1. Move the new mapfile into place.
     ```
-    cd /var/www/html/seaice-monthly-2016
+    sudo cp hsia-2017.map /var/www/html
+    sudo chown apache:apache /var/www/html/hsia-2017.map
+    ```
+ 1. Edit the tilecache configuration file.
+ 1. Get an archive of all the data to move to `hermes`, copy to local machine then `hermes`.
+    ```
+    cd /var/www/html/hsia-2017
     tar -cjvf seaice.bz2 *
     mv seaice.bz2 ~
     exit
     scp user@hades:seaice.bz2 .
+    scp seaice.bz2 user@hermes:~
     ```
 
 ### Update data in PostGIS
