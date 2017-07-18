@@ -31,4 +31,4 @@ sea-ice-atlas.sublime-project
 
 etc/mapfile-generator/tilecache.cfg
 etc/mapfile-generator/hsia-tilecache.cfg
-etc/mapfile-generator/hsia.map
+etc/mapfile-generator/*.map

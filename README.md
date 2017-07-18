@@ -180,19 +180,40 @@ The data update on MapServer is done on `hades`.  These steps assume that the ne
  1. Move the old and new GeoTIFF files to the appropriate location on `hades`.
     ```
     ssh user@hades
+    sudo mkdir /var/www/html/seaice-monthly # may not be needed
     tar -jxvf seaice2016.bz2
-    cp seaice2016/*.tif /var/www/html/seaice-monthly-2016
-    sudo chown -R apache:apache /var/www/html/seaice-monthly-2016
+    cp seaice2016/*.tif /var/www/html/seaice-monthly
+    sudo chown -R apache:apache /var/www/html/seaice-monthly
     ```
  1. Move the new mapfile into place.
     ```
     sudo cp hsia-2017.map /var/www/html
     sudo chown apache:apache /var/www/html/hsia-2017.map
+    sudo ln -s /var/www/html/hsia-2017.map /var/www/html/hsia.map
     ```
- 1. Edit the tilecache configuration file.
+ 1. Edit the tilecache configuration file.  You may need to fuss around with permissions on these files.
+    ```
+    cp /var/www/tilecache/tilecache.cfg /var/www/tilecache/tilecache.cfg.bak # backup!
+    cp /var/www/tilecache/tilecache.cfg /var/www/tilecache/tilecache.cfg.new # Working copy!
+    vi /var/www/tilecache/tilecache.cfg.new
+    [ edit the tile cache configuration file and remove all portions that reference sea ice atlas layers; leave other parts alone. Save. ]
+    cat ~/hsia-tilecache.cfg >> /var/www/tilecache/tilecache.cfg.new
+    [ verify that the file looks OK ]
+    mv /var/www/tilecache/tilecache.cfg.new /var/www/tilecache/tilecache.cfg
+    ```
+ 1. Restart apache.
+    ```
+    sudo service httpd restart
+    ```
+ 1. Regenerate the tilecache.  We need a clone of this repo to assist with regenerating the cache.
+    ```
+    rm -rf /tmp/tilecache/seaice*
+    git clone https://github.com/ua-snap/sea-ice-atlas.git
+    ./sea-ice-atlas/etc/seedTilecache.sh
+    sudo chown -R apache:apache /tmp/tilecache
  1. Get an archive of all the data to move to `hermes`, copy to local machine then `hermes`.
     ```
-    cd /var/www/html/hsia-2017
+    cd /var/www/html/seaice-monthly
     tar -cjvf seaice.bz2 *
     mv seaice.bz2 ~
     exit
@@ -205,15 +226,16 @@ The data update on MapServer is done on `hades`.  These steps assume that the ne
 The PostGIS data should be generated and manipulated on `hermes`.  These steps assume the archive of all (including updated) data is in a file named `seaice.bz2`.
 
  1. Update the ```etc/netcdf2raster.r``` script as required to change paths/configuration. If you are starting with GeoTIFFs, set ```doNetCDF = FALSE``` and set ```outDirPath``` to your GeoTIFF directory (```ncFilePath``` will be ignored). Then run the file and it will eventually emit an SQL file.  (*Note*, there will likely be a huge number of warnings when this script runs, but it should be OK.)
- 1. Generate the mapfile.
-    * Update the ```etc/mapfile-generator/generateMapfile.pl``` tile with the correct date span (near line 46), then execute to yield the "hsia.map" and "hsia-tilecache.cfg".
-    * Check the config files and note the directories where the GeoTIFFs should go, as well as making sure the layer names / filenames line up correctly.
-    * Check the templates for the mapfile and layer if you need to edit URLs or file locations.
- 1. Move the mapfile and the GeoTIFFs up to the production mapserver, copy to production directory.
- 1. Move the tilecache configuration file up to the production mapserver, then merge it into the giant tilecache configuration file (Tilecache doesn't support multiple configs). 
- 1. Regenerate the tilecache.  Delete all previous cache items with ```rm -rf /tmp/tilecache/seaice*``` then run the ```etc/seedTilecache.sh``` script.  After generating the cache, set the file permissions so Apache can read them with ```sudo chown -R apache:apache /tmp/tilecache```.
+ 
+ 
  1. Double check that you are using a different table name than the production PostGIS table. The base name of the raster SQL file name will be used for the new table. I.e., the ```sql_raster_seaice_rev_YYYY_MM_DD``` in ```sql_raster_seaice_rev_YYYY_MM_DD.sql``` will be used as the new table name. Then, load the generated raster SQL file into PostGIS with ```sudo -u postgres psql -d sea_ice_atlas < sql_raster_seaice_rev_YYYY_MM_DD.sql```.
  1. Update configurations on the application as appropriate, and restart the app as outlined above.
+
+### Cleanup
+
+ * on `hades`, remove old files from prior deployments from `/var/www/html` and `/var/www/tilecache`.  Also remove any temporary files or directories from your home directory.
+ * on `hermes`, remove temp/scratch files from your home directory.
+ * on `hermes`, drop the old data table.
 
 ## Development
 
