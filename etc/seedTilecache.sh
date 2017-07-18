@@ -9,5 +9,7 @@ do
 	# Strip trailing file extension and leading file paths:
 	y=${f%.tif}
 	z=${y##*/}
-	tilecache_seed.py $z 4	
+	# Only generate 1st order tiles because the app
+	# does not allow zooming.
+	tilecache_seed.py $z 1
 done
