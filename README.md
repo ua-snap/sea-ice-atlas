@@ -92,7 +92,7 @@ Important stuff grunt is doing for us:
 
 ```bash
 cd /path/to/project
-forever start --append -l /var/log/hsia/forever.log -o /var/log/hsia/out.log -e /var/log/hsia/error.log ./app.js 
+forever start --append -l /var/log/hsia/forever.log -o /var/log/hsia/out.log -e /var/log/hsia/error.log ./app.js
 ```
 
 To update the server:
@@ -118,7 +118,7 @@ Outcomes, with server names and data locations identified below:
  * All (existing & updated) GeoTIFF images are located on `hades` (`tiles.snap.uaf.edu`) at `/var/www/html/hsia`.
  * New mapfile configuration `/var/www/html/hsia.map`.
  * Updated tilecache configuration `/var/www/tilecache/tilecache.cfg`.
- * New PostGIS table created named `hsia-2017`.
+ * New PostGIS table created named `sql_raster_seaice_rev_2017_07_19`.
  * Application configuration updated to point at new locations for data.
 
 ### Warning & apologies!
@@ -205,11 +205,12 @@ The data update on MapServer is done on `hades`.  These steps assume that the ne
     ```
     sudo service httpd restart
     ```
- 1. Regenerate the tilecache.  We need a clone of this repo to assist with regenerating the cache.
+ 1. Regenerate the tilecache.  We need a clone of this repo to assist with regenerating the cache.  By default, the tilecache configuration file the seed generator uses may be wrong; if you get lots of errors, check to see if the `tilecache_seed.py` is looking in the right spot for configuration (should be `/var/www/tilecache`).  Again, there may be some permission wiggles in the `/tmp/tilecache` directory.
     ```
     rm -rf /tmp/tilecache/seaice*
     git clone https://github.com/ua-snap/sea-ice-atlas.git
-    ./sea-ice-atlas/etc/seedTilecache.sh
+    screen # this runs a long time
+    bash ./sea-ice-atlas/etc/seedTilecache.sh
     sudo chown -R apache:apache /tmp/tilecache
  1. Get an archive of all the data to move to `hermes`, copy to local machine then `hermes`.
     ```
@@ -218,24 +219,59 @@ The data update on MapServer is done on `hades`.  These steps assume that the ne
     mv seaice.bz2 ~
     exit
     scp user@hades:seaice.bz2 .
-    scp seaice.bz2 user@hermes:~
     ```
 
 ### Update data in PostGIS
 
 The PostGIS data should be generated and manipulated on `hermes`.  These steps assume the archive of all (including updated) data is in a file named `seaice.bz2`.
 
- 1. Update the ```etc/netcdf2raster.r``` script as required to change paths/configuration. If you are starting with GeoTIFFs, set ```doNetCDF = FALSE``` and set ```outDirPath``` to your GeoTIFF directory (```ncFilePath``` will be ignored). Then run the file and it will eventually emit an SQL file.  (*Note*, there will likely be a huge number of warnings when this script runs, but it should be OK.)
- 
- 
- 1. Double check that you are using a different table name than the production PostGIS table. The base name of the raster SQL file name will be used for the new table. I.e., the ```sql_raster_seaice_rev_YYYY_MM_DD``` in ```sql_raster_seaice_rev_YYYY_MM_DD.sql``` will be used as the new table name. Then, load the generated raster SQL file into PostGIS with ```sudo -u postgres psql -d sea_ice_atlas < sql_raster_seaice_rev_YYYY_MM_DD.sql```.
- 1. Update configurations on the application as appropriate, and restart the app as outlined above.
+ 1. Prepare the data, clone this repo.
+    ```
+    scp seaice.bz2 user@hermes:~
+    ssh user@hermes
+    mkdir tifs && mv seaice.bz2 tifs
+    cd tifs && tar -jxvf seaice.bz2 && cd ..
+    git clone https://github.com/ua-snap/sea-ice-atlas.git
+
+ 1. Update the `sea-ice-atlas/etc/netcdf2raster.r` script as required to change paths/configuration.  Special note, we must change the `tableName` to something new/current:
+    ```
+    line 33: outDirPath = '~/tifs'
+    line 37: endYear = 2016
+    line 41: tableName = 'sql_raster_seaice_rev_2017_07_19'
+    ```
+    ...then run the file and it will eventually emit an SQL file.  (*Note*, there will likely be a huge number of warnings when this script runs, but it should be OK.)
+ 1. Double check that you are using a different table name than the production PostGIS table. The base name of the raster SQL file name will be used for the new table. I.e., the ```sql_raster_seaice_rev_YYYY_MM_DD``` in ```sql_raster_seaice_rev_YYYY_MM_DD.sql``` will be used as the new table name.
+    ```
+    sudo su - postgres
+    psql -d sea_ice_atlas
+    \dt
+    ```
+    ...and look for the table name.
+ 1. Then, load the generated raster SQL file into PostGIS.
+    ```
+    sudo -u postgres psql -d sea_ice_atlas < sql_raster_seaice_rev_YYYY_MM_DD.sql
+    ```
+
+### Update the application configuration
+
+Application configuration lives on `icarus`.
+
+```
+ssh user@icarus
+sudo su - seaice
+cd sea-ice-atlas && vi config.json
+[edit configuration for `table` and `endYear` elements.  Save.]
+forever restart 0
+```
+
+The server will be restarted and the update is complete!  Check out the Cleanup section below, too, for some optional housekeeping.
 
 ### Cleanup
 
  * on `hades`, remove old files from prior deployments from `/var/www/html` and `/var/www/tilecache`.  Also remove any temporary files or directories from your home directory.
  * on `hermes`, remove temp/scratch files from your home directory.
  * on `hermes`, drop the old data table.
+ * on `hermes`, clean up anything in `/var/lib/pgsql`
 
 ## Development
 
