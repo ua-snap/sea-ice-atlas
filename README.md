@@ -107,7 +107,7 @@ forever restart 0
 
 ...where 0 is the number corresponding to the associated process to restart.  ```forever list``` first if there are multiple processes running on this server to ensure you've got the right number.
 
-#### Database and map layer deployment / data updates
+### Database and map layer deployment / data updates
 
 Other folks will provide the updated GeoTIFF files.  The GeoTIFF files will be used by MapServer, but they are also used to generate an SQL raster file to import into PostGIS. On the HSIA Explore page, the map layers are served from the GeoTIFFs through MapServer, whereas the Sea Ice Concentration and Ice Open and Close Dates charts are generated from the SQL raster data through PostGIS. The data is duplicated and served up through these two different channels independently.
 
@@ -121,7 +121,7 @@ Outcomes, with server names and data locations identified below:
  * New PostGIS table created named `sql_raster_seaice_rev_2017_07_19`.
  * Application configuration updated to point at new locations for data.
 
-### Warning & apologies!
+#### Warning & apologies!
 
 You should assume that once you've modified the main production tilecache configuration file, *the production site will be broken* until you complete the entire update process.
 
@@ -129,7 +129,7 @@ These directions aren't peer-tested.  There are probably mistakes.  Sorry!
 
 There's a lot of paths that need to be carefully aligned between the mapfile, tilecache, and filesystem.  You can look at the generated mapfile/tilecache configurations and ensure that the paths match what you're actually deploying on `hades`.  If you need to modify paths, it's easy to do so by editing the template files in this repo in `etc/mapfile-generator/templates`.
 
-### Obtain and verify updated GeoTIFF files
+#### Obtain and verify updated GeoTIFF files
 
  1. Obtain the updated data file, and be aware that if the file has structural changes some coding may be needed to support it. Double check that the bounding box and nodata value(s) are consistent with our existing infrastructure with the ```gdalinfo``` command. The bounding box should look like this:
 
@@ -148,7 +148,7 @@ There's a lot of paths that need to be carefully aligned between the mapfile, ti
      If the bounding box does not look like this, talk to whoever generated the data. Or, you may be able to correct the data bounding box with the ```etc/reproject.sh``` script as a last resort.
  1. If you are starting with GeoTIFF files, not a NetCDF file, the GeoTIFF file names need to be in the format ```seaice_conc_sic_mean_pct_monthly_ak_YYYY_MM.tif``` before you can continue. If the GeoTIFF files are not named like this, you can modify and run the ```etc/rename_geotiffs.pl``` script to rename them.
 
-### Generate updated mapfile and tilecache config files
+#### Generate updated mapfile and tilecache config files
 
  1. On your local machine, clone this repository to some location (here, `~/repos`).
  1. Install Perl dependencies if needed.
@@ -167,7 +167,7 @@ There's a lot of paths that need to be carefully aligned between the mapfile, ti
     ./generateMapfile.pl
     ```
 
-### Update data in MapServer
+#### Update data in MapServer
 
 The data update on MapServer is done on `hades`.  These steps assume that the new GeoTIFFs to be added are in an archive named `~/seaice2016.bz2`.
 
@@ -221,7 +221,7 @@ The data update on MapServer is done on `hades`.  These steps assume that the ne
     scp user@hades:seaice.bz2 .
     ```
 
-### Update data in PostGIS
+#### Update data in PostGIS
 
 The PostGIS data should be generated and manipulated on `hermes`.  These steps assume the archive of all (including updated) data is in a file named `seaice.bz2`.
 
@@ -252,7 +252,7 @@ The PostGIS data should be generated and manipulated on `hermes`.  These steps a
     sudo -u postgres psql -d sea_ice_atlas < sql_raster_seaice_rev_YYYY_MM_DD.sql
     ```
 
-### Update the application configuration
+#### Update the application configuration
 
 Application configuration lives on `icarus`.
 
@@ -266,7 +266,7 @@ forever restart 0
 
 The server will be restarted and the update is complete!  Check out the Cleanup section below, too, for some optional housekeeping.
 
-### Cleanup
+#### Cleanup
 
  * on `hades`, remove old files from prior deployments from `/var/www/html` and `/var/www/tilecache`.  Also remove any temporary files or directories from your home directory.
  * on `hermes`, remove temp/scratch files from your home directory.
